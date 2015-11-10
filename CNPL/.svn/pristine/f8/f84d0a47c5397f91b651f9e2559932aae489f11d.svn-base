@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/titleSize"
+        android:layout_marginLeft="@dimen/titlepadSize"
+        android:layout_marginTop="@dimen/titlepadSize"
+        android:orientation="horizontal"
+         >
+
+        <TextView
+            android:layout_width="@dimen/titleImgSize"
+            android:layout_height="@dimen/titleSize"
+            android:background="@drawable/toptext"
+            android:layout_marginRight="@dimen/titlepadSize"
+            android:gravity="center"
+            android:text="@string/outform"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/btnTextSize" />
+        
+         <LinearLayout
+        	android:layout_width="fill_parent"
+        	android:layout_height="@dimen/titleSize"
+        	android:layout_marginRight="@dimen/titlepadSize"
+        	android:orientation="vertical"
+        	android:background="@drawable/topright" >
+        	<Button
+                    android:id="@+id/btncode"
+                    android:layout_width="@dimen/erweiSize"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:layout_height="@dimen/titleSize"
+                    android:background="@drawable/btndenglu"
+                    android:text="@string/code"
+                    android:textSize="@dimen/btnTextSize" />
+        </LinearLayout>
+    </LinearLayout>
+    
+<!--
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/topline" >
+    </LinearLayout>
+-->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="@dimen/titlepadSize"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/titlepadSize" >
+
+            <Button
+                android:id="@+id/beforebtn"
+                android:layout_width="@dimen/imgTextSize"
+                android:layout_height="@dimen/btnHSize"
+                android:layout_gravity="left|center"
+                android:layout_marginLeft="@dimen/imgpadSize"
+                android:background="@drawable/btndenglu"
+                android:text="@string/before"
+                android:textSize="@dimen/btnTextSize"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/line2" />
+        
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/titlepadSize" >
+
+            <Button
+                android:id="@+id/conok"
+                android:layout_width="@dimen/out_form_conok_width"
+                android:layout_height="@dimen/btnHSize"
+                android:layout_gravity="left|center"
+                android:layout_marginLeft="@dimen/imgpadSize"
+                android:background="@drawable/btndenglu"
+                android:text="@string/suc_code"
+                android:textSize="@dimen/btnTextSize"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/titlepadSize" >
+
+            <Button
+                android:id="@+id/conokpp"
+                android:layout_width="@dimen/out_form_conokpp_width"
+                android:layout_height="@dimen/btnHSize"
+                android:layout_gravity="left|center"
+                android:layout_marginLeft="@dimen/imgpadSize"
+                android:background="@drawable/btndenglu"
+                android:text="@string/suc_paper"
+                android:textSize="@dimen/btnTextSize"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/image2code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/alert_dark_frame" />
+        
+    </LinearLayout>
+
+</LinearLayout>

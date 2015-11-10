@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.arvin.koalapush"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="20" />
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>  
+
+    <application
+        android:allowBackup="true"
+        android:persistent="true"
+        android:priority="1000"
+        android:theme="@style/AppBaseTheme" >
+        <activity android:name="com.arvin.koalapush.MainActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name="com.arvin.koalapush.potter.PushService"
+            android:persistent="true"
+            android:priority="1000" >
+        </service>
+
+        <!-- android:process="com.koala.PushService" -->
+        <receiver
+            android:name="com.arvin.koalapush.potter.MyReceiver"
+            tools:ignore="ExportedReceiver" >
+            <intent-filter>
+                <action android:name="com.arvin.koalapush.USER_ACTION" />
+
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
+
+        
+        <meta-data
+            android:name="app_key"
+            android:value="805eb03b1346306b9e303f855949925d" />
+        
+    </application>
+
+</manifest>

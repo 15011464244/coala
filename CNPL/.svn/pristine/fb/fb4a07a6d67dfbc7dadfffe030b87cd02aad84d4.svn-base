@@ -1,0 +1,764 @@
+package com.cn.net.cnpl;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONObject;
+
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Environment;
+import android.telephony.TelephonyManager;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.format.DateFormat;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.cn.net.cnpl.db.DaoFactory;
+import com.cn.net.cnpl.db.dao.MailDao;
+import com.cn.net.cnpl.db.dao.MailHandDetailDao;
+import com.cn.net.cnpl.db.dao.ProjReasonDao;
+import com.cn.net.cnpl.db.dao.ResOrgDao;
+import com.cn.net.cnpl.db.dao.TransferDao;
+import com.cn.net.cnpl.model.User;
+import com.cn.net.cnpl.tools.BaiduGps;
+import com.cn.net.cnpl.tools.BaseActivity;
+import com.cn.net.cnpl.tools.MyCode;
+import com.cn.net.cnpl.tools.MyDialog;
+import com.cn.net.cnpl.tools.MySpinnerAdapter;
+import com.google.zxing.client.android.CaptureActivity;
+
+public class MailDlvNEnter extends BaseActivity {
+	private TextView title;
+	private Button back;
+	private Button codeButton = null;
+	// 邮件类型
+	private RadioGroup rdiaogroup = null;
+	private RadioButton mailTypeButton1 = null;
+	private RadioButton mailTypeButton2 = null;
+	// 原因
+	private Spinner spinner;
+	private TextView narrTypeText;
+
+	List<Map<String, String>> typeList = null;
+
+	// 原因  下一步动作
+	private Spinner reasonspinner,nfollow;
+	List<Map<String, String>> reasonList = null,nfollowList=null;
+
+	// 扫描或输入获取邮件号值
+	private EditText mailEdit,remark_edit;
+
+	// 保存按钮
+	private Button saveButton = null;
+	List<Map<String, String>> maildaoList = null;
+
+	// 数值
+	private String signerName = "";
+	private String dlvOrgPostCode = "";
+	private String dlvOrgName = "";
+	
+	// 设置国际标识 国内国际是1，0
+	String interFlag = "1";
+	MySpinnerAdapter<String> spinneradapter =null;
+	// 保存值
+	private String is_upload = "0", role = "", undlvCauseCode = "", undlvNextModeCode = "", dlvAddress = "",
+			signatureImg = "",undlvfollowCode ="",undlvCauseDesc="";
+	
+	//获取地址
+	private BaiduGps baidugps = null;
+	private File fullFilename;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		setContentView(R.layout.mail_dlvnenter_new);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.top_bg_new);
+		initTitle();
+		File dir = new File(Environment.getExternalStorageDirectory()+ "/CNPL");
+    	if(!dir.exists()){
+    	    dir.mkdirs();
+    	}
+    	fullFilename =new File(Environment.getExternalStorageDirectory()+ "/CNPL/"+Global.MAILDLV);
+    	if (!fullFilename.exists()){
+	    try {
+		fullFilename.createNewFile();
+	    } catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    } 
+	    }
+		// 地址
+			baidugps = BaiduGps.getInstance(this.getApplicationContext());
+			baidugps.getLocation();
+		// **邮件号
+		// 请输入或扫描邮件号
+		mailEdit = (EditText) findViewById(R.id.ndlvmailidserch);
+		//备注
+		remark_edit = (EditText) findViewById(R.id.remark_edit);
+		// **未妥投项目
+		spinner = (Spinner) findViewById(R.id.narrType);
+		narrTypeText = (TextView) findViewById(R.id.narrTypeText);
+		// 扫描邮件号
+		ImageView camera = (ImageView) findViewById(R.id.ndlvcamera);
+		camera.setOnClickListener(new Button.OnClickListener() {
+			public void onClick(View v) {
+				spinner.setEnabled(true);
+				spinner.setVisibility(View.VISIBLE);
+				narrTypeText.setVisibility(View.GONE);
+				Intent intent = new Intent(MailDlvNEnter.this,
+						CaptureActivity.class);
+				startActivityForResult(intent, 1);
+			}
+		});
+		/*
+		codeButton = (Button) findViewById(R.id.btncode);
+		codeButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				MyCode.Builder builder = new MyCode.Builder(
+						MailDlvNEnter.this);
+				builder.setTitle("二维码:");
+				builder.setPositiveButton("", null);
+				builder.create().show();
+			}
+
+		});
+		*/
+		// **邮件类型
+		/*
+		rdiaogroup = (RadioGroup) findViewById(R.id.nradioGrouplei);
+
+		mailTypeButton1 = (RadioButton) findViewById(R.id.nradioin);
+		mailTypeButton1.setText(getString(R.string.internal).toString());
+		mailTypeButton2 = (RadioButton) findViewById(R.id.nradioout);
+		mailTypeButton2.setText(getString(R.string.international).toString());
+
+		rdiaogroup
+				.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+					@Override
+					public void onCheckedChanged(RadioGroup group, int checkedId) {
+						// TODO Auto-generated method stub
+						if (checkedId == mailTypeButton1.getId()) {
+							interFlag = "1";
+						} else if (checkedId == mailTypeButton2.getId()) {
+							interFlag = "0";
+						}
+					}
+
+				});
+
+		
+		*/
+		// 原因 
+		reasonspinner = (Spinner) findViewById(R.id.nreason);
+
+//		DlvStateDao	dlvstatedao = DaoFactory.getInstance().getDlvStateDao(this.getApplicationContext());
+//		typeList = dlvstatedao.FindDlvStateBystateType(Global.UNDLVCODE);
+		List<String> arraylist = new ArrayList<String>();
+		ProjReasonDao projdao=DaoFactory.getInstance().getProjReasonDao(MailDlvNEnter.this);
+		typeList = projdao.findPros();
+		for (Map<String, String> map : typeList) {
+			String xk = map.get("projId")+","+ map.get("projName");
+			arraylist.add(xk);
+		}
+//		for (Map<String, String> map : typeList) {
+//			String xk = map.get("stateDescCHS");
+//			if (getResources().getConfiguration().locale.getCountry().equals(
+//					"CN")) {
+//				xk = map.get("stateDescCHS");
+//			} else if (getResources().getConfiguration().locale.getCountry()
+//					.equals("TW")) {
+//				xk = map.get("stateDescTRADITIONAL");
+//			} else if (getResources().getConfiguration().locale.getCountry()
+//					.equals("UK")
+//					|| getResources().getConfiguration().locale.getCountry()
+//							.equals("US")) {
+//				xk = map.get("stateDescENG");
+//			}
+//			arraylist.add(xk);
+//		}
+		spinneradapter = new MySpinnerAdapter<String>(
+				this, R.layout.my_spinner, R.id.name_text, arraylist);
+		spinneradapter.setDropDownViewResource(R.layout.my_spinner_drpdown_item);
+		spinner.setAdapter(spinneradapter);
+		spinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				undlvNextModeCode =typeList.get(arg2).get("projId");// 保存项目代码
+				initReason(typeList.get(arg2).get("projId"));// 原因
+				initNext(typeList.get(arg2).get("projId"));
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+
+			}
+
+		});
+
+		// 获取数值
+		ResOrgDao resOrgDao = DaoFactory.getInstance().getResOrgDao(MailDlvNEnter.this);
+		maildaoList = resOrgDao.FindResOrgDaoBystateType();
+		for (Map<String, String> map : maildaoList) {
+			dlvOrgPostCode = map.get("postcode");
+			dlvOrgName = map.get("org_sname");
+		}
+
+		// 保存按钮
+		saveButton = (Button) findViewById(R.id.ndlvsave);
+		saveButton.setText(getString(R.string.save).toString());
+		saveButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				saveData();
+			}
+
+		});
+		mailEdit.addTextChangedListener(mTextWatcher);
+		
+	}
+	private void initTitle() {
+		// TODO Auto-generated method stub
+		title = (TextView) findViewById(R.id.new_name);
+		title.setText("未妥投录入");
+		back = (Button) findViewById(R.id.top_left);
+		back.setVisibility(View.VISIBLE);
+		back.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				MailDlvNEnter.this.finish();
+			}
+		});
+	}
+	TextWatcher mTextWatcher = new TextWatcher() {
+		private CharSequence temp;
+		private int editStart;
+		private int editEnd;
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
+			// TODO Auto-generated method stub
+			temp = s;
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+			// TODO Auto-generated method stub
+			// mTextView.setText(s);//将输入的内容实时显示
+		}
+
+		@Override
+		public void afterTextChanged(Editable s) {
+			// TODO Auto-generated method stub
+			editStart = mailEdit.getSelectionStart();
+			editEnd = mailEdit.getSelectionEnd();
+			if (temp.length() > 3) {
+				User user = User.FindUser(MailDlvNEnter.this);
+				TransferDao dao = DaoFactory.getInstance().getTransferDao(MailDlvNEnter.this);
+				List<Map<String,String>> transfer = dao.findTransferByTicketNum(user.getLoginName(), temp.toString());
+				if(transfer != null && transfer.size() > 0){
+					boolean isSearched = false;
+					for(int i=0;i<transfer.size();i++){
+						if(isSearched){// 已找到配置。不再查找
+							break;
+						}
+						String projId = transfer.get(i).get("projId");
+						if(typeList == null || typeList.size() == 0){
+							break;
+						}
+						for(int j=0;j<typeList.size();j++){
+							String pId = typeList.get(j).get("projId");
+							if(pId != null && projId != null && projId.equals(pId)){
+								isSearched = true;
+								spinner.setSelection(j);
+								spinner.setEnabled(false);
+								spinner.setVisibility(View.GONE);
+								undlvNextModeCode =typeList.get(j).get("projId");// 保存项目代码
+								initReason(typeList.get(j).get("projId"));// 原因
+								initNext(typeList.get(j).get("projId"));
+								narrTypeText.setText(pId+","+ typeList.get(j).get("projName"));
+								narrTypeText.setVisibility(View.VISIBLE);
+								break;
+							}
+						}
+					}
+					if(!isSearched){
+						spinner.setSelection(0);
+						spinneradapter.notifyDataSetChanged();
+						String str = spinner.getSelectedItem().toString();
+						initReason(str);// 原因
+						initNext(str);
+					}
+				}
+			}else if(temp.length()==1){
+				spinner.setEnabled(true);
+				spinner.setVisibility(View.VISIBLE);
+				narrTypeText.setVisibility(View.GONE);
+			}
+		}
+	}; 
+	
+	private MailHandDetailDao mailhanddetailDao = null;
+	private void saveData(){
+		String str = mailEdit.getText().toString();
+		
+		mailhanddetailDao  = DaoFactory.getInstance().getMailHandDetailDao(this);
+		List<Map<String,String>>   mailNoList =mailhanddetailDao.FindMailIn();
+//		boolean isjieru=false;
+//		if(mailNoList!=null){
+//		for(int i=0;i<mailNoList.size();i++){
+//			if(str.equals(mailNoList.get(i).get("mail_num").toString())){
+//				isjieru = true;
+//			}
+//		}
+//		}
+		if ( "".equals(str))//str.length() != 13 ||
+			Toast.makeText(MailDlvNEnter.this,
+					getString(R.string.mailnocuowu), 1000).show();
+		else
+//			if(!isjieru){
+//			Toast.makeText(MailDlvNEnter.this,
+//					getString(R.string.mailnojieru), 1000).show();
+//		}else 
+		{
+			str=str.toUpperCase();
+			//查询是否录入过
+			MailDao maildao = DaoFactory.getInstance().getMailDao(this.getApplicationContext());
+			String data = maildao.Findcount(getlogName(), Global.DLVCODE, str);
+			String datare = maildao.Findcount(getlogName(), str);
+			if(data!=null&&!"".equals(data)){
+				try{
+				SimpleDateFormat f=new SimpleDateFormat("yyyyMMddHHmmSS");
+				String dataStr =""+DateFormat.format("yyyy-MM-dd", f.parse(data));
+				String message = getString(R.string.issave1)+dataStr+getString(R.string.issave2);
+				
+				MyDialog.Builder builder = new MyDialog.Builder(MailDlvNEnter.this);
+				builder.setTitle(getString(R.string.hint));
+				builder.setMessage(message);
+				builder.setPositiveButton("",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.dismiss();
+								if (saveEnter()) {
+									// 保存成功返回原来页面
+									//mailhanddetailDao.UpdateMail_isout(eqmail,eqsid);
+									Intent serviceIntent = new Intent(MailDlvNEnter.this.getApplicationContext(),
+											DlvUploadService.class);
+									startService(serviceIntent);
+									Intent intent = new Intent();
+									setResult(1, intent);
+									finish();
+								} else {
+									Toast.makeText(MailDlvNEnter.this,getString(R.string.save_fail), 1000).show();
+								}
+							}
+						});
+				builder.setNegativeButton("", null);
+				builder.create().show();
+				}catch(Exception e){
+					
+				}
+			}else if(datare!=null&&!"".equals(datare)){
+				try{
+					SimpleDateFormat f=new SimpleDateFormat("yyyyMMddHHmmSS");
+					String dataStr =""+DateFormat.format("yyyy-MM-dd", f.parse(datare));
+					String message = getString(R.string.issave1)+dataStr+getString(R.string.issave3);
+					
+					MyDialog.Builder builder = new MyDialog.Builder(MailDlvNEnter.this);
+					builder.setTitle(getString(R.string.hint));
+					builder.setMessage(message);
+					builder.setPositiveButton("",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									dialog.dismiss();
+									if (saveEnter()) {
+										// 保存成功返回原来页面
+										//mailhanddetailDao.UpdateMail_isout(eqmail,eqsid);
+										Intent serviceIntent = new Intent(MailDlvNEnter.this.getApplicationContext(),
+												DlvUploadService.class);
+										startService(serviceIntent);
+										Intent intent = new Intent();
+										setResult(1, intent);
+										finish();
+									} else {
+										Toast.makeText(MailDlvNEnter.this,getString(R.string.save_fail), 1000).show();
+									}
+								}
+							});
+					builder.setNegativeButton("", null);
+					builder.create().show();
+					}catch(Exception e){
+						
+					}
+			}else{
+				MyDialog.Builder builder = new MyDialog.Builder(MailDlvNEnter.this);
+				builder.setTitle(getString(R.string.hint));
+				builder.setMessage(getString(R.string.shifousave));
+				builder.setPositiveButton("",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.dismiss();
+								
+								if (saveEnter()) {
+									// 保存成功返回原来页面
+									//mailhanddetailDao.UpdateMail_isout(eqmail,eqsid);
+									Intent serviceIntent = new Intent(MailDlvNEnter.this.getApplicationContext(),
+											DlvUploadService.class);
+									startService(serviceIntent);
+									Intent intent = new Intent();
+									setResult(1, intent);
+									finish();
+								} else {
+									Toast.makeText(MailDlvNEnter.this,getString(R.string.save_fail), 1000).show();
+								}
+							}
+						});
+				builder.setNegativeButton("", null);
+				builder.create().show();
+			}
+		}
+	}
+	// 通过扫描后得到邮件号
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode,
+			Intent intent) {
+		super.onActivityResult(requestCode, resultCode, intent);
+		if (resultCode == 1) {
+			// 获取跳转来源
+			Bundle bundle = intent.getExtras();
+			String strDnNumber = bundle.getString("txtResult");
+			if (strDnNumber != null && strDnNumber.length() > 0){
+				mailEdit.setText(strDnNumber);
+			}
+			
+			User user = User.FindUser(this.getApplicationContext());
+			TransferDao dao = DaoFactory.getInstance().getTransferDao(MailDlvNEnter.this);
+			List<Map<String,String>> transfer = dao.findTransferByTicketNum(user.getLoginName(), strDnNumber);
+			Log.e("transfer", transfer.toString());
+			if(transfer != null && transfer.size() > 0){
+				boolean isSearched = false;
+				for(int i=0;i<transfer.size();i++){
+					if(isSearched){// 已找到配置。不再查找
+						break;
+					}
+					String projId = transfer.get(i).get("projId");
+					if(typeList == null || typeList.size() == 0){
+						break;
+					}
+					for(int j=0;j<typeList.size();j++){
+						String pId = typeList.get(j).get("projId");
+						if(pId != null && projId != null && projId.equals(pId)){
+							isSearched = true;
+							spinner.setSelection(j);
+							spinner.setEnabled(false);
+							spinner.setVisibility(View.GONE);
+							undlvNextModeCode =typeList.get(j).get("projId");// 保存项目代码
+							initReason(typeList.get(j).get("projId"));// 原因
+							initNext(typeList.get(j).get("projId"));
+							narrTypeText.setText(pId+","+ typeList.get(j).get("projName"));
+							narrTypeText.setVisibility(View.VISIBLE);
+							break;
+						}
+					}
+				}
+				if(!isSearched){
+					spinner.setSelection(0);
+					spinneradapter.notifyDataSetChanged();
+					String str = spinner.getSelectedItem().toString();
+					initReason(str);// 原因
+					initNext(str);
+				}
+			}
+		}
+	}
+	
+	String[] nextCd={"","1","2","3","4","5","8"};
+	String[] nextDesc={"","重新对客户进行预约","安排再次配送","转为自提","退回收寄局",
+			"退无着","报险及理赔"};
+	
+	String[] reasonCd={"0","1","10","11","12","13","2","3","4","5","6","7","8","9","98","99"};
+	String[] reasonDesc={"正常","干线运输延误，货未到或延迟到","客户要求改址","预约成功，但遇客户外出，经过努力未能配送出",
+			"收件人地址、姓名、电话错误，无法配送","地址超范围，通知客户自提","干线运输因自然原因（如下大雪）延误，货未到或延迟到",
+			"配送端内部原因，货未配送","配送端因自然原因（如下大雪），无法配送","发生货损、货差","客户外出，预约结果：客户要求等待其通知",
+			"客户外出，预约结果：客户要求##日配送","客户暂不接货，预约结果：客户要求等待其通知","客户暂不接货，预约结果：客户要求##日配送",
+			"签收异常填报","其它"};
+	
+	private void initReasonType(){
+		if(reasonList == null)
+			reasonList = new ArrayList<Map<String, String>>();
+		Map<String, String> paramsMap = null;
+		for(int j=0;j<16;j++){
+			paramsMap = new LinkedHashMap<String, String>();
+			paramsMap.put("cd", reasonCd[j]);
+			paramsMap.put("desc", reasonDesc[j]);
+			reasonList.add(paramsMap);
+		}
+		
+	}
+	
+	// 原因
+	private void initReason(String proId) {
+		ProjReasonDao projdao = DaoFactory.getInstance().getProjReasonDao(
+				MailDlvNEnter.this);
+		final String feedBackType = projdao.findProType(proId);
+		List<String> reasonlist = new ArrayList<String>();
+		if(reasonList!=null)
+			reasonList.clear();
+		if(reasonlist!=null)
+			reasonlist.clear();
+		if("2".equals(feedBackType)){
+			reasonList = projdao.findProReasons(proId);
+
+			for (Map<String, String> map : reasonList) {
+				String xk = map.get("cd") + "," + map.get("desc");
+				reasonlist.add(xk);
+			}
+		}else{
+			reasonList = projdao.findProReasons(proId);
+			
+			if(reasonList.size()==1&&"".equals(reasonList.get(0).get("cd"))){
+				reasonList.clear();
+				initReasonType();
+			}
+			
+			for (Map<String, String> map : reasonList) {
+				String xk = map.get("desc");
+				reasonlist.add(xk);
+			}
+		}
+		
+		MySpinnerAdapter<String> reasonadapter = new MySpinnerAdapter<String>(
+				this, R.layout.my_spinner, R.id.name_text, reasonlist);
+		reasonadapter
+				.setDropDownViewResource(R.layout.my_spinner_drpdown_item);
+		reasonspinner.setAdapter(reasonadapter);
+		reasonspinner
+				.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+
+					@Override
+					public void onItemSelected(AdapterView<?> arg0, View arg1,
+							int arg2, long arg3) {
+						undlvCauseCode = reasonList.get(arg2).get(
+								"cd");
+						undlvCauseDesc = reasonList.get(arg2).get(
+								"desc");
+					}
+
+					@Override
+					public void onNothingSelected(AdapterView<?> arg0) {
+
+					}
+
+				});
+	}
+	
+	// 下一步动作
+	private void initNext(String proId) {
+		ProjReasonDao projdao = DaoFactory.getInstance().getProjReasonDao(
+				MailDlvNEnter.this);
+		final String feedBackType = projdao.findProType(proId);
+		List<String> nextlist = new ArrayList<String>();
+		if ("1".equals(feedBackType)) {
+			nextlist.clear();
+			for (int h = 0; h < 5; h++) {
+				nextlist.add(nextDesc[h]);
+			}
+		} else {
+			nextlist.clear();
+		}
+		// 下一步动作
+		nfollow = (Spinner) findViewById(R.id.nfollow);
+		MySpinnerAdapter<String> followadapter = new MySpinnerAdapter<String>(
+				this, R.layout.my_spinner, R.id.name_text, nextlist);
+		followadapter.setDropDownViewResource(R.layout.my_spinner_drpdown_item);
+		nfollow.setAdapter(followadapter);
+		nfollow.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				undlvfollowCode = nextCd[arg2];
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+
+			}
+
+		});
+	}
+//	// 下一步动作初始化
+//	private void initFllowAction(String standardCode, String fllow) {
+//		int position = 0;
+//		StateFollowDao stateFollowDao=DaoFactory.getInstance().getStateFollowDao(this.getApplicationContext());
+//		fllowtypeList = stateFollowDao
+//				.FindStateFllowActionBystateType(standardCode);//未妥投原因和下一步动作对应 集合
+//
+//		List<String> fllowarraylist = new ArrayList<String>();
+//		for ( int i=0;i<fllowtypeList.size();i++) {
+//			Map<String, String> map= fllowtypeList.get(i);
+//				String fllowstr = map.get("actionDescCHS");
+//				if (getResources().getConfiguration().locale.getCountry()
+//						.equals("CN")) {
+//					fllowstr = map.get("actionDescCHS");
+//				} else if (getResources().getConfiguration().locale
+//						.getCountry().equals("TW")) {
+//					fllowstr = map.get("actionDescTRADITIONAL");
+//				} else if (getResources().getConfiguration().locale
+//						.getCountry().equals("UK")
+//						|| getResources().getConfiguration().locale
+//								.getCountry().equals("US")) {
+//					fllowstr = map.get("actionDescENG");
+//				}
+//				fllowarraylist.add(fllowstr);
+//				if(fllow.equals(map.get("followAction"))){ //设置默认选择
+//					position=i;
+//				}
+//		}
+//
+//		MySpinnerAdapter<String> fllowtypeadapter = new MySpinnerAdapter<String>(
+//				this, R.layout.my_spinner, R.id.name_text, fllowarraylist);
+//		fllowtypeadapter
+//				.setDropDownViewResource(R.layout.my_spinner_drpdown_item);
+//		fllowspinner.setAdapter(fllowtypeadapter);
+//		fllowspinner
+//				.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+//
+//					@Override
+//					public void onItemSelected(AdapterView<?> arg0, View arg1,
+//							int arg2, long arg3) {
+//						undlvNextModeCode = fllowtypeList.get(arg2).get("followAction");
+//					}
+//
+//					@Override
+//					public void onNothingSelected(AdapterView<?> arg0) {
+//
+//					}
+//
+//				});
+//		fllowspinner.setSelection(position, true);
+//	}
+
+	// 保存数据
+	private boolean saveEnter() {
+		// is_upload, role, operationMode, dlvStsCode, undlvCauseCode,
+		// undlvNextModeCode,dlvAddress, signatureImg
+		boolean isSave = false;
+		try {
+			MailDao maildao = DaoFactory.getInstance().getMailDao(this.getApplicationContext());
+			Map<String, Object> map = maildao.FindMail(mailEdit.getText().toString(), getlogName(), Global.UNUPLOAD);
+			
+			if(map!=null&&map.size()>0){
+				maildao.deleteMailRe(mailEdit.getText().toString(), getlogName(), Global.UNUPLOAD);
+			}
+			
+			JSONObject	params = new JSONObject();
+			BaiduGps baiduGps = BaiduGps.getInstance(this);
+			baiduGps.getLocation();
+			
+			TelephonyManager telephonemanage = (TelephonyManager) getWindow()
+	                .getContext().getSystemService(Context.TELEPHONY_SERVICE);
+			if(!"".equals(getorgCode())&&!"".equals(getlogName())){
+			dlvAddress = baidugps.getAddress();
+			
+			params.put("IS_UPLOAD", is_upload);
+
+			params.put("deviceNumber", telephonemanage.getDeviceId());// Tm.getDeviceId());//手机设备号
+			params.put("orgCode", getorgCode());// 机构号
+			params.put("userCode", getlogName());// 工号
+
+			params.put("role", role);
+			params.put("operationMode", "I");
+			params.put("mailCode", mailEdit.getText());// 邮件号
+
+			params.put("dlvOrgCode", getorgCode());// 机构号
+			params.put("dlvOrgName", dlvOrgName);// 机构名称
+			params.put("dlvOrgPostCode", StringFormate(dlvOrgPostCode)); // 投递机构邮编
+
+			params.put("dlvStsCode", "H");
+			params.put("signStsCode", "");// 签收情况代码
+			params.put("actualGoodsFee", "0.0");// 实收货款
+			params.put("actualTax", "0.0");
+			params.put("actualFee", "0.0");// 实收资费
+			params.put("otherFee", "0.0");
+
+			params.put("dlvUserCode", getlogName());// 工号
+			params.put("dlvUserName", Global.NAME);// 投递员姓名
+			params.put("undlvCauseCode", undlvCauseCode);// 原因
+			params.put("undlvNextModeCode", undlvNextModeCode);// 未妥投项目代码
+			params.put("undlvfollowCode", undlvfollowCode);// 下一步动作
+			params.put("undlvCauseDesc", undlvCauseDesc);// 原因描述
+			params.put("signerName", signerName);// 签收人姓名
+			params.put("interFlag", interFlag);// 国际标识 国内国际是1，0
+			params.put("createDate", DateFormat.format("yyyyMMddkkmmss", new Date()));
+			params.put("operationTime","");// 操作时间
+			params.put("dlvAddress", dlvAddress);
+			params.put("signatureImg", signatureImg);
+			params.put("remark", remark_edit.getText().toString());
+			if( baiduGps != null && baiduGps.getBdLocation() != null ){
+				params.put("longitude", ""+baiduGps.getBdLocation().getLongitude());// 经度
+				params.put("latitude", ""+baiduGps.getBdLocation().getLatitude());// 纬度
+				params.put("province", ""+baiduGps.getBdLocation().getProvince());
+				params.put("city", ""+baiduGps.getBdLocation().getCity());
+				params.put("county", ""+baiduGps.getBdLocation().getDistrict());
+				params.put("street", ""+baiduGps.getBdLocation().getStreet());
+			}else{
+				params.put("longitude", "");// 经度
+				params.put("latitude", "");// 纬度
+				params.put("province", "");
+				params.put("city", "");
+				params.put("county", "");
+				params.put("street", "");
+			}
+
+			isSave = maildao.SaveMail(params);
+			if(isSave){
+			FileOutputStream fos = new FileOutputStream(fullFilename,true);
+			String message = "H"+"\t\t"+mailEdit.getText().toString()+"\t\t"+is_upload+"\n";
+			fos.write(message.getBytes());
+			fos.close();
+			}
+			}
+		} catch (Exception e) {
+
+		}
+		return isSave;
+	}
+	
+
+}

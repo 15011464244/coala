@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:background="#dcdcdc" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="7dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="7dp" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="邮    件    号"
+            android:textColor="#323232"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="7dp"
+            android:background="#dcdcdc" />
+
+        <EditText
+            android:id="@+id/dlvmailidserch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="6"
+            android:background="#00000000"
+            android:capitalize="characters"
+            android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-_"
+            android:hint="@string/scan_hint"
+            android:inputType="textCapCharacters"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:background="#dcdcdc" />
+
+        <ImageView
+            android:id="@+id/dlvcamera"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/new_code"
+            android:clickable="true"
+            android:scaleType="center" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="#dcdcdc" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="7dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="7dp" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="签  收 类 型"
+            android:textColor="#323232"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:background="#dcdcdc" />
+
+        <Spinner
+            android:id="@+id/arrType"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="7"
+            android:background="@null"
+            android:popupBackground="@drawable/divbg" />
+
+        <TextView
+            android:id="@+id/narrTypeText"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
+            android:visibility="gone" />
+    </LinearLayout>
+    <!-- 暂时无用RadioGroup  -->
+	<LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:layout_weight="5"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/mail_type"
+                        android:textSize="@dimen/btnTextSize"
+                        android:textColor="#129381" />
+                </LinearLayout>
+
+                <RadioGroup
+                    android:id="@+id/radioGrouplei"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.5"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
+
+                    <RadioButton
+                        android:id="@+id/radioin"
+                        android:drawableLeft="@drawable/checkboxstyte"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:paddingLeft="5dp"
+                        android:button="@null"
+                        android:checked="true"
+                        android:text="@string/internal"
+                        android:textSize="@dimen/btnTextSize"
+                       android:textColor="#129381"/>
+
+                    <RadioButton
+                        android:id="@+id/radioout"
+                        android:drawableLeft="@drawable/checkboxstyte"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:button="@null"
+                        android:text="@string/international"
+                        android:textSize="@dimen/btnTextSize"
+                        android:textColor="#129381" />
+                </RadioGroup>
+            </LinearLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:background="#dcdcdc" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="7dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="7dp" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="签    收    人"
+            android:textColor="#323232"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:background="#dcdcdc" />
+
+        <EditText
+            android:id="@+id/dlventername"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="7"
+            android:background="#00000000"
+            android:hint="请输入备注"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="#dcdcdc" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="7dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="7dp" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="资  费 类 型 "
+            android:textColor="#323232"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:background="#dcdcdc" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="7"
+            android:orientation="horizontal" >
+
+            <CheckBox
+                android:id="@+id/substitute_fee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:scaleX="0.5"
+                android:scaleY="0.5" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="代收货款"
+                android:textColor="@android:color/background_dark"
+                android:textSize="13sp" />
+
+            <CheckBox
+                android:id="@+id/receive_fee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:scaleX="0.5"
+                android:scaleY="0.5" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="收货人付款"
+                android:textColor="@android:color/background_dark"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="#dcdcdc" />
+	<LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="7dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="7dp" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="收  款 金 额 "
+            android:textColor="#323232"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:background="#dcdcdc" />
+
+        <EditText
+            android:id="@+id/dlventermoney"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="7"
+            android:background="#00000000"
+            android:hint="请输入备注"
+            android:textSize="14sp" />
+    </LinearLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:background="#dcdcdc" />
+
+                                                                                   
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="#dcdcdc" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="7dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="7dp" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="签  收 照 片"
+            android:textColor="#323232"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:background="#dcdcdc" />
+		<LinearLayout 
+		    android:orientation="horizontal"
+		    android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="7"
+		    >
+            <ImageView 
+                android:id="@+id/imgbutton"
+                android:layout_height="fill_parent"
+                android:layout_width="fill_parent"
+                android:src="@drawable/camera_new"
+                android:scaleType="fitStart"
+                android:clickable="true"
+                />
+		</LinearLayout>
+        
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="7dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="7dp" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#323232"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:background="#00000000" />
+		<LinearLayout 
+		    android:orientation="horizontal"
+		    android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="5dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="7"
+		    >
+            <ImageView
+                android:id="@+id/imageViewcamera" 
+                android:layout_height="80dp"
+                android:layout_width="fill_parent"
+                android:scaleType="fitStart"
+                android:src="@drawable/default_new"
+                />
+		</LinearLayout>
+        
+    </LinearLayout>
+	
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#dcdcdc"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp" >
+
+        <Button
+            android:id="@+id/dlvEnsave"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/bk_login"
+            android:text="保存" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/titleSize"
+       	android:layout_marginTop="@dimen/connect_info_youjianjieru5_top"
+        android:orientation="horizontal"
+         >
+
+        <TextView
+            android:layout_width="@dimen/titleImgSize"
+            android:layout_height="@dimen/titleSize"
+            android:background="@drawable/toptext"
+            android:layout_marginRight="@dimen/titlepadSize"
+            android:gravity="center"
+            android:text="@string/relief"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/btnTextSize" />
+        
+         <LinearLayout
+        	android:layout_width="fill_parent"
+        	android:layout_height="@dimen/titleSize"
+        	android:orientation="vertical"
+        	android:background="@drawable/topright" >
+        	<Button
+                    android:id="@+id/btncode"
+                    android:layout_width="@dimen/erweimasize"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/btndenglu"
+                    android:text="@string/code"
+                    android:textSize="@dimen/erweimatextsize" />
+        </LinearLayout>
+    </LinearLayout>
+   
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/imgpadSize"
+            android:layout_gravity="center"
+            android:layout_weight="5"
+            android:gravity="center" >
+
+            <Button
+                android:id="@+id/onok"
+                android:layout_width="@dimen/imgTextSize"
+                android:layout_height="@dimen/imgTextSize"
+                android:background="@drawable/onduty"
+                android:gravity="bottom|center"
+                android:paddingBottom="@dimen/imggapSize"
+                android:text="@string/on_duty"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/btnTextSize" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="5"
+            android:gravity="center" >
+
+            <Button
+                android:id="@+id/offok"
+                android:layout_width="@dimen/imgTextSize"
+                android:layout_height="@dimen/imgTextSize"
+                android:background="@drawable/offduty"
+                android:gravity="bottom|center"
+                android:paddingBottom="@dimen/imggapSize"
+                android:text="@string/off_duty"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/btnTextSize" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+</LinearLayout>

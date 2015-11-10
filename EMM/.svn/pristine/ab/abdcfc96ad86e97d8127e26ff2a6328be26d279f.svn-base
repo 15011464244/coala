@@ -1,0 +1,1531 @@
+package com.koala.emm.basicdata;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.TreeSet;
+
+import android.app.ActivityManager;
+import android.app.ActivityManager.MemoryInfo;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.app.ProgressDialog;
+import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.MediaPlayer;
+import android.net.TrafficStats;
+import android.os.AsyncTask;
+import android.os.BatteryManager;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
+import android.util.Log;
+import android.view.WindowManager;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
+import com.android.volley.Request.Method;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.arvin.koalapush.potter.Kpush;
+import com.arvin.koalapush.util.ToastUtil;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.location.LocationClientOption.LocationMode;
+import com.koala.emm.R;
+import com.koala.emm.app.EmmApplication;
+import com.koala.emm.business.ApplicationDelete;
+import com.koala.emm.business.ApplicationUpdate;
+import com.koala.emm.business.DataEncryption;
+import com.koala.emm.business.PolicyUpdate;
+import com.koala.emm.business.SafeUtil;
+import com.koala.emm.constant.Constant;
+import com.koala.emm.model.WarnPushMessage;
+import com.koala.emm.model.WarnType;
+import com.koala.emm.supervision.NetworkUtils;
+import com.koala.emm.tools.BaiduGpsContants;
+//import com.koala.emm.tools.LogSave;
+import com.koala.emm.tools.PhoneMessageUtils;
+import com.koala.emm.tools.SharePreferenceUtilDaoFactory;
+import com.koala.emm.util.CheckUtil;
+import com.koala.emm.util.DateTimeUtil;
+import com.koala.emm.util.DeviceUtil;
+import com.koala.emm.util.SpfsUtil;
+import com.koala.emm.util.WarningDialogUtil;
+import com.lidroid.xutils.util.LogUtils;
+import com.koala.emm.business.DataUpdate;;
+
+/**
+ * 设备信息提交服务
+ * 
+ * @author hanrong
+ * 
+ */
+public class BasicDataService extends Service {
+
+	private static final int LOCATION_DELAY_MILLIS = 1000 * 60 * 1;
+	private static final int COLLECT_DELAY_MILLIS = 1000 * 60 * 1;
+	private static final int WARNING_DELAY_MILLIS = 1000 * 60 * 1;
+
+	public static Context mContext;
+
+	// 测试阶段
+	public Boolean TestType = true;
+
+	//
+	public static final int HANDLE_SEND_DEVICE_INFO = 1;
+	public static final int HANDLE_POLICY = 2;
+	public static final int HANDLE_SEND_WARNING = 3;
+
+	public Integer signTimeHour = null;
+	public Integer signTimeMin = null;
+	public Integer offWorkHour = null;
+	public Integer offWorkMin = null;
+
+	private Timer timer;
+	private Timer signTimer;
+//	private Timer collectTimer;
+	private boolean isSign;
+	private BatteryMessageReceiver mBatteryMessageReceiver = null;
+	private static PhoneMessageUtils utils = new PhoneMessageUtils(
+			EmmApplication.getInstance().getApplicationContext());
+	private JSONObject obj;// 设备信息参数
+	private static int BatteryN; // 目前电量
+	private int warningMax = 100;// 电池最大的警告值
+	private int flowToal = 1024;// 总流量
+
+	private MediaPlayer player = null;// 播放器引用
+	
+	//是否是第一次定位
+	private boolean isFirstLocation = true;
+
+	// 警报列表json
+	private static JSONArray abjBat;
+	private static JSONArray abjFlow;
+	private static JSONArray abjMemory;
+
+	private static boolean[] boarray;// 电量警告状态
+	private static boolean[] flarray;// 流量警告状态
+	private static boolean[] mearray;// 内存警告状态
+	
+
+	// 设备信息固定参数
+	String vendor = utils.getmEquipmentmanufacturers();
+	String deviceModel = utils.getmAnlagentyp();
+	String systemModel = utils.getmSystemVersion();
+	String userId = SpfsUtil.getUserId();
+	String userName = SpfsUtil.getUserName();
+	String orgId = SpfsUtil.getOrgId();
+	String totalMemory = new DecimalFormat("0.00").format(getTotalMemory())
+			+ "GB";
+	String version = utils.getmAppVersion();
+	String imei = DeviceUtil.getDeviceNo();
+	String clientId = SpfsUtil.getClientId();
+
+	private LocationClient mLocationClient = null;
+	private String locAddr, locLat, locLng, pro, city, district, street,
+			streetNumber;
+
+	private LocationClientOption option;
+	//点亮屏幕
+	private WakeLock mWakelock;
+	
+	
+	// private String oldAddr;// 旧地址
+	private int LOCTIME = 15 * 1000;// 定位间隔时间
+	public MyLocationListener myListener;// 定位监听器
+	
+	private Handler wakeHandle = new Handler(){
+		public void handleMessage(Message msg) {
+			mWakelock.release();
+		};
+	};
+
+	
+	
+	public BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			LogUtils.e("service内部广播接受");
+			String action = intent.getAction();
+			if (action.equals("MDM")) {
+				Bundle bundle = intent.getExtras();
+				String relust = bundle.getString("relust");
+				WarnPushMessage wpm = JSONObject.parseObject(relust,
+						WarnPushMessage.class);
+				Message mess = new Message();
+				mess.what = HANDLE_POLICY;
+				mess.obj = wpm;
+				handler.sendMessage(mess);
+			}
+		}
+	};
+	
+	public void handMDM(Context context, Intent intent){
+		Bundle bundle = intent.getExtras();
+		String relust = bundle.getString("relust");
+		WarnPushMessage wpm = JSONObject.parseObject(relust,
+				WarnPushMessage.class);
+		Message mess = new Message();
+		mess.what = HANDLE_POLICY;
+		mess.obj = wpm;
+		handler.sendMessage(mess);
+	}
+	
+	//获取服务实例
+	public static BasicDataService getInstance(){
+		return (BasicDataService) mContext;
+	}
+	
+	
+	
+	private Handler locationHandler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			if (msg.what == 1) {
+				Log.e("tag", "开始");
+				baiduLocation();
+//				locationHandler.sendEmptyMessageDelayed(1,
+//						LOCATION_DELAY_MILLIS);
+				locationHandler.sendEmptyMessageDelayed(1,
+						LOCATION_DELAY_MILLIS);
+			}
+		};
+	};
+
+	private void baiduLocation() {
+		if (mLocationClient.isStarted() && mLocationClient != null) {
+			mLocationClient.requestLocation();
+		}
+	}
+
+	private  Handler handler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			switch (msg.what) {
+			case HANDLE_SEND_DEVICE_INFO:
+				basicData();
+				handler.sendEmptyMessageDelayed(HANDLE_SEND_DEVICE_INFO,
+						COLLECT_DELAY_MILLIS);
+				break;
+			case HANDLE_POLICY:
+				//点亮屏幕
+				mWakelock.acquire();
+				//熄灭屏幕
+				wakeHandle.sendEmptyMessageDelayed(1, 5*1000);
+				//播发音效
+				playVideo(R.raw.push_tone);
+				WarnPushMessage wpm = (WarnPushMessage) msg.obj;
+				String receiveTime = DateTimeUtil.getCurrentDateTime();
+				wpm.setReceiveTime(receiveTime);
+				//保存数据
+				EmmApplication.dbHelper.insertMessage(EmmApplication.db, wpm);
+				if (WarnType.DATA_ENCRYPTION.equals(wpm.getType())) {
+					// 数据加密
+//					ToastUtil.show(BasicDataService.this,
+//							"数据加密" + "\n" + wpm.getType());
+//					DataEncryption dataE = new DataEncryption(mContext);
+//					if(dataE.encryData("encKey")){
+//						basicData();
+//					}
+					//测试要加密某个app的数据
+//					wpm.setPackageName("com.example.mdm_sdk");
+//					tesSendGuangbo(wpm);
+					
+					String encTag = SpfsUtil.getEncryption();// 加密标识
+					String content = null;
+					if ("0".equals(encTag)) {
+						//加密数据库
+						EmmApplication.dbHelper.encryptData(EmmApplication.db, "encKey");
+						//后台进程
+						EncryAsyncTask encryAsyncTask = new EncryAsyncTask();
+						encryAsyncTask.execute("");
+//						//加密文档文件
+//						DataEncryption dataEn = new DataEncryption(mContext);
+//						dataEn.startEncry(Environment.getExternalStorageDirectory().toString()+"/mdm/file",
+//								Environment.getExternalStorageDirectory().toString()+"/mdm/file2");
+						
+						SpfsUtil.setEncryption("1");
+						basicData();
+						content = "数据加密中";
+					} else {
+						content = "数据已加密";
+						EmmApplication.dbHelper.encryptData(EmmApplication.db, "encKey");
+					}
+					// 弹窗
+					WarningDialogUtil.createSystemAlertDialog(mContext,
+							"数据安全", content, "确定", new OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									WarningDialogUtil.dismiss();
+								}
+							}, null, null);
+				} else if (WarnType.DATA_FORCED_UPDATE.equals(wpm.getType())) {
+					// 数据强制更新
+					ToastUtil.show(BasicDataService.this,
+							"数据强制更新" + "\n" + wpm.getType());
+					DataUpdate updateUtil = new DataUpdate(mContext);
+					updateUtil.forecedUpdate(wpm);
+				} else if (WarnType.NOT_DATA_FORCED_UPDATE
+						.equals(wpm.getType())) {
+					// 数据更新
+					ToastUtil.show(BasicDataService.this,
+							"数据更新" + "\n" + wpm.getType());
+					DataUpdate updateUtil = new DataUpdate(mContext);
+					updateUtil.notForecedUpdate(wpm);
+				} else if (WarnType.APPLICATION_UPDATE_FORCED.equals(wpm
+						.getType())) {
+					// 应用强制更新
+					ToastUtil.show(
+							BasicDataService.this,
+							"应用强制更新" + "\n" + wpm.getType() + "\n"
+									+ wpm.getApp_edition() + "\n"
+									+ wpm.getUpdateUrl());
+					//改变标识
+					SpfsUtil.setUpdateForce(true);
+					SpfsUtil.setCheckState(true);
+					SpfsUtil.setUpdateUrl(wpm.getUpdateUrl());
+					SpfsUtil.setUpdateVersion(wpm.getApp_edition());
+					ApplicationUpdate updateUtil = new ApplicationUpdate(mContext);
+					updateUtil.forecedUpdate(wpm);
+
+				} else if (WarnType.APPLICATION_DELETE.equals(wpm.getType())) {
+					// 卸载应用
+					ToastUtil.show(BasicDataService.this,
+							"应用卸载" + "\n" + wpm.getType()+"\n"+wpm.getPackageName());
+					SpfsUtil.setUninstall(true);
+					SpfsUtil.setCheckState(true);
+					//测试要加密某个app的数据
+					wpm.setPackageName("com.koala.emm");
+					tesSendGuangbo(wpm);
+					
+					ApplicationDelete delUtil = new ApplicationDelete(mContext);
+					delUtil.uninstall(wpm);
+
+				} else if (WarnType.MEMORY_CLEANUP.equals(wpm.getType())) {
+					// 清理缓存
+					ToastUtil.show(BasicDataService.this,
+							"清理缓存" + "\n" + wpm.getType());
+					clear(BasicDataService.this);
+					basicData();
+//					handler.sendEmptyMessage(HANDLE_SEND_DEVICE_INFO);
+				} else if (WarnType.POLICY_UPDATE.equals(wpm.getType())) {
+					// 策略报警通知
+					ToastUtil.show(BasicDataService.this,
+							"策略更新" + "\n" + wpm.getType());
+					PolicyUpdate.strategyStorage(utils,
+							wpm.getStrategyUpdateType());
+				} else if (WarnType.DATA_DECRYPTION.equals(wpm.getType())) {
+					// 数据解密
+					ToastUtil.show(BasicDataService.this,
+							"数据解密" + "\n" + wpm.getType());
+					
+					//测试要加密某个app的数据
+					wpm.setPackageName("com.example.mdm_sdk");
+					tesSendGuangbo(wpm);
+//					DataEncryption dataE = new DataEncryption(mContext);
+//					if(dataE.decryData("encKey")){
+//						basicData();
+//					}
+					String encTag = SpfsUtil.getEncryption();// 加密标识
+					String content = null;
+					if ("1".equals(encTag)) {
+						EmmApplication.dbHelper.decryptData(EmmApplication.db, "encKey");
+//						//加密数据库
+//						EmmApplication.dbHelper.encryptData(EmmApplication.db, "encKey");
+						
+						//后台进程
+						DecryAsyncTask decryAsyncTask = new DecryAsyncTask();
+						decryAsyncTask.execute("");
+//						//加密文档文件
+//						DataEncryption dataEn = new DataEncryption(mContext);
+//						dataEn.startDecry(Environment.getExternalStorageDirectory().toString()+"/mdm/file2",
+//								Environment.getExternalStorageDirectory().toString()+"/mdm/file");
+						
+						SpfsUtil.setEncryption("0");
+						basicData();
+						content = "数据解密完成";
+					} else {
+						content = "数据未加密";
+					}
+					// 弹窗
+					WarningDialogUtil.createSystemAlertDialog(mContext,
+							"数据安全", content, "确定", new OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									WarningDialogUtil.dismiss();
+								}
+							}, null, null);
+				} else if (WarnType.RECEIVE_MESSAGE.equals(wpm.getType())) {
+					// 显示消息
+					ToastUtil.show(BasicDataService.this,
+							"接受消息" + "\n" + wpm.getType());
+					showMsg(wpm);
+				} else if (WarnType.APPLICATION_NOT_UPDATE_FORCED.equals(wpm
+						.getType())) {
+					ToastUtil.show(
+							BasicDataService.this,
+							"应用更新" + "\n" + wpm.getType() + "\n"
+									+ wpm.getApp_edition() + "\n"
+									+ wpm.getUpdateUrl());
+					ApplicationUpdate updateUtil = new ApplicationUpdate(mContext);
+					updateUtil.notForecedUpdate(wpm);
+				}
+				else if (WarnType.DEVICE_LOCK.equals(wpm
+						.getType())) {
+					ToastUtil.show(
+							BasicDataService.this,
+							"应用锁屏" + "\n" + wpm.getType());
+					//锁屏
+					SafeUtil safe = new SafeUtil(mContext);
+					safe.resetPwd("1234");
+					safe.lockScreen();
+
+
+				}else if (WarnType.DEVICE_RECOVERY.equals(wpm
+						.getType())) {
+					ToastUtil.show(
+							BasicDataService.this,
+							"应用恢复出厂设置" + "\n" + wpm.getType());
+					//恢复出厂设置
+					SafeUtil safe = new SafeUtil(mContext);
+//					safe.wipeDevice();
+				}
+				break;
+			case HANDLE_SEND_WARNING:
+				// 设置报警状态
+				changeStatus();
+
+				LogUtils.e("内存警告");
+				memoryWarning();
+				LogUtils.e("流量警告");
+				flowWarning();
+				handler.sendEmptyMessageDelayed(HANDLE_SEND_WARNING,
+						WARNING_DELAY_MILLIS);
+				break;
+			default:
+				break;
+			}
+		};
+	};
+	
+
+	@Override
+	public IBinder onBind(Intent intent) {
+		return null;
+	}
+
+	@Override
+	public ComponentName startService(Intent service) {
+		return super.startService(service);
+	}
+	
+	AlarmManager mAlarmManager = null;
+	PendingIntent mPendingIntent = null;
+
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		mContext = this;
+		mBatteryMessageReceiver = new BatteryMessageReceiver();
+		// 注册一个系统 BroadcastReceiver，作为访问电池计量之用这个不能直接在AndroidManifest.xml中注册
+		registerReceiver(mBatteryMessageReceiver, new IntentFilter(
+				Intent.ACTION_BATTERY_CHANGED));
+		registerBoradcastReceiver();
+		
+		PowerManager pm = (PowerManager)getSystemService(POWER_SERVICE);
+		mWakelock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP|PowerManager.SCREEN_DIM_WAKE_LOCK,"SimpleTimer");
+		
+		//从onStattCommand转移的代码
+		LogUtils.e("启动服务");
+//		LogSave.append(" 服务");
+		// 采集启动时间
+		String startTimes = SpfsUtil.getStartTime();
+		JSONArray times = null;
+		if (startTimes == null) {
+			times = new JSONArray();
+		} else {
+			times = JSONArray.parseArray(startTimes);
+		}
+		String start = DateTimeUtil.getCurrentDateTime();
+		times.add(start);
+		SpfsUtil.setStartTime(times.toString());
+		LogUtils.e("startTimes:" + times);
+//		LogSave.append("startTime:" + start);
+		LogUtils.e("endTimes:" + SpfsUtil.getEndTime());
+//		LogSave.append("endTimes:" + SpfsUtil.getEndTime());
+
+		if (SpfsUtil.getClientId() == null) {
+			SpfsUtil.setClientId(Kpush.getInstence().getClientId());
+		}
+		LogUtils.e("clientId == " + SpfsUtil.getClientId());
+//		LogSave.append("clientId == " + SpfsUtil.getClientId());
+		// init baidu location
+		initBaiduLocation();
+
+		// 报警
+		handler.sendEmptyMessage(HANDLE_SEND_WARNING);
+
+		// 签到定时器
+		if (signTimer == null) {
+			signTimer = new Timer();
+			signTimer.schedule(new TimerTask() {
+
+				@Override
+				public void run() {
+//					if (signTimeHour == null || offWorkHour == null) {
+//						getSignPolicy();
+//					} else {
+						sign();
+//					}
+				}
+			}, 10, 1000 * 600 * 1);
+		}
+		// 日志采集定时器
+//		if (collectTimer == null) {
+//			collectTimer = new Timer();
+//			collectTimer.schedule(new TimerTask() {
+//
+//				@Override
+//				public void run() {
+//					LogSave.save("哈哈日志");
+//				}
+//			}, 10, 1000 * 300 * 1);
+//		}
+
+//		ToastUtil.show(this, "首次提交设备信息");
+//		handler.sendEmptyMessageDelayed(HANDLE_SEND_DEVICE_INFO,5000);
+		//首次提交经纬度信息
+		ToastUtil.show(this, "首次提交经纬度信息");
+		locationHandler.sendEmptyMessage(1);
+
+		initData(INIT_ALL);
+		
+		
+//		CheckUtil checkUtil = new CheckUtil();
+		CheckUtil.checkUpdate2(mContext);
+//		checkUtil.checkUpdate2(mContext);
+	}
+
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		return START_STICKY;
+		
+	}
+
+	private void initBaiduLocation() {
+		if (null == mLocationClient) {
+			mLocationClient = new LocationClient(getApplicationContext()); // 声明LocationClient类
+			if (myListener == null) {
+				myListener = new MyLocationListener();
+			}
+			if (null == option) {
+				option = new LocationClientOption();
+
+				option.setLocationMode(LocationMode.Hight_Accuracy);// 设置定位模式
+				option.setCoorType("bd09ll");// 返回的定位结果是百度经纬度，默认值gcj02
+				option.setScanSpan(LOCTIME);// 设置发起定位请求的间隔时间为15000ms
+				option.setIsNeedAddress(true);// 是否需要地址信息
+			}
+			mLocationClient.setLocOption(option);
+			mLocationClient.registerLocationListener(myListener);
+			mLocationClient.start();
+		}
+		// 获取经纬度
+		locationHandler.sendEmptyMessage(1);
+	}
+
+	/**
+	 * 签到
+	 * 
+	 * @return
+	 */
+	private void sign() {
+		if (isSign) {
+//			 停止定时器
+			if (signTimer != null) {
+				signTimer.cancel();
+				signTimer = null;
+			}
+//			 return isSign;
+		} else {
+//			Calendar calendar = Calendar.getInstance();
+//			int h = calendar.get(Calendar.HOUR_OF_DAY);
+//			int m = calendar.get(Calendar.MINUTE);
+//			if ((h > signTimeHour || (h == signTimeHour && m >= signTimeMin))
+//					&& (h < offWorkHour || (h == offWorkHour && m <= offWorkMin))) {
+//				 签到
+				if (DeviceUtil.isNetwork()) {
+					RequestQueue queue = EmmApplication.VolleyQueue();
+					StringRequest stringRequest = new StringRequest(
+							Method.POST, Constant.sign,
+							new Response.Listener<String>() {
+								@Override
+								public void onResponse(String result) {
+									// 处理
+									if (result.contains("true")) {
+										LogUtils.e("签到成功：" + result);
+//										LogSave.append("签到成功：" + result);
+										isSign = true;
+									} else {
+										LogUtils.e("签到失败：" + result);
+//										LogSave.append("签到失败：" + result);
+//										isSign = false;
+										isSign = true;
+									}
+								}
+							}, new Response.ErrorListener() {
+								@Override
+								public void onErrorResponse(VolleyError error) {
+									// Log.e("TAG", error.getMessage(), error);
+									isSign = false;
+									LogUtils.e("网络连接超时");
+//									LogSave.append("网络连接超时");
+								}
+							}) {
+						@Override
+						protected Map<String, String> getParams() {
+							// 在这里设置需要post的参数
+							JSONObject obj = new JSONObject();
+							try {
+								obj.put("imei", DeviceUtil.getDeviceNo());
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+							LogUtils.e(obj.toString());
+//							LogSave.append("签到参数" + obj.toString());
+							Map<String, String> params = new HashMap<String, String>();
+							params.put("json", obj.toString());
+							return params;
+						}
+					};
+					queue.add(stringRequest);
+				}
+			}
+
+//		}
+//		 return isSign;
+	}
+
+	
+
+	/**
+	 * 数据采集
+	 */
+	private void basicData() {
+		// if (BatteryN < 20) {
+		if (DeviceUtil.isNetwork()) {
+			RequestQueue queue = EmmApplication.VolleyQueue();
+			StringRequest stringRequest = new StringRequest(Method.POST,
+					Constant.deviceCollection, new Response.Listener<String>() {
+						@Override
+						public void onResponse(String result) {
+							LogUtils.e("采集信息下行数据  " + result);
+//							LogSave.append("采集信息下行数据  " + result);
+							Message msg = new Message();
+							msg.what = 1;
+							msg.obj = result;
+							mAlramHandler.sendMessage(msg);
+						}
+					}, new Response.ErrorListener() {
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							// Log.e("TAG", error.getMessage(), error);
+							LogUtils.e("数据采集信息：网络连接超时");
+//							LogSave.append("数据采集信息：网络连接超时");
+						}
+					}) {
+				@Override
+				protected Map<String, String> getParams() {
+					// 在这里设置需要post的参数
+					String str = alramsPrams();
+					Map<String, String> params = new HashMap<String, String>();
+					params.put("json", str);
+					LogUtils.e("数据采集参数=="+str);
+					return params;
+				}
+			};
+			queue.add(stringRequest);
+		} else {
+			LogUtils.e("设备信息采集：未连接网络");
+//			LogSave.append("设备信息采集：未连接网络");
+		}
+
+	}
+
+	/**
+	 * 设备参数
+	 */
+	private String alramsPrams() {
+		obj = new JSONObject();
+		try {
+			obj.put("vendor", vendor);// 厂商
+			obj.put("device_model", deviceModel);// 设备型号
+			obj.put("system_model", systemModel);// 系统型号
+			obj.put("user_id", userId);// 员工号
+			obj.put("user_name", userName);// 员工姓名
+			if (clientId == null) {
+				clientId = SpfsUtil.getClientId();
+				obj.put("client_id", clientId);// 序列id（ESN）
+			} else {
+				obj.put("client_id", clientId);// 序列id（ESN）
+			}
+
+			obj.put("organization_id", orgId);// 机构号
+			obj.put("internet_state",
+					NetworkUtils.getCurrentNetworkType(getApplicationContext()));// 网络连接状态
+			String longitude = BaiduGpsContants.getInstance().getLng();
+			String latitudes = BaiduGpsContants.getInstance().getLat();
+			obj.put("longitude", longitude == null ? "0" : longitude);// 经度
+			obj.put("latitudes", latitudes == null ? "0" : latitudes);// 纬度
+			obj.put("batery_per", BatteryN);// 电量
+			obj.put("device_total", flowToal);// 设备总流量
+			obj.put("device_rest", (flowToal - getMobileUsedFlow()) + "MB");// 设备剩余流量
+
+			obj.put("device_memory_total", totalMemory);// 设备总内存
+			obj.put("device_memory_rest",
+					new DecimalFormat("0.00").format(getAvailMemory()) + "GB");// 设备剩余内存
+
+			obj.put("app_edition", version);// 应用版本号
+			obj.put("encryption", SpfsUtil.getEncryption());// 是否加密
+
+			// 报警状态
+			obj.put("warning_state", getWarningStatus());// 是否报警
+
+			// IMEI
+			obj.put("imei", imei);
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		LogUtils.e("设备参数:" + obj.toString());
+//		LogSave.append("设备参数:" + obj.toString());
+		return obj.toString();
+	}
+
+	/**
+	 * 显示消息
+	 */
+	private void showMsg(WarnPushMessage wpm) {
+		// 弹窗
+		WarningDialogUtil.createSystemAlertDialog(BasicDataService.this,
+				wpm.getTitle(), wpm.getText(), "确定", new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						WarningDialogUtil.dismiss();
+					}
+				}, null, null);
+	}
+
+	public static final String NOT_WARNING = "0";
+	public static final String ELECTRICITY_WARNING = "1";
+	public static final String FLOW_WARNING = "2";
+	public static final String MEMORY_WARNING = "3";
+
+	/**
+	 * 获取报警状态
+	 */
+	public String getWarningStatus() {
+		String status = NOT_WARNING;
+		// 电量报警状态
+		if (null != SpfsUtil.getElectricity()
+				&& !"[]".equals(SpfsUtil.getElectricity())) {
+			LogUtils.e("-----Electricity：" + SpfsUtil.getElectricity());
+//			LogSave.append("-----Electricity：" + SpfsUtil.getElectricity());
+			JSONArray jsonArray = JSONArray.parseArray(SpfsUtil
+					.getElectricity());
+			// 排序获得最大的警告值
+			warningMax = 0;// 初始化最大报警值
+			for (int j = 0; j < jsonArray.size(); j++) {
+				JSONObject obj = JSONObject.parseObject(jsonArray.getString(j));
+				if (obj.getInteger("warning_max") > warningMax) {
+					warningMax = obj.getInteger("warning_max");
+				}
+			}
+			if (warningMax >= BatteryN) {
+				status = ELECTRICITY_WARNING;
+			}
+		}
+
+		// 流量报警状态
+		if (null != SpfsUtil.getFlow() && !"[]".equals(SpfsUtil.getFlow())) {
+			LogUtils.e("-----Flow:" + SpfsUtil.getFlow());
+//			LogSave.append("-----Flow：" + SpfsUtil.getFlow());
+			JSONArray jsonArray = JSONArray.parseArray(SpfsUtil.getFlow());
+			// 排序获得最大的警告值
+			warningMax = 0;// 初始化最大报警值
+			for (int j = 0; j < jsonArray.size(); j++) {
+				JSONObject obj = JSONObject.parseObject(jsonArray.getString(j));
+				if (obj.getInteger("warning_max") > warningMax) {
+					warningMax = obj.getInteger("warning_max");
+				}
+			}
+			if (flowToal - getMobileUsedFlow() < warningMax) {
+				status = FLOW_WARNING;
+			}
+			// 如果剩余流量大于最低报警值，报警状态恢复为true
+		}
+		// 内存报警状态
+		if (null != SpfsUtil.getMemory() && !"[]".equals(SpfsUtil.getMemory())) {
+			LogUtils.e("-----Memory:" + SpfsUtil.getMemory());
+//			LogSave.append("-----Memory：" + SpfsUtil.getMemory());
+			JSONArray jsonArray = JSONArray.parseArray(SpfsUtil.getMemory());
+			// 排序获得最大的警告值
+			warningMax = 0;// 初始化最大报警值
+			for (int j = 0; j < jsonArray.size(); j++) {
+				JSONObject obj = JSONObject.parseObject(jsonArray.getString(j));
+				if (obj.getInteger("warning_max") > warningMax) {
+					warningMax = obj.getInteger("warning_max");
+				}
+			}
+			if (100 - getMemoryUsePercentage() < warningMax) {
+				status = MEMORY_WARNING;
+			}
+			// 如果剩余内存大于最低报警值，报警状态恢复为true
+		}
+
+		return status;
+	}
+
+	
+	
+
+	/**
+	 * 清理Android系统后台没有用到的内存：
+	 * 
+	 * @param context
+	 */
+	private void clear(Context context) {
+		ActivityManager activityManger = (ActivityManager) context
+				.getSystemService(ACTIVITY_SERVICE);
+		List<ActivityManager.RunningAppProcessInfo> list = activityManger
+				.getRunningAppProcesses();
+		if (list != null)
+			for (int i = 0; i < list.size(); i++) {
+				ActivityManager.RunningAppProcessInfo apinfo = list.get(i);
+
+				System.out.println("pid---->>>>>>>" + apinfo.pid);
+				System.out.println("processName->> " + apinfo.processName);
+				System.out.println("importance-->>" + apinfo.importance);
+				String[] pkgList = apinfo.pkgList;
+
+				if (apinfo.importance > ActivityManager.RunningAppProcessInfo.IMPORTANCE_SERVICE) {
+					// Process.killProcess(apinfo.pid);
+					for (int j = 0; j < pkgList.length; j++) {
+						// 2.2以上是过时的,请用killBackgroundProcesses代替
+						/** 清理不可用的内容空间 **/
+						// activityManger.restartPackage(pkgList[j]);
+						activityManger.killBackgroundProcesses(pkgList[j]);
+					}
+				}
+			}
+	}
+
+	@Override
+	public void onDestroy() {
+			String endTimes = SpfsUtil.getEndTime();
+//			stopAlramListener();
+//			stopLocationListener();
+//			if (mBatteryMessageReceiver != null) {
+//				try {
+//					unregisterReceiver(mBatteryMessageReceiver);
+//				} catch (Exception e) {
+//				}
+//			}
+//			unregisterReceiver(mBroadcastReceiver);
+			//重启服务
+			Intent localIntent = new Intent();
+			localIntent.setClass(this, BasicDataService.class); //销毁时重新启动Service
+			this.startService(localIntent);
+			
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+
+		super.onDestroy();
+	}
+
+
+	/**
+	 * 关闭一切活动
+	 */
+	public void stopAlramListener() {
+		timer.cancel();
+		stopSelf();
+	}
+
+	/**
+	 * 电量报警
+	 * 
+	 * @author mingsheng
+	 * 
+	 */
+	class BatteryMessageReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context arg0, Intent intent) {
+			String action = intent.getAction();
+			if (Intent.ACTION_BATTERY_CHANGED.equals(action)) {
+				warningMax = 0;
+				abjBat = JSONArray.parseArray(SpfsUtil.getElectricity());
+				BatteryN = intent.getIntExtra("level", 0); // 目前电量
+				// 电池状态0
+				int status = intent
+						.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+				LogUtils.e("当前电量：" + BatteryN);
+//				LogSave.append("当前电量：" + BatteryN);
+
+				if (SpfsUtil.getElectricity() != null
+						&& !"[]".equals(SpfsUtil.getElectricity())) {
+					if (true) {
+						// 排序获得最大的警告值
+						for (int j = 0; j < abjBat.size(); j++) {
+							JSONObject obj = JSONObject.parseObject(abjBat
+									.getString(j));
+							if (obj.getInteger("warning_max") > warningMax) {
+								warningMax = obj.getInteger("warning_max");
+							}
+						}
+						Integer warning = 0;
+						// 排序存储警报界值
+						TreeSet<Integer> criticalValues = getTreeSet(abjBat);
+						LogUtils.e("电量报警界值" + criticalValues);
+//						LogSave.append("电量报警界值" + criticalValues);
+						for (int i = 0; i < abjBat.size(); i++) {
+							warning = criticalValues.first();
+							criticalValues.pollFirst();
+							if (BatteryN <= warning) {
+								if (!boarray[i]) {
+									boarray[i] = true;
+									// 发出警报音
+									playVideo(R.raw.push_tone);
+									// 发送警告信息
+									sendWarnInfo("1", "电量不足，请及时充电！");
+									WarningDialogUtil.createSystemAlertDialog(
+											BasicDataService.this, "警告",
+											"您的电量已低于" + warning + "%，请及时充电",
+											"确定", new OnClickListener() {
+
+												@Override
+												public void onClick(
+														DialogInterface dialog,
+														int which) {
+													WarningDialogUtil.dismiss();
+
+												}
+											}, null, null);
+									// 把之后的报警状态都改为true
+									for (Integer item : criticalValues) {
+										i++;
+										boarray[i] = true;
+									}
+									break;
+
+								}
+							}
+						}
+					}
+				} else {
+					LogUtils.e("还未定制电池警号阔值");
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * 获取android当前可用内存大小
+	 */
+	private double getAvailMemory() {// 获取android当前可用内存大小
+		ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+		MemoryInfo mi = new MemoryInfo();
+		am.getMemoryInfo(mi);
+		return mi.availMem / 1024.0 / 1024.0 / 1024.0;
+	}
+
+	/**
+	 * 获取android系统总内存大小
+	 */
+	private double getTotalMemory() {
+
+		String str1 = "/proc/meminfo";// 系统内存信息文件
+		String str2;
+		String[] arrayOfString;
+		long initial_memory = 0;
+
+		try {
+			FileReader localFileReader = new FileReader(str1);
+			BufferedReader localBufferedReader = new BufferedReader(
+					localFileReader, 8192);
+			str2 = localBufferedReader.readLine();// 读取meminfo第一行，系统总内存大小
+
+			arrayOfString = str2.split("\\s+");
+			for (String num : arrayOfString) {
+				Log.i(str2, num + "\t");
+			}
+
+			initial_memory = Integer.valueOf(arrayOfString[1]).intValue();// 获得系统总内存，单位是KB，乘以1024转换为Byte
+			localBufferedReader.close();
+
+		} catch (IOException e) {
+		}
+
+		return initial_memory / 1024.0 / 1024.0;
+	}
+
+	/**
+	 * 内存使用百分比
+	 * 
+	 * @return
+	 */
+	public int getMemoryUsePercentage() {
+		double total = ((double) getTotalMemory());
+		double avail = ((double) getAvailMemory());
+		double use = total - avail;
+
+		return (int) ((use / total) * 100);
+	}
+
+	private Handler mAlramHandler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case 1:
+				String result_DL = (String) msg.obj;
+				// Log.e("tag", "=resultAlarm" + result_DL);
+				if (result_DL == null || "请求服务器失败".equals(result_DL)) {
+					LogUtils.e("请求服务器失败,请检查网络");
+				} else if ("false".equals(resState(result_DL))) {
+					LogUtils.e("设备信息提交失败，服务器挂掉");
+				} else if ("true".equals(resState(result_DL))) {
+					LogUtils.e("设备信息提交成功");
+				}
+				break;
+			case 2:
+				break;
+			default:
+				break;
+			}
+		}
+
+	};
+
+	private void registerBoradcastReceiver() {
+		IntentFilter MDMIntentFilter = new IntentFilter();
+		MDMIntentFilter.addAction("MDM");
+		registerReceiver(mBroadcastReceiver, MDMIntentFilter);
+
+	}
+
+	public static String resState(String s) {
+		String str = "";
+		try {
+			JSONObject json = JSONObject.parseObject(s);
+			str = json.get("result").toString();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return str;
+	}
+
+	/**
+	 * 内存警告
+	 */
+	public void memoryWarning() {
+		if (SpfsUtil.getMemory() != null && !"[]".equals(SpfsUtil.getMemory())) {
+			int warning = 0;
+			abjMemory = JSONArray.parseArray(SpfsUtil.getMemory());
+			// 排序存储警报界值
+			TreeSet<Integer> criticalValues = getTreeSet(abjMemory);
+			LogUtils.e("内存报警界值" + criticalValues);
+			LogUtils.e("当前内存剩余量" + (100 - getMemoryUsePercentage()));
+//			LogSave.append("内存报警界值" + criticalValues);
+//			LogSave.append("当前内存剩余量" + (100 - getMemoryUsePercentage()));
+
+			if (abjMemory != null && abjMemory.size() > 0) {
+				for (int i = 0; i < abjMemory.size(); i++) {
+					warning = criticalValues.first();
+					criticalValues.pollFirst();
+					if (100 - getMemoryUsePercentage() < warning) {
+						if (!mearray[i]) {
+							mearray[i] = true;
+							// 已发出警报
+							playVideo(R.raw.push_tone);
+							// 发送警告信息
+							sendWarnInfo("3", "内存不足，请及时清理！");
+							WarningDialogUtil.createSystemAlertDialog(
+									BasicDataService.this, "警告", "您的内存剩余不足"
+											+ warning + "%，请清理内存", "确定",
+									new OnClickListener() {
+
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+											WarningDialogUtil.dismiss();
+										}
+									}, null, null);
+							// 把之后的报警状态都改为true
+							for (Integer item : criticalValues) {
+								i++;
+								mearray[i] = true;
+							}
+							break;
+						}
+					}
+				}
+
+			}
+
+		} else {
+			LogUtils.e("还未定制内存警号阔值");
+		}
+	}
+
+	/**
+	 * 流量报警
+	 */
+	public void flowWarning() {
+		if (SpfsUtil.getFlow() != null && !"[]".equals(SpfsUtil.getFlow())) {
+			int flow = 0;
+			abjFlow = JSONArray.parseArray(SpfsUtil.getFlow());
+			TreeSet<Integer> criticalValues = getTreeSet(abjFlow);
+			LogUtils.e("流量报警界值：" + criticalValues);
+			LogUtils.e("当前流量剩余：" + (flowToal - getMobileUsedFlow()));
+//			LogSave.append("流量报警界值" + criticalValues);
+//			LogSave.append("当前流量剩余量" + (flowToal - getMobileUsedFlow()));
+
+			if (abjFlow != null && abjFlow.size() > 0) {
+				for (int i = 0; i < abjFlow.size(); i++) {
+					JSONObject obj = abjFlow.getJSONObject(i);
+					flow = obj.getInteger("warning_max");
+					criticalValues.add(flow);
+				}
+			}
+
+			// JSONArray abj = JSONArray.parseArray(SpfsUtil.getFlow());
+			if (abjFlow != null && abjFlow.size() > 0) {
+				for (int i = 0; i < abjFlow.size(); i++) {
+					flow = criticalValues.first();
+					criticalValues.pollFirst();
+					if (flowToal - getMobileUsedFlow() < flow) {
+						if (!flarray[i]) {
+							flarray[i] = true;
+							// 剩余流量小于设定报警流量的时候报警
+							playVideo(R.raw.push_tone);
+							// 发送警告信息
+							sendWarnInfo("2", "流量不足");
+
+							// 已发出警报
+							WarningDialogUtil.createSystemAlertDialog(
+									BasicDataService.this, "警告", "您的流量剩余不足"
+											+ flow + "M。", "确定",
+									new OnClickListener() {
+
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+											WarningDialogUtil.dismiss();
+										}
+									}, null, null);
+							// 把之后的报警状态都改为true
+							for (Integer item : criticalValues) {
+								i++;
+								flarray[i] = true;
+							}
+							break;
+							// }
+						}
+					}
+
+				}
+
+			}
+		} else {
+			LogUtils.e("还未定制流量警号阔值");
+		}
+	}
+
+	/**
+	 * 发送报警信息
+	 */
+	public void sendWarnInfo(final String warnType, final String warnInfo) {
+		if (DeviceUtil.isNetwork()) {
+			RequestQueue queue = EmmApplication.VolleyQueue();
+			StringRequest stringRequest = new StringRequest(Method.POST,
+					Constant.warnInfoCollection,
+					new Response.Listener<String>() {
+						@Override
+						public void onResponse(String result) {
+							Message msg = new Message();
+							msg.what = 1;
+							msg.obj = result;
+							mAlramHandler.sendMessage(msg);
+						}
+					}, new Response.ErrorListener() {
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							LogUtils.e("发送警报信息：网络连接超时");
+//							LogSave.append("发送警报信息：连接网络超时");
+						}
+					}) {
+				@Override
+				protected Map<String, String> getParams() {
+					// 在这里设置需要post的参数
+					String warnTime = DateTimeUtil.getCurrentDateTime();
+					JSONObject obj = new JSONObject();
+					try {
+						obj.put("user_id", SpfsUtil.getUserId());// 员工号
+						obj.put("user_name", SpfsUtil.getUserName());// 员工姓名
+						obj.put("client_id", SpfsUtil.getClientId());// 序列id（ESN）
+						obj.put("organization_id", SpfsUtil.getOrgId());// 机构号
+						obj.put("app_edition", utils.getmAppVersion());// 应用版本号
+						obj.put("warning_type", warnType);
+						obj.put("warning_time", warnTime);
+						obj.put("warning_info", warnInfo);
+						obj.put("imei", DeviceUtil.getDeviceNo());
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+					LogUtils.e(obj.toString());
+//					LogSave.append("报警参数：" + obj.toString());
+
+					Map<String, String> params = new HashMap<String, String>();
+					params.put("json", obj.toString());
+					return params;
+				}
+			};
+			queue.add(stringRequest);
+		}
+	}
+
+	/**
+	 * 获取手机已使用的流量
+	 */
+	public double getMobileUsedFlow() {
+		long flowUp = TrafficStats.getMobileTxBytes();// 获取手机3g/2g网络上传的总流量
+		long flowDown = TrafficStats.getMobileRxBytes();// 手机2g/3g下载的总流量
+
+		return Double.valueOf(new DecimalFormat("0.00")
+				.format((flowUp + flowDown) / 1024.0 / 1024.0));
+	}
+
+	private static String INIT_ALL = "0";
+	private static String INIT_POWER = "1";
+	private static String INIT_FLOW = "2";
+	private static String INIT_MEMORY = "3";
+
+	/**
+	 * 初始化 存储数据
+	 */
+	public static void initData(String type) {
+		if (INIT_ALL.equals(type)) {
+			if (SpfsUtil.getElectricity() != null) {
+				abjBat = JSONArray.parseArray(SpfsUtil.getElectricity());
+				boarray = new boolean[abjBat.size()];
+			}
+			if (SpfsUtil.getFlow() != null) {
+				abjFlow = JSONArray.parseArray(SpfsUtil.getFlow());
+				flarray = new boolean[abjFlow.size()];
+			}
+			if (SpfsUtil.getMemory() != null) {
+				abjMemory = JSONArray.parseArray(SpfsUtil.getMemory());
+				mearray = new boolean[abjMemory.size()];
+			}
+		}
+		if (INIT_POWER.equals(type)) {
+			if (SpfsUtil.getElectricity() != null) {
+				abjBat = JSONArray.parseArray(SpfsUtil.getElectricity());
+				boarray = new boolean[abjBat.size()];
+			}
+		}
+		if (INIT_FLOW.equals(type)) {
+			if (SpfsUtil.getFlow() != null) {
+				abjFlow = JSONArray.parseArray(SpfsUtil.getFlow());
+				flarray = new boolean[abjFlow.size()];
+			}
+		}
+		if (INIT_MEMORY.equals(type)) {
+			if (SpfsUtil.getMemory() != null) {
+				abjMemory = JSONArray.parseArray(SpfsUtil.getMemory());
+				mearray = new boolean[abjMemory.size()];
+			}
+		}
+
+		LogUtils.e("初始化策略json ：" + "    " + abjBat + "    " + abjFlow + "    "
+				+ abjFlow);
+	}
+
+	/**
+	 * 修改报警状态
+	 */
+	public void changeStatus() {
+		TreeSet<Integer> tree = getTreeSet(abjBat);
+		int i = 0;
+		for (Integer item : tree) {
+			if (item < BatteryN) {
+				boarray[i] = false;
+				i++;
+			} else {
+				break;
+			}
+		}
+
+		tree = getTreeSet(abjFlow);
+		i = 0;
+		for (Integer item : tree) {
+			if (flowToal - getMobileUsedFlow() > item) {
+				flarray[i] = false;
+				i++;
+			} else {
+				break;
+			}
+		}
+
+		tree = getTreeSet(abjMemory);
+		i = 0;
+		for (Integer item : tree) {
+			if (100 - getMemoryUsePercentage() > item) {
+				mearray[i] = false;
+				i++;
+			} else {
+				break;
+			}
+		}
+		LogUtils.e("重新获取警报状态 ：" + boarray + "  " + flarray + "  " + mearray);
+
+	}
+
+	/**
+	 * 排序
+	 */
+	public TreeSet<Integer> getTreeSet(JSONArray tree) {
+
+		// 排序存储警报界值
+		TreeSet<Integer> criticalValues = new TreeSet<Integer>();
+		if (tree != null && tree.size() > 0) {
+			for (int i = 0; i < tree.size(); i++) {
+				JSONObject obj = tree.getJSONObject(i);
+				Integer warning = obj.getInteger("warning_max");
+				criticalValues.add(warning);
+			}
+		}
+
+		return criticalValues;
+	}
+
+	/**
+	 * 播放提示音
+	 */
+	private void playVideo(int toneId) {
+		player = MediaPlayer.create(this, toneId);
+		player.start();
+	}
+
+	class MyLocationListener implements BDLocationListener {
+		@Override
+		public void onReceiveLocation(final BDLocation location) {
+			if (null != location) {
+				locAddr = location.getAddrStr();
+				locLat = String.valueOf(location.getLatitude());
+				locLng = String.valueOf(location.getLongitude());
+				pro = String.valueOf(location.getProvince());
+				city = String.valueOf(location.getCity());
+				district = String.valueOf(location.getDistrict());
+				street = String.valueOf(location.getStreet());
+				streetNumber = String.valueOf(location.getStreetNumber());
+				BaiduGpsContants.getInstance().setAddressStr(locAddr);
+				BaiduGpsContants.getInstance().setLat(locLat);
+				BaiduGpsContants.getInstance().setLng(locLng);
+				BaiduGpsContants.getInstance().setPro(pro);
+				BaiduGpsContants.getInstance().setCity(city);
+				BaiduGpsContants.getInstance().setDistrict(district);
+				BaiduGpsContants.getInstance().setStreet(street);
+				BaiduGpsContants.getInstance().setStreetNumber(streetNumber);
+				BaiduGpsContants.getInstance().setTime(
+						System.currentTimeMillis());
+				if(isFirstLocation){
+					LogUtils.e("首次获取经纬度后提交设备信息");
+					handler.sendEmptyMessage(HANDLE_SEND_DEVICE_INFO);
+					isFirstLocation = false;
+				}
+				
+			} else {
+				mLocationClient.requestLocation();
+				// baiduLocation();
+			}
+			// 只发送一次地理位置广播
+			if (SharePreferenceUtilDaoFactory.getInstance(
+					getApplicationContext()).getIsFirstLocation()) {
+				// 发送广播 以便上传基本信息
+				Intent mIntent = new Intent("location.ok");
+				mIntent.putExtra("locLat", locLat);
+				mIntent.putExtra("locLng", locLng);
+				sendBroadcast(mIntent);
+				SharePreferenceUtilDaoFactory.getInstance(
+						getApplicationContext()).setIsFirstLocation(false);
+			}
+		}
+	};
+
+	/**
+	 * 关闭定位的一切活动
+	 */
+	public void stopLocationListener() {
+		timer.cancel();
+		mLocationClient.unRegisterLocationListener(myListener);
+		mLocationClient.stop();
+		mLocationClient = null;
+		myListener = null;
+		stopSelf();
+	}
+
+	/**
+	 * 获取签到策略
+	 * 
+	 */
+	public void getSignPolicy() {
+		RequestQueue queue = EmmApplication.VolleyQueue();
+		LogUtils.e("签到策略");
+		StringRequest stringRequest = new StringRequest(Method.GET,
+				Constant.signPolicy, new Response.Listener<String>() {
+					@Override
+					public void onResponse(String result) {
+						LogUtils.e("签到策略下行数据：" + result);
+						JSONObject obj = JSONObject.parseObject(result);
+						if ("true".equals(obj.getString("state"))) {
+							// 处理
+							String signTime = obj.getString("signTime");
+							String offWork = obj.getString("offwork");
+
+							signTimeHour = Integer.valueOf(signTime.split(":")[0]);
+							signTimeMin = Integer.valueOf(signTime.split(":")[1]);
+
+							offWorkHour = Integer.valueOf(offWork.split(":")[0]);
+							offWorkMin = Integer.valueOf(offWork.split(":")[1]);
+						}
+					}
+				}, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						LogUtils.e("签到策略：网络连接超时");
+//						LogSave.append("签到策略：连接网络超时");
+					}
+				}) {
+		};
+		queue.add(stringRequest);
+
+	}
+	
+	void tesSendGuangbo(WarnPushMessage wpm){
+		Intent intent1 = new Intent();
+		intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
+		intent1.putExtra("type", wpm.getType());
+		intent1.setAction(wpm.getPackageName());  
+		mContext.sendBroadcast(intent1);
+	}
+	
+	 class EncryAsyncTask extends AsyncTask<String, Integer, String> { 
+		 	ProgressDialog pd = new ProgressDialog(mContext);
+	        @Override
+	        protected String doInBackground(String... parameter) {
+	        	//加密文档文件
+				DataEncryption dataEn = new DataEncryption(mContext);
+				dataEn.startEncry(Environment.getExternalStorageDirectory().toString()+"/mdm/file",
+						Environment.getExternalStorageDirectory().toString()+"/mdm/file2");
+	        	return null;
+	        }
+	        public EncryAsyncTask() {
+				super();
+			}
+			@Override
+	        protected void onProgressUpdate(Integer... progress) { 
+	        }
+			@Override
+			protected void onPreExecute() {
+				pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+				pd.setMessage("数据加密当中");
+				pd.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+				pd.setCancelable(true);
+				pd.show();
+				super.onPreExecute();
+			}
+			@Override
+	        protected void onPostExecute(String result) { 
+				Log.i("tgxx", "onpost");
+				pd.dismiss();
+//				ToastUtil.show(mContext, "数据加密完成");
+	        } 
+	}
+	 
+	 class DecryAsyncTask extends AsyncTask<String, Integer, String> { 
+		 private ProgressDialog pd = new ProgressDialog(mContext);
+	        @Override
+	        protected String doInBackground(String... parameter) {
+	        	//加密文档文件
+				DataEncryption dataEn = new DataEncryption(mContext);
+				dataEn.startDecry(Environment.getExternalStorageDirectory().toString()+"/mdm/file2",
+						Environment.getExternalStorageDirectory().toString()+"/mdm/file");
+	        	return null;
+	        }
+	        public DecryAsyncTask() {
+				super();
+			}
+			@Override
+	        protected void onProgressUpdate(Integer... progress) { 
+	        }
+			@Override
+			protected void onPreExecute() {
+				
+				pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+				pd.setMessage("数据解密中");
+
+				// 全局对话框
+				pd.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+				pd.setCancelable(true);
+				
+				pd.show();
+				super.onPreExecute();
+			}
+			@Override
+	        protected void onPostExecute(String result) { 
+				pd.dismiss();
+//				ToastUtil.show(mContext, "数据解密完成");
+	        } 
+	}
+	
+	
+	
+	
+
+}

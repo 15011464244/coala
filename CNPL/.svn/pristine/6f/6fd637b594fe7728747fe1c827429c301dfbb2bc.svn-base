@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/titleSize"
+       	android:layout_marginTop="@dimen/connect_info_youjianjieru5_top"
+        android:orientation="horizontal"
+         >
+
+        <TextView
+            android:layout_width="@dimen/titleImgSize"
+            android:layout_height="@dimen/titleSize"
+            android:background="@drawable/toptext"
+            android:layout_marginRight="@dimen/titlepadSize"
+            android:gravity="center"
+            android:text="@string/exchange_suc"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/btnTextSize" />
+        
+         <LinearLayout
+        	android:layout_width="fill_parent"
+        	android:layout_height="@dimen/titleSize"
+        	android:orientation="vertical"
+        	android:background="@drawable/topright" >
+        	<Button
+                    android:id="@+id/btncode"
+                    android:layout_width="@dimen/erweimasize"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/btndenglu"
+                    android:text="@string/code"
+                    android:textSize="@dimen/erweimatextsize" />
+        </LinearLayout>
+    </LinearLayout>
+   
+<!-- 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/topline" >
+    </LinearLayout>
+-->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/titlepadSize"
+            android:layout_marginLeft="@dimen/imggapSize"
+            android:layout_marginRight="@dimen/imggapSize"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:text="@string/comp_hint"
+                android:textSize="@dimen/imgtitleSize"
+                android:textColor="#ff0000" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/line2" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/imggapSize"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mailcon_out"
+                    android:textSize="@dimen/btnTextSize"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textSize="@dimen/btnTextSize"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/mailcon_out_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="FJDD"
+                    android:textSize="@dimen/btnTextSize"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/exchange_time"
+                    android:textSize="@dimen/btnTextSize"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textSize="@dimen/btnTextSize"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/exchange_time_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="FJDD"
+                    android:textSize="@dimen/btnTextSize"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mailtotal"
+                    android:textSize="@dimen/btnTextSize"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textSize="@dimen/btnTextSize"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/mailtotal_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="FJDD"
+                    android:textSize="@dimen/btnTextSize"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/disrepair_no"
+                    android:textSize="@dimen/btnTextSize"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textSize="@dimen/btnTextSize"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/disrepair_no_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="FJDD"
+                    android:textSize="@dimen/btnTextSize"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lose_no"
+                    android:textSize="@dimen/btnTextSize"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textSize="@dimen/btnTextSize"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/lose_no_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="FJDD"
+                    android:textSize="@dimen/btnTextSize"
+                    android:textColor="#000000" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/line2" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <ListView
+                android:id="@+id/comListView"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="left"
+                android:layout_weight="2"
+                android:cacheColorHint="#00000000"
+                android:divider="@drawable/line2" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="8"
+                android:layout_marginBottom="@dimen/imggapSize"
+                android:gravity="center" >
+
+                <Button
+                    android:id="@+id/enterbtn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/btnHSize"
+                    android:layout_margin="@dimen/imggapSize"
+                    android:layout_weight="1"
+                    android:background="@drawable/btndenglu"
+                    android:textSize="@dimen/btnTextSize"
+                    android:text="@string/con_enter" />
+
+                <Button
+                    android:id="@+id/compbtn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/btnHSize"
+                    android:layout_margin="@dimen/imggapSize"
+                    android:layout_weight="1"
+                    android:background="@drawable/btndenglu"
+                    android:textSize="@dimen/btnTextSize"
+                    android:text="@string/exchange_comp" />
+
+                <Button
+                    android:id="@+id/cancelbtn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/btnHSize"
+                    android:layout_margin="@dimen/imggapSize"
+                    android:layout_weight="1"
+                    android:background="@drawable/btndenglu"
+                    android:textSize="@dimen/btnTextSize"
+                    android:text="@string/clean" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

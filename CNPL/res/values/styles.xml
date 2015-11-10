@@ -1,0 +1,56 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="AppTheme" parent="android:Theme.Light" />
+
+
+    <style name="CustomWindowTitleBackground">
+        <item name="android:background">#000000</item>
+    </style>
+
+      <style name="CustomButton" parent="@android:style/Widget.Button"> 
+        <!-- 水平、垂直居中 --> 
+        <item name="android:gravity">center_vertical|center_horizontal</item> 
+        <!-- 字体颜色 --> 
+        <item name="android:textColor">#FFFFFFFF</item> 
+        <!-- 指定文本阴影的颜色，需要与shadowRadius一起使用 --> 
+        <item name="android:shadowColor">#FF000000</item> 
+        <!-- 设置阴影横向坐标开始的位置 --> 
+        <item name="android:shadowDx">0</item> 
+        <!-- 设置阴影纵向坐标开始的位置 --> 
+        <item name="android:shadowDy">-1</item> 
+        <!-- 设置阴影的半径，设置为0.1就变成文本的颜色了 --> 
+        <item name="android:shadowRadius">0.2</item> 
+        <item name="android:textSize">16sp</item> 
+        <item name="android:textStyle">bold</item> 
+        <!-- 这里引用定义的按钮样式 --> 
+        <item name="android:focusable">true</item> 
+        <item name="android:clickable">true</item> 
+    </style> 
+    
+    <style name="cnpl" parent="android:Theme">
+        <item name="android:windowTitleSize">50dp</item>
+        <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitleBackground</item>
+        <item name="android:buttonStyle">@style/CustomButton</item> 
+    </style>
+
+    
+    
+    
+    
+    <style name="DialogText">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+ 
+    <style name="DialogText.Title">
+         <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+     <style name="Dialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item> 
+        <item name="android:windowIsFloating">true</item>
+    </style>
+ 
+</resources>

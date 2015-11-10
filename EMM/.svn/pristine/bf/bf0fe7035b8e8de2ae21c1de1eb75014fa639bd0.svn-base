@@ -1,0 +1,36 @@
+package com.koala.emm.basicdata;
+
+
+
+import com.koala.emm.util.SpfsUtil;
+
+import android.content.BroadcastReceiver;  
+import android.content.Context;  
+import android.content.Intent;  
+import android.util.Log;  
+      
+    public class BootBroadcastReceiver extends BroadcastReceiver {  
+    	 private final String ACTION = "android.intent.action.BOOT_COMPLETED";
+        @Override  
+        public void onReceive(Context context, Intent intent) {  
+        	if (intent.getAction().equals(ACTION))
+        	  {
+        		  Intent service = new Intent(context,BasicDataService.class);  
+                  context.startService(service);  
+                  Log.e("TAG", "EMM开机自动服务自动启动....."); 
+        	  }else{
+        		  Log.e("TAG", "EMM服务监听  "+intent.getAction()+"  广播.....");
+        		  if(BasicDataService.getInstance() == null){
+        			  Log.e("TAG", "EMM服务监听 广播,开启服务.....");
+        			  //不检测状态的时候才开启
+        			  if(!SpfsUtil.getCheckState()){
+        				  Intent service = new Intent(context,BasicDataService.class);  
+                          context.startService(service);
+        			  }
+        		  }
+        	  }
+        	
+            
+        }  
+      
+    }  

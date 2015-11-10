@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/titleSize"
+       	android:layout_marginTop="@dimen/connect_info_youjianjieru5_top"
+        android:orientation="horizontal"
+         >
+
+        <TextView
+            android:layout_width="@dimen/titleImgSize"
+            android:layout_height="@dimen/titleSize"
+            android:background="@drawable/toptext"
+            android:layout_marginRight="@dimen/titlepadSize"
+            android:gravity="center"
+            android:text="@string/exchange"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/btnTextSize" />
+        
+         <LinearLayout
+        	android:layout_width="fill_parent"
+        	android:layout_height="@dimen/titleSize"
+        	android:orientation="vertical"
+        	android:background="@drawable/topright" >
+        	<Button
+                    android:id="@+id/btncode"
+                    android:layout_width="@dimen/erweimasize"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/btndenglu"
+                    android:text="@string/code"
+                    android:textSize="@dimen/erweimatextsize" />
+        </LinearLayout>
+    </LinearLayout>
+   
+<!-- 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/topline" >
+    </LinearLayout>
+-->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/comListView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="left"
+            android:layout_marginTop="@dimen/titlepadSize"
+            android:cacheColorHint="#00000000"
+            android:divider="@drawable/line2" />
+    </LinearLayout>
+
+</LinearLayout>

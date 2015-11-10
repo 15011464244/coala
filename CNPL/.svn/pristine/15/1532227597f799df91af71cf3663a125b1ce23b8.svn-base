@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/titleSize"
+       	android:layout_marginTop="@dimen/connect_info_youjianjieru5_top"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/titleImgSize"
+            android:layout_height="@dimen/titleSize"
+            android:background="@drawable/toptext"
+            android:layout_marginRight="@dimen/titlepadSize"
+            android:gravity="center"
+            android:text="@string/dlvdownload"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/btnTextSize" />
+        
+         <LinearLayout
+        	android:layout_width="fill_parent"
+        	android:layout_height="@dimen/titleSize"
+        	android:orientation="vertical"
+        	android:background="@drawable/topright" >
+        	<Button
+                android:id="@+id/btncode"
+                android:visibility="gone"
+                android:layout_width="@dimen/erweimasize"
+                android:layout_gravity="right"
+                android:gravity="center"
+                android:layout_height="fill_parent"
+                android:background="@drawable/btndenglu"
+                android:text="@string/code"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/erweimatextsize" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="@dimen/titlepadSize"
+            android:layout_marginLeft="@dimen/titlepadSize"
+            android:layout_marginRight="@dimen/titlepadSize"
+            android:layout_marginBottom="@dimen/imggapSize"
+            android:background="@drawable/tuotou1"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="2"
+                android:layout_marginBottom="@dimen/imggapSize"
+                android:layout_marginRight="@dimen/imggapSize"
+                android:layout_marginTop="@dimen/imgpadSize"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:id="@+id/ndlvEnid"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/btnHSize"
+                    android:layout_weight="5"
+                    android:gravity="left|center_vertical"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:text="@string/peisongdanhao"
+                        android:textSize="@dimen/btnTextSize"
+                        android:textColor="#129381" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.5"
+                    android:orientation="horizontal" >
+
+                    <EditText
+                        android:id="@+id/dlvDataDownloadPeiSongText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.9"
+                        android:background="@drawable/input2"
+                        android:inputType="textCapCharacters"
+                        android:focusable="true"
+                        android:capitalize="characters"
+                        android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                        android:hint="@string/scan_hint2"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:textSize="@dimen/btnTextSize"
+                        android:singleLine="true" >
+                        <requestFocus />
+                    </EditText>
+
+                    <Button
+                        android:id="@+id/dlvDataDownloadScanBtn"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:background="@drawable/btndenglu"
+                        android:text="@string/scan"
+                        android:textColor="#ffffff"
+                        android:textSize="@dimen/btnTextSize"/>
+                </LinearLayout>
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="2"
+                android:layout_marginBottom="@dimen/imggapSize"
+                android:layout_marginTop="@dimen/imggapSize"
+                android:gravity="center_horizontal" >
+
+                <Button
+                    android:id="@+id/addListBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/btnHSize"
+                    android:layout_marginBottom="@dimen/imggapSize"
+                    android:layout_marginLeft="@dimen/imgpadSize"
+                    android:background="@drawable/btndenglu"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/btnTextSize"
+                    android:text="@string/add_text" />
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.1"
+                android:layout_marginBottom="@dimen/imggapSize"
+                android:layout_marginTop="@dimen/imggapSize"
+                android:gravity="center_horizontal" >
+
+                <ListView
+                    android:id="@+id/peisongdanlist"
+			        android:layout_width="fill_parent"
+			        android:layout_height="fill_parent"
+			        android:layout_gravity="left"
+			        android:layout_marginTop="@dimen/titlepadSize"
+			        android:cacheColorHint="#00000000"
+			        android:divider="@drawable/line2" />
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="2"
+                android:layout_marginBottom="@dimen/imggapSize"
+                android:layout_marginTop="@dimen/imggapSize"
+                android:gravity="center_horizontal" >
+
+                <Button
+                    android:id="@+id/dlvDataDownloadBtn"
+                    android:layout_width="@dimen/btmWSize"
+                    android:layout_height="@dimen/btnHSize"
+                    android:layout_marginBottom="@dimen/imggapSize"
+                    android:layout_marginLeft="@dimen/imgpadSize"
+                    android:background="@drawable/btndenglu"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/btnTextSize"
+                    android:text="@string/downloadpeisongdan" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

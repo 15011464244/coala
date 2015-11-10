@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+
+        <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/titleSize"
+       	android:layout_marginTop="@dimen/connect_info_youjianjieru5_top"
+        android:orientation="horizontal"
+         >
+
+        <TextView
+            android:layout_width="@dimen/titleImgSize"
+            android:layout_height="@dimen/titleSize"
+            android:background="@drawable/toptext"
+            android:layout_marginRight="@dimen/titlepadSize"
+            android:gravity="center"
+            android:text="@string/connect"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/btnTextSize" />
+        
+         <LinearLayout
+        	android:layout_width="fill_parent"
+        	android:layout_height="@dimen/titleSize"
+        	android:orientation="vertical"
+        	android:background="@drawable/topright" >
+        	<Button
+                    android:id="@+id/btncode"
+                    android:layout_width="@dimen/erweimasize"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/btndenglu"
+                    android:text="@string/code"
+                    android:textSize="@dimen/erweimatextsize" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/topline" >
+    </LinearLayout> -->
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_horizontal" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="@dimen/imgpadSize"
+                android:layout_marginTop="@dimen/imgpadSize"
+                android:orientation="horizontal" >
+
+
+                   <Button
+                    android:id="@+id/dlvcamera"
+                    android:layout_width="@dimen/titleImgSize"
+                    android:layout_height="@dimen/titleImgSize"
+                    android:gravity="bottom|center_horizontal"
+                    android:paddingBottom="@dimen/imggapSize"
+                    android:layout_weight="1"
+                    android:background="@drawable/scan"
+                    android:textSize="@dimen/btnTextSize"
+                    android:text="@string/scan" />
+
+<!--
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="20dip"
+                    android:layout_marginRight="20dip"
+                    android:layout_marginTop="20dip"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dip" >
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:gravity="center"
+                            android:text="@string/out_type"
+                            android:textColor="#006699" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginTop="20dip"
+                        android:orientation="horizontal" >
+
+                        <RadioGroup
+                            android:id="@+id/radioGrouplei"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal" >
+
+                            <RadioButton
+                                android:id="@+id/radioin"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:text="@string/organ"
+                                android:textColor="#000000" />
+
+                            <RadioButton
+                                android:id="@+id/radioout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/carrier"
+                                android:textColor="#000000" />
+                        </RadioGroup>
+                    </LinearLayout>
+                </LinearLayout>-->
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/beginHsize"
+                android:layout_marginLeft="@dimen/imgpadSize"
+                android:layout_marginRight="@dimen/imgpadSize"
+                android:layout_marginTop="@dimen/imgpadSize"
+                android:background="@drawable/jieruzhuanchu2"
+                android:orientation="vertical" >
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/btnHSize"
+                android:layout_marginLeft="@dimen/titlepadSize"
+                android:layout_marginRight="@dimen/titlepadSize"
+                android:layout_marginTop="@dimen/imgpadSize"
+                android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:id="@+id/ndlvEnid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_gravity="center" >
+
+                        <TextView
+                            android:layout_width="@dimen/titleImgSize"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:text="@string/exchange_no"
+                            android:textSize="@dimen/btnTextSize"
+                            android:textColor="#006699" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <EditText
+                            android:id="@+id/dlvmailidserch"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/input2"
+                            android:capitalize="characters"
+                            android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                            android:focusable="true"
+                            android:hint="@string/out_hint"
+                            android:inputType="textCapCharacters"
+                            android:paddingLeft="3dp"
+                            android:paddingRight="3dp"
+                            android:textSize="@dimen/btnTextSize"
+                            android:singleLine="true" >
+
+                            <requestFocus />
+                        </EditText>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/imggapSize"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="@dimen/imggapSize"
+                    android:layout_marginRight="@dimen/imggapSize" >
+
+                    <Button
+                        android:id="@+id/cancelbtn"
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/btnHSize"
+                        android:layout_margin="@dimen/imggapSize"
+                        android:layout_weight="1"
+                        android:background="@drawable/chang"
+                        android:textSize="@dimen/btnTextSize"
+                        android:text="@string/cancel" />
+
+                    <Button
+                        android:id="@+id/nextbtn"
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/btnHSize"
+                        android:layout_margin="@dimen/imggapSize"
+                        android:layout_weight="1"
+                        android:background="@drawable/chang"
+                        android:textSize="@dimen/btnTextSize"
+                        android:text="@string/next" />
+                </LinearLayout>
+            </LinearLayout>
+<!-- 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" >
+
+                <ImageView
+                    android:id="@+id/two_code_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout> -->
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,258 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="${relativePackage}.${activityClass}" >
+    <include layout="@layout/title_layout"/>
+    <RelativeLayout 
+        android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="2"
+	    android:gravity="center_vertical"
+	    android:background="@color/light_blue">
+	    
+        <ImageView 
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:src="@drawable/img_show_device"
+            />
+        
+    </RelativeLayout>
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20sp">
+        
+        <LinearLayout 
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+           android:layout_margin="3dp">
+            
+            <ImageView 
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/img_total_memory"/>
+            <TextView 
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:textColor="#666"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:text="总内存"/>
+            <TextView 
+                android:id="@+id/tv_total_memory"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:textColor="#999"
+                android:gravity="right|center_vertical"
+                android:textSize="16sp"
+                android:text="2.85G"/>
+        </LinearLayout>
+        <View style="@style/line_h_margin_no"/>
+        
+        <LinearLayout 
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_margin="3dp">
+            
+            <ImageView 
+               android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/img_remain_memory"/>
+            <TextView 
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:textColor="#666"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:text="剩余内存"/>
+            <TextView 
+                android:id="@+id/tv_remain_memory"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:textColor="#999"
+                android:gravity="right|center_vertical"
+                android:textSize="16sp"
+                android:text="1.22G"/>
+        </LinearLayout>
+        <View style="@style/line_h_margin_no"/>
+        
+        <LinearLayout 
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_margin="3dp">
+            
+            <ImageView 
+               android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/img_remain_battery"/>
+            <TextView 
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:textColor="#666"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:text="剩余电量"/>
+            <TextView 
+                android:id="@+id/tv_remain_battery"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:textColor="#999"
+                android:gravity="right|center_vertical"
+                android:textSize="16sp"
+                android:text="80%"/>
+        </LinearLayout>
+        <View style="@style/line_h_margin_no"/>
+        
+        <LinearLayout 
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_margin="3dp">
+            
+            <ImageView 
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/img_producer"/>
+            <TextView 
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:textColor="#666"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:text="产商"/>
+            <TextView 
+                android:id="@+id/tv_productor"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:textColor="#999"
+                android:gravity="right|center_vertical"
+                android:textSize="16sp"
+                android:text="XiaoMi"/>
+        </LinearLayout>
+        <View style="@style/line_h_margin_no"/>
+        
+        <LinearLayout 
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_margin="3dp">
+            
+            <ImageView 
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/img_device_version"/>
+            <TextView 
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:textColor="#666"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:text="设备型号"/>
+            <TextView 
+                android:id="@+id/tv_device_version"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:textColor="#999"
+                android:gravity="right|center_vertical"
+                android:textSize="16sp"
+                android:text="XiaoMi"/>
+        </LinearLayout>
+        <View style="@style/line_h_margin_no"/>
+        
+        <LinearLayout 
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_margin="3dp">
+            
+            <ImageView 
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/img_sys_ersion"/>
+            <TextView 
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:textColor="#666"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:text="系统版本"/>
+            <TextView 
+                android:id="@+id/tv_sys_version"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:textColor="#999"
+                android:gravity="right|center_vertical"
+                android:textSize="16sp"
+                android:text="4.4.4"/>
+        </LinearLayout>
+        <View style="@style/line_h_margin_no"/>
+        
+        <LinearLayout 
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+           android:layout_margin="3dp">
+            
+            <TextView 
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:textColor="#666"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:text="序列号"
+                android:layout_marginRight="5dp"/>
+            <TextView 
+                android:id="@+id/tv_client_id"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:textColor="#999"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="56aafawfagafa4f5a4g5aG45g"/>
+        </LinearLayout>
+        
+    </LinearLayout>
+
+
+</LinearLayout>

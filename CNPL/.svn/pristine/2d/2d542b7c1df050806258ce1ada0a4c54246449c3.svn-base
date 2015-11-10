@@ -1,0 +1,174 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/titleSize"
+        android:layout_marginLeft="@dimen/titlepadSize"
+        android:layout_marginTop="@dimen/titlepadSize"
+        android:orientation="horizontal"
+         >
+
+        <TextView
+            android:layout_width="@dimen/titleImgSize"
+            android:layout_height="@dimen/titleSize"
+            android:background="@drawable/toptext"
+            android:layout_marginRight="@dimen/titlepadSize"
+            android:gravity="center"
+            android:text="@string/password"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/btnTextSize" />
+        
+         <LinearLayout
+        	android:layout_width="fill_parent"
+        	android:layout_height="@dimen/titleSize"
+        	android:layout_marginRight="@dimen/titlepadSize"
+        	android:orientation="vertical"
+        	android:background="@drawable/topright" >
+        	<Button
+                    android:id="@+id/btncode"
+                    android:layout_width="@dimen/erweiSize"
+                    android:layout_gravity="right"
+                    android:gravity="center_horizontal|top"
+                    android:layout_height="@dimen/titleSize"
+                    android:background="@drawable/btndenglu"
+                    android:text="@string/code"
+                    android:textSize="@dimen/btnTextSize" />
+        </LinearLayout>
+    </LinearLayout>
+    
+    <!--
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/topline" >
+    </LinearLayout>
+-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/titlepadSize"
+        android:layout_marginLeft="@dimen/imggapSize"
+        android:layout_marginRight="@dimen/imggapSize"
+        android:layout_marginTop="@dimen/imggapSize"
+        android:background="@drawable/txt_bg"
+        android:gravity="center" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.75"
+            android:gravity="center_vertical"
+            android:text="@string/oldpassword"
+            android:textSize="@dimen/btnTextSize"
+            android:textColor="#ffffff" />
+
+        <EditText
+            android:id="@+id/modifypoldp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/imgpadSize"
+            android:layout_weight="0.25"
+            android:background="@null"
+            android:textSize="@dimen/btnTextSize"
+            android:password="true" >
+        </EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/titlepadSize"
+        android:layout_marginLeft="@dimen/imggapSize"
+        android:layout_marginRight="@dimen/imggapSize"
+        android:layout_marginTop="@dimen/imggapSize"
+        android:background="@drawable/txt_bg"
+        android:gravity="center" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.75"
+            android:gravity="center_vertical"
+            android:text="@string/newpassword"
+            android:textSize="@dimen/btnTextSize"
+            android:textColor="#ffffff" />
+
+        <EditText
+            android:id="@+id/modifypnewp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="0.25"
+            android:background="@null"
+            android:textSize="@dimen/btnTextSize"
+            android:password="true" >
+        </EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/titlepadSize"
+        android:layout_marginLeft="@dimen/imggapSize"
+        android:layout_marginRight="@dimen/imggapSize"
+        android:layout_marginTop="@dimen/imggapSize"
+        android:background="@drawable/txt_bg"
+        android:gravity="center" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="0.75"
+            android:gravity="center_vertical"
+            android:text="@string/repassword"
+            android:textSize="@dimen/btnTextSize"
+            android:textColor="#ffffff" />
+
+        <EditText
+            android:id="@+id/modifypconfirmp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="0.23"
+            android:background="@null"
+            android:textSize="@dimen/btnTextSize"
+            android:password="true" >
+        </EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/titlepadSize"
+        android:layout_marginLeft="@dimen/imggapSize"
+        android:layout_marginRight="@dimen/imggapSize"
+        android:layout_marginTop="@dimen/imggapSize"
+        android:gravity="center" >
+
+        <Button
+            android:id="@+id/modifypsubmit"
+            android:layout_width="fill_parent"
+      		android:layout_height="@dimen/btnHSize"
+            android:layout_margin="@dimen/imggapSize"
+            android:layout_weight="1"
+            android:background="@drawable/btndenglu"
+            android:textSize="@dimen/btnTextSize"
+            android:text="@string/save" />
+
+        <Button
+            android:id="@+id/resetpasswordBtn"
+            android:layout_width="fill_parent"
+             android:layout_height="@dimen/btnHSize"
+            android:layout_margin="@dimen/imggapSize"
+            android:layout_weight="1"
+            android:background="@drawable/btndenglu"
+            android:textSize="@dimen/btnTextSize"
+            android:text="@string/re_write" />
+    </LinearLayout>
+
+</LinearLayout>

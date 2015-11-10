@@ -1,0 +1,83 @@
+<resources>
+
+    <dimen name="standard_padding">8dip</dimen>
+    <dimen name="half_padding">4dip</dimen>
+    
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">8dp</dimen>
+    <dimen name="padding_large">16dp</dimen>
+	<dimen name="bottom_tab_padding_drawable">2.0dip</dimen>
+	<dimen name="bottom_tab_padding_up">5.0dip</dimen>
+	<dimen name="bottom_tab_font_size">10.0dip</dimen>
+	
+	<dimen name="btmWSize">90dip</dimen>
+	
+	<dimen name="dialogXSize">300dip</dimen>
+	<dimen name="dialogYSize">250dip</dimen>
+	
+	<dimen name="erweiSize">80dip</dimen>
+	
+	<dimen name="imgtitleSize">24dip</dimen>
+	<dimen name="btnimgXSize">150dip</dimen>
+	<dimen name="btnimgYSize">70dip</dimen>
+	<dimen name="btnimgTextSize">28dip</dimen>
+	
+	<dimen name="btnHSize">45dip</dimen>
+	
+	<dimen name="btnTextSize">16dip</dimen>
+	<dimen name="titlepadSize">7dip</dimen>
+	<dimen name="hintSize">30dip</dimen>
+	<dimen name="imgTextSize">130dip</dimen>  
+	<dimen name="titleSize">30dip</dimen>  
+	<dimen name="titleImgSize">100dip</dimen>
+	<dimen name="imgpadSize">20dip</dimen>
+	<dimen name="imggapSize">10dip</dimen>
+	
+	
+	<dimen name="confirmTextSize">45dip</dimen>
+	<dimen name="dialogTextSize">35dip</dimen>
+	<dimen name="dialogWidthSize">428dip</dimen>
+	<dimen name="dialogHighSize">268dip</dimen>
+	<dimen name="dialogButtonWh">70dp</dimen>
+	<dimen name="dialogButtonLeft">60dp</dimen>
+	
+	<dimen name="erweimasize">100dp</dimen>
+	<dimen name="erweimatextsize">15dp</dimen>
+	
+	<dimen name="connect_info_camera_wigth">115dp</dimen>
+	<dimen name="connect_info_camera_height">115dp</dimen>
+	<dimen name="connect_info_camera_text_size">18dp</dimen>
+	<dimen name="connect_info_camera_text_btoom">6dp</dimen>
+	<dimen name="connect_info_ndlvEnid_wigth">56dp</dimen>
+	<dimen name="connect_info_ndlvEnid_height">47dp</dimen>
+	<dimen name="connect_info_mail_no_size">15dp</dimen>
+	<dimen name="connect_info_mail_no_right">5dp</dimen>
+	<dimen name="connect_info_mailidserch_size">13dp</dimen>
+	<dimen name="connect_info_youjianjieru5_top">10dp</dimen>
+	<dimen name="connect_info_ndlvEnid_wigth2">70dp</dimen>
+	<dimen name="connect_info_substitute_fee_text_size">15dip</dimen>
+	<dimen name="connect_info_substitute_fee_height">47dip</dimen>
+	<dimen name="connect_info_substitute_fee_paddingLeft">55dp</dimen>
+	<dimen name="connect_info_TableRow_height">15dp</dimen>
+	<dimen name="connect_info_conListView_height">230dp</dimen>
+	<dimen name="connect_info_RelativeLayout_top">-55dp</dimen> 
+	<dimen name="connect_info_beforebtn_height">50dp</dimen>
+	<dimen name="connect_info_beforebtn_wigth">101dp</dimen>
+	<dimen name="connect_info_beforebtn_layout_margin">3dp</dimen>
+	<dimen name="connect_info_beforebtn_textsize">20dp</dimen>
+	<dimen name="connect_info_okbtn_width">90dip</dimen>
+	<dimen name="connect_info_okbtn_height">45dip</dimen>
+	<dimen name="connect_info_okbtn_marginRight">30dip</dimen>
+	<dimen name="connect_info_deletebtn_width">120dip</dimen>
+	<dimen name="connect_info_displayOrderNum_textsize">23dip</dimen>
+	
+	<dimen name="out_form_conok_width">200dip</dimen>
+	<dimen name="out_form_conokpp_width">250dip</dimen>
+	
+		<dimen name="mail_dlvnenter_textsize">20dp</dimen>
+		
+		<dimen name="mail_batchdlvnenter_ndllvadd_width">100dp</dimen>
+		<dimen name="mydialogTextSize">22dip</dimen>	
+		
+		<dimen name="beginHsize">145dip</dimen>
+</resources>

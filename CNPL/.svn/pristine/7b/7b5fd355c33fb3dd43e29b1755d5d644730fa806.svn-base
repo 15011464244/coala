@@ -1,0 +1,13 @@
+insert into FOLLOW_ACTION (followAction, actionDescCHS, actionDescTRADITIONAL, actionDescENG) values ('A', '收件人不在，今天再投', '收件人不在，今天再投', null);
+insert into FOLLOW_ACTION (followAction, actionDescCHS, actionDescTRADITIONAL, actionDescENG) values ('B', '下一个工作日再投', '下一個工作日再投', null);
+insert into FOLLOW_ACTION (followAction, actionDescCHS, actionDescTRADITIONAL, actionDescENG) values ('C', '保持与收件人的联系', '保持與收件人的聯系', null);
+insert into FOLLOW_ACTION (followAction, actionDescCHS, actionDescTRADITIONAL, actionDescENG) values ('D', '已和寄件人联系，等待答复', '已和寄件人聯系，等待答復', null);
+insert into FOLLOW_ACTION (followAction, actionDescCHS, actionDescTRADITIONAL, actionDescENG) values ('E', '退回寄件人', '退回寄件人', null);
+insert into FOLLOW_ACTION (followAction, actionDescCHS, actionDescTRADITIONAL, actionDescENG) values ('F', '邮件转发', '郵件轉發', null);
+insert into FOLLOW_ACTION (followAction, actionDescCHS, actionDescTRADITIONAL, actionDescENG) values ('G', '邮件待查', '郵件待查', null);
+insert into FOLLOW_ACTION (followAction, actionDescCHS, actionDescTRADITIONAL, actionDescENG) values ('H', '邮件被扣留或损坏', '郵件被扣留或損壞', null);
+insert into FOLLOW_ACTION (followAction, actionDescCHS, actionDescTRADITIONAL, actionDescENG) values ('I', '与原寄邮政联系', '與原寄郵政聯系', null);
+insert into FOLLOW_ACTION (followAction, actionDescCHS, actionDescTRADITIONAL, actionDescENG) values ('J', '收件人自取', '收件人自取', null);
+insert into FOLLOW_ACTION (followAction, actionDescCHS, actionDescTRADITIONAL, actionDescENG) values ('K', '按寄件人要求毁掉', '按寄件人要求毀掉', null);
+insert into FOLLOW_ACTION (followAction, actionDescCHS, actionDescTRADITIONAL, actionDescENG) values ('L', '按收件人要求保留', '按收件人要求保留', null);
+insert into FOLLOW_ACTION (followAction, actionDescCHS, actionDescTRADITIONAL, actionDescENG) values ('M', '收件人地址被核实', '收件人地址被核實', null);

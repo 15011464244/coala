@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/titleSize"
+       	android:layout_marginTop="@dimen/connect_info_youjianjieru5_top"
+        android:orientation="horizontal"
+         >
+
+        <TextView
+            android:layout_width="@dimen/titleImgSize"
+            android:layout_height="@dimen/titleSize"
+            android:background="@drawable/toptext"
+            android:layout_marginRight="@dimen/titlepadSize"
+            android:gravity="center"
+            android:text="@string/deliver"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/btnTextSize" />
+        
+         <LinearLayout
+        	android:layout_width="fill_parent"
+        	android:layout_height="@dimen/titleSize"
+        	android:orientation="vertical"
+        	android:background="@drawable/topright" >
+        	<Button
+                    android:id="@+id/btncode"
+                    android:visibility="gone"
+                    android:layout_width="@dimen/erweimasize"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/btndenglu"
+                    android:text="@string/code"
+                    android:textSize="@dimen/erweimatextsize" />
+        </LinearLayout>
+    </LinearLayout>
+ 
+<!--
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/topline" >
+    </LinearLayout>
+-->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/btnHSize"
+        android:layout_marginTop="@dimen/imggapSize"
+        android:layout_marginBottom="@dimen/imggapSize"
+        android:gravity="center|bottom" >
+
+        <Button
+            android:id="@+id/dlventer"
+            android:layout_width="@dimen/btmWSize"
+            android:layout_height="wrap_content"
+            android:background="@drawable/chang"
+            android:textSize="@dimen/btnTextSize"
+            android:text="@string/deliver_enter" />
+
+        <Button
+            android:id="@+id/dlvbatchenter"
+            android:layout_width="@dimen/btmWSize"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/btnTextSize"
+            android:layout_marginLeft="@dimen/imggapSize"
+            android:background="@drawable/chang"
+            android:text="@string/deliver_batch_enter" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tuotou1"
+        android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/imggapSize"
+        android:layout_marginLeft="@dimen/imggapSize"
+        android:layout_marginRight="@dimen/imggapSize"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/reqdate"
+   			android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/titlepadSize"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/input2"
+            android:textSize="@dimen/btnTextSize"
+            android:hint="请选择日期 "
+            android:paddingLeft="15dp" />
+
+        <Button
+            android:id="@+id/queryButton"
+            android:layout_width="fill_parent"
+            android:layout_weight="4"
+            android:layout_height="fill_parent"
+            android:textSize="@dimen/btnTextSize"
+            android:background="@drawable/tuotou2" />
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/dlvradioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/imggapSize"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/dlvradio0"
+            android:drawableLeft="@drawable/checkboxstyte"
+            android:button="@null"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+             android:paddingLeft="@dimen/titlepadSize"
+            android:layout_marginRight="@dimen/imgpadSize"
+            android:checked="true"
+            android:text="@string/upload"
+            android:textSize="@dimen/btnTextSize"
+            android:textColor="#000" />
+
+        <RadioButton
+            android:id="@+id/dlvradio1"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:drawableLeft="@drawable/checkboxstyte"
+            android:button="@null"
+            android:text="@string/no_upload"
+            android:textSize="@dimen/btnTextSize"
+            android:textColor="#000" />
+    </RadioGroup>
+</LinearLayout>
+    <ListView
+        android:id="@+id/DlvListView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="left"
+        android:layout_marginTop="@dimen/titlepadSize"
+        android:cacheColorHint="#00000000"
+        android:divider="@drawable/line2" />
+
+</LinearLayout>

@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg" 
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/titleSize"
+       	android:layout_marginTop="@dimen/connect_info_youjianjieru5_top"
+        android:orientation="horizontal"
+         >
+
+        <TextView
+            android:layout_width="@dimen/titleImgSize"
+            android:layout_height="@dimen/titleSize"
+            android:background="@drawable/toptext"
+            android:layout_marginRight="@dimen/titlepadSize"
+            android:gravity="center"
+            android:text="@string/mail_detail"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/btnTextSize" />
+        
+         <LinearLayout
+        	android:layout_width="fill_parent"
+        	android:layout_height="@dimen/titleSize"
+        	android:orientation="vertical"
+        	android:background="@drawable/topright" >
+        	<Button
+                    android:id="@+id/btncode"
+                    android:layout_width="@dimen/erweimasize"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/btndenglu"
+                    android:text="@string/code"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/erweimatextsize" />
+        </LinearLayout>
+    </LinearLayout>	 	
+ 
+        <!--
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/topline">
+    </LinearLayout>
+-->
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/imgpadSize"
+            android:layout_marginRight="@dimen/imgpadSize"
+            android:layout_marginTop="@dimen/imggapSize"
+            android:background="@drawable/inputtxt1"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/imgpadSize"
+            android:paddingRight="@dimen/imgpadSize" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/btnHSize"
+                android:layout_marginTop="@dimen/imgpadSize"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="2.7" >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1.5"
+                        android:gravity="center|left"
+                        android:text="@string/mail_no"
+                        android:textColor="#006699"
+                        android:textSize="@dimen/btnTextSize" >
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="8.5"
+                        android:gravity="center|left"
+                        android:text=":"
+                        android:textColor="#006699"
+                        android:textSize="@dimen/btnTextSize" >
+                    </TextView>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/send_name_mailn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1.5"
+                    android:gravity="center|left"
+                    android:text=""
+                    android:textColor="#006699"
+                    android:textSize="@dimen/btnTextSize" >
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/btnHSize"
+                android:layout_marginTop="@dimen/titlepadSize"
+                android:visibility="gone"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="2.7" >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1.5"
+                        android:gravity="center|left"
+                        android:text="@string/mail_type"
+                        android:textColor="#006699"
+                        android:textSize="@dimen/btnTextSize" >
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="8.5"
+                        android:gravity="center|left"
+                        android:text=":"
+                        android:textColor="#006699"
+                        android:textSize="@dimen/btnTextSize" >
+                    </TextView>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/mailtypeidn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1.5"
+                    android:gravity="center|left"
+                    android:text=""
+                    android:textColor="#006699"
+                    android:textSize="@dimen/btnTextSize" >
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/btnHSize"
+                android:layout_marginTop="@dimen/titlepadSize"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="2.7" >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1.5"
+                        android:gravity="center|left"
+                        android:text="@string/project"
+                        android:textColor="#006699"
+                        android:textSize="@dimen/btnTextSize">
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="8.5"
+                        android:gravity="center|left"
+                        android:text=":"
+                        android:textColor="#006699"
+                        android:textSize="@dimen/btnTextSize" >
+                    </TextView>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/send_action_mail"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1.5"
+                    android:gravity="center|left"
+                    android:text=""
+                    android:textColor="#006699"
+                    android:textSize="@dimen/btnTextSize" >
+                </TextView>
+            </LinearLayout>
+
+			<LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/btnHSize"
+                android:layout_marginTop="@dimen/titlepadSize"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="2.7" >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1.5"
+                        android:gravity="center|left"
+                        android:text="@string/reason"
+                        android:textColor="#006699"
+                        android:textSize="@dimen/btnTextSize" >
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="8.5"
+                        android:gravity="center|left"
+                        android:text=":"
+                        android:textColor="#006699"
+                        android:textSize="@dimen/btnTextSize" >
+                    </TextView>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/send_reson_mail"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1.5"
+                    android:gravity="center|left"
+                    android:text=""
+                    android:textColor="#006699"
+                    android:textSize="@dimen/btnTextSize" >
+                </TextView>
+            </LinearLayout>
+            
+			<LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/btnHSize"
+                android:layout_marginTop="@dimen/titlepadSize"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="2.7" >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1.5"
+                        android:gravity="center|left"
+                        android:text="@string/follow_action"
+                        android:textColor="#006699"
+                        android:textSize="@dimen/btnTextSize" >
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="8.5"
+                        android:gravity="center|left"
+                        android:text=":"
+                        android:textColor="#006699"
+                        android:textSize="@dimen/btnTextSize" >
+                    </TextView>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/send_followaction"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1.5"
+                    android:gravity="center|left"
+                    android:text=""
+                    android:textColor="#006699"
+                    android:textSize="@dimen/btnTextSize" >
+                </TextView>
+            </LinearLayout>
+			<LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/btnHSize"
+                android:layout_marginTop="@dimen/titlepadSize"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="2.7" >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1.5"
+                        android:gravity="center|left"
+                        android:text="@string/remark"
+                        android:textColor="#006699"
+                        android:textSize="@dimen/btnTextSize" >
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="8.5"
+                        android:gravity="center|left"
+                        android:text=":"
+                        android:textColor="#006699"
+                        android:textSize="@dimen/btnTextSize" >
+                    </TextView>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/send_remark"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1.5"
+                    android:gravity="center|left"
+                    android:text=""
+                    android:textColor="#006699"
+                    android:textSize="@dimen/btnTextSize" >
+                </TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/buttonlayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/imggapSize"
+                android:layout_marginBottom="@dimen/imggapSize"
+                android:gravity="center"
+                android:orientation="horizontal" >
+                <Button
+                    android:id="@+id/delmailn"
+             		android:layout_width="@dimen/btmWSize"
+                	android:layout_height="@dimen/btnHSize"
+                	android:background="@drawable/btndenglu"
+                    android:text="@string/delete"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+</LinearLayout>

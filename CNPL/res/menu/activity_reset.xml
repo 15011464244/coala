@@ -1,0 +1,4 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_reset" android:title="@string/menu_reset" android:orderInCategory="101"></item>
+        <item android:id="@+id/menu_out" android:title="@string/menu_out" android:orderInCategory="101"></item>
+</menu>

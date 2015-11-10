@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#323232"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:paddingLeft="10dp"
+        android:background="#F5F5F5"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" 投递总件数: "
+                android:textColor="#646464" />
+            <TextView
+                android:id="@+id/dlvcount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FEA500" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="     妥投件数: "
+                android:textColor="#646464" />
+
+            <TextView
+                android:id="@+id/ydlvcount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FEA500" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="未妥投件数: "
+                android:textColor="#646464" />
+
+            <TextView
+                android:id="@+id/ndlvcount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FEA500" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#eeeeee" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="235dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/banner" />
+	
+      <LinearLayout 
+          android:layout_height="fill_parent"
+          android:layout_width="fill_parent"
+          android:orientation="vertical"
+          android:background="@android:color/white"
+          >
+          <LinearLayout 
+              android:layout_height="0dp"
+              android:layout_width="fill_parent"
+              android:layout_weight="1"
+              android:orientation="horizontal"
+              >
+              <LinearLayout
+                  android:paddingTop="10dp"
+                  android:background="@drawable/bk_main"
+                  android:id="@+id/dataDownloadBtn"
+                  android:layout_height="fill_parent"
+                  android:layout_width="0dp"
+                  android:layout_weight="1"
+                  android:orientation="vertical"
+                  android:gravity="center_horizontal"
+                  android:clickable="true"
+                  >
+                  <ImageView 
+                      android:layout_height="0dp"
+                      android:layout_weight="3"
+                      android:layout_width="wrap_content"
+                      android:src="@drawable/index_new_peisong"
+                      android:scaleType="centerInside"
+                      />
+                  <TextView 
+                      android:layout_height="0dp"
+                      android:layout_weight="1"
+                      android:layout_width="wrap_content"
+                      android:text="配送单下载"
+                      android:textColor="#646464"
+                      android:layout_marginTop="10dp"
+                      />
+              </LinearLayout>
+              <View 
+                  android:layout_height="fill_parent"
+                  android:layout_width="1dp"
+                  android:background="#f2f2f2"
+                  />
+              <LinearLayout
+                  android:background="@drawable/bk_main"
+                  android:paddingTop="10dp"
+                  android:id="@+id/dlvdownload"
+                  android:layout_height="fill_parent"
+                  android:layout_width="0dp"
+                  android:layout_weight="1"
+                  android:orientation="vertical"
+                  android:gravity="center_horizontal"
+                  android:clickable="true"
+                  >
+                  <ImageView 
+                      android:layout_height="0dp"
+                      android:layout_weight="3"
+                      android:layout_width="wrap_content"
+                      android:src="@drawable/index_new_fandan"
+                      android:scaleType="centerInside"
+                      />
+                  <TextView 
+                      android:layout_height="0dp"
+                      android:layout_weight="1"
+                      android:layout_width="wrap_content"
+                      android:text="电子返单"
+                      android:textColor="#646464"
+                      android:layout_marginTop="10dp"
+                      />
+              </LinearLayout>
+          </LinearLayout>
+          <!--LineTwo -->
+          <View 
+              android:layout_height="1dp"
+              android:layout_width="fill_parent"
+              android:background="#f2f2f2"
+              />
+          <LinearLayout 
+              android:layout_height="0dp"
+              android:layout_width="fill_parent"
+              android:layout_weight="1"
+              android:orientation="horizontal"
+              >
+              <LinearLayout
+                  android:background="@drawable/bk_main"
+                  android:paddingTop="10dp"
+                  android:id="@+id/dlvbuttonok"
+                  android:layout_height="fill_parent"
+                  android:layout_width="0dp"
+                  android:layout_weight="1"
+                  android:orientation="vertical"
+                  android:gravity="center_horizontal"
+                  android:clickable="true"
+                  >
+                  <ImageView 
+                      android:layout_height="0dp"
+                      android:layout_weight="3"
+                      android:layout_width="wrap_content"
+                      android:src="@drawable/index_new_tuotou"
+                      android:scaleType="centerInside"
+                      />
+                  <TextView 
+                      android:layout_height="0dp"
+                      android:layout_weight="1"
+                      android:layout_width="wrap_content"
+                      android:text="妥投"
+                      android:textColor="#646464"
+                      android:layout_marginTop="10dp"
+                      />
+              </LinearLayout>
+              <View 
+                  android:layout_height="fill_parent"
+                  android:layout_width="1dp"
+                  android:background="#f2f2f2"
+                  />
+              <LinearLayout
+                  android:background="@drawable/bk_main"
+                  android:paddingTop="10dp"
+                  android:id="@+id/dlvbuttonn"
+                  android:layout_height="fill_parent"
+                  android:layout_width="0dp"
+                  android:layout_weight="1"
+                  android:orientation="vertical"
+                  android:gravity="center_horizontal"
+                  android:clickable="true"
+                  >
+                  <ImageView 
+                      android:layout_height="0dp"
+                      android:layout_weight="3"
+                      android:layout_width="wrap_content"
+                      android:src="@drawable/index_new_weituotou"
+                      android:scaleType="centerInside"
+                      />
+                  <TextView 
+                      android:layout_height="0dp"
+                      android:layout_weight="1"
+                      android:layout_width="wrap_content"
+                      android:text="未妥投"
+                      android:textColor="#646464"
+                      android:layout_marginTop="10dp"
+                      />
+              </LinearLayout>
+          </LinearLayout>
+      </LinearLayout>
+      <!-- 代码中需要用到下面对象，为了不更改代码暂时放置，无实际用途 -->
+      <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:orientation="horizontal" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:gravity="right|center_vertical"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:text="@string/upload"
+                                android:textColor="#129381"
+                                android:textSize="@dimen/btnTextSize" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center"
+                            android:text=":"
+                            android:textColor="#129381"
+                            android:textSize="@dimen/btnTextSize" />
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="2"
+                            android:gravity="left|center_vertical"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:id="@+id/dlvuploadText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:layout_marginLeft="2dp"
+                                android:text="0"
+                                android:textColor="#129381"
+                                android:textSize="@dimen/btnTextSize" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        android:orientation="horizontal" >
+					<LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:gravity="right|center_vertical"
+                            android:orientation="horizontal" >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center"
+                            android:layout_marginLeft="@dimen/titlepadSize"
+                            android:text="@string/no_upload"
+                            android:textColor="#129381"
+                            android:textSize="@dimen/btnTextSize" />
+					</LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center"
+                            android:text=":"
+                            android:textColor="#129381"
+                            android:textSize="@dimen/btnTextSize" />
+					<LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="2"
+                            android:gravity="left|center_vertical"
+                            android:orientation="horizontal" >
+                        
+                        <TextView
+                            android:id="@+id/dlvUnUploadText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center"
+                            android:layout_marginLeft="2dp"
+                            android:text="0"
+                            android:textColor="#129381"
+                            android:textSize="@dimen/btnTextSize" />
+                    </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:orientation="horizontal" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:gravity="right|center_vertical"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:text="@string/upload"
+                                android:textColor="#129381"
+                                android:textSize="@dimen/btnTextSize" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center"
+                            android:text=":"
+                            android:textColor="#129381"
+                            android:textSize="@dimen/btnTextSize" />
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="2"
+                            android:gravity="left|center_vertical"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:id="@+id/undlvuploadText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:layout_marginLeft="2dp"
+                                android:text="0"
+                                android:textColor="#129381"
+                                android:textSize="@dimen/btnTextSize" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/btnTextSize"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:orientation="horizontal" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:gravity="right|center_vertical"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:layout_marginLeft="@dimen/titlepadSize"
+                                android:text="@string/no_upload"
+                                android:textColor="#129381"
+                                android:textSize="@dimen/btnTextSize" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center"
+                            android:text=":"
+                            android:textColor="#129381"
+                            android:textSize="@dimen/btnTextSize" />
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="2"
+                            android:gravity="left|center_vertical"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:id="@+id/undlvUnUploadText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center"
+                                android:layout_marginLeft="2dp"
+                                android:text="0"
+                                android:textColor="#129381"
+                                android:textSize="@dimen/btnTextSize" />
+                        </LinearLayout>
+                    </LinearLayout>
+</LinearLayout>

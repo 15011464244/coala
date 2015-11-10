@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.koalademo"
+    android:versionCode="1"
+    android:versionName="1.0" xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="21" />
+
+    <!-- koalapush需要的权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- demo需要的权限 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+        <!-- 定时请求 重启个线程 -->
+    <application
+        android:name="com.example.koalademo.App"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher">
+        <!-- koalapush需要修改启动模式 -->
+        <activity android:name=".MainActivity" 
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        
+        <!-- koalapush需要注册的服务 -->
+        <service
+            android:name="com.arvin.koalapush.potter.PushService"
+            android:persistent="true"
+            android:priority="1000" >
+        </service>
+
+        <!-- koalapush需要注册的广播 -->
+        <receiver android:name="com.arvin.koalapush.api.NetworkManager" >
+            <intent-filter android:priority="2147483647" >
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.BATTERY_CHANGED" />
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
+         <!-- 定时请求 重启个线程 -->
+  		<receiver android:name="com.arvin.koalapush.receiver.PushAlarmReceiver">
+  		    <intent-filter android:priority="2147483646">
+  		        <action android:name="com.amaker.ch08.app.action.BC_ACTION"/>
+  		    </intent-filter>
+  		</receiver>
+		<!-- koalapush需要的APPKEY -->
+        <meta-data
+            android:name="app_key"
+            android:value="5d8a5c0854fa3a1a8c49512c008bf99d" />
+    </application>
+
+</manifest>

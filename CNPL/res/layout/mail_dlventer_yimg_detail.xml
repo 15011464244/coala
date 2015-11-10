@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/titleSize"
+       	android:layout_marginTop="@dimen/connect_info_youjianjieru5_top"
+        android:orientation="horizontal"
+         >
+
+        <TextView
+            android:layout_width="@dimen/titleImgSize"
+            android:layout_height="@dimen/titleSize"
+            android:background="@drawable/toptext"
+            android:layout_marginRight="@dimen/titlepadSize"
+            android:gravity="center"
+            android:text="@string/mail_detail"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/btnTextSize" />
+        
+         <LinearLayout
+        	android:layout_width="fill_parent"
+        	android:layout_height="@dimen/titleSize"
+        	android:orientation="vertical"
+        	android:background="@drawable/topright" >
+        	<Button
+                    android:id="@+id/btncode"
+                    android:layout_width="@dimen/erweimasize"
+                    android:layout_gravity="right"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/btndenglu"
+                    android:text="@string/code"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/erweimatextsize" />
+        </LinearLayout>
+    </LinearLayout>
+    
+        <!--
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/topline" >
+    </LinearLayout>
+    -->
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/imgpadSize"
+        android:layout_marginRight="@dimen/imgpadSize"
+        android:layout_marginTop="@dimen/imggapSize"
+        android:background="@drawable/inputtxt1"
+        android:layout_gravity="center|top"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/imgpadSize"
+        android:paddingRight="@dimen/imgpadSize" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/btnHSize"
+            android:layout_marginTop="@dimen/imgpadSize"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:gravity="center|left"
+                    android:text="@string/mail_no"
+                    android:textColor="#006699"
+                    android:textSize="@dimen/btnTextSize" >
+                </TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:gravity="center|left"
+                    android:text=":"
+                    android:textColor="#006699"
+                    android:textSize="@dimen/btnTextSize" >
+                </TextView>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/send_name_mail"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="3dp"
+                android:gravity="center|left"
+                android:text=""
+                android:textColor="#006699"
+                android:textSize="@dimen/btnTextSize" >
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/btnHSize"
+            android:layout_marginTop="@dimen/titlepadSize"
+            android:visibility="gone"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="2.7" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:text="@string/mail_type"
+                    android:textColor="#006699"
+                    android:textSize="@dimen/btnTextSize" >
+                </TextView>
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="9"
+                    android:gravity="center|left"
+                    android:text=":"
+                    android:textSize="@dimen/btnTextSize"
+                    android:textColor="#006699" >
+                </TextView>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/mailtypeid"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="3dp"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:text=""
+                android:textColor="#006699"
+                android:textSize="@dimen/btnTextSize" >
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/btnHSize"
+            android:layout_marginTop="@dimen/titlepadSize"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:gravity="center|left"
+                    android:text="@string/update_time"
+                    android:textColor="#006699"
+                    android:textSize="@dimen/btnTextSize" >
+                </TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:gravity="center|left"
+                    android:text=":"
+                    android:textColor="#006699"
+                    android:textSize="@dimen/btnTextSize" >
+                </TextView>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/dtname"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="3dp"
+                android:gravity="center|left"
+                android:text=""
+                android:textColor="#006699"
+                android:textSize="@dimen/btnTextSize" >
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/btnHSize"
+            android:layout_marginTop="@dimen/titlepadSize"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:gravity="center|left"
+                    android:text="@string/sign_image"
+                    android:textColor="#006699"
+                    android:textSize="@dimen/btnTextSize" >
+                </TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:gravity="center|left"
+                    android:text=":"
+                    android:textSize="@dimen/btnTextSize"
+                    android:textColor="#006699" >
+                </TextView>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="3dp"
+                android:gravity="center|left"
+                android:text=""
+                android:textSize="@dimen/btnTextSize"
+                android:textColor="#006699">
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buttonlayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/imggapSize"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/dtimageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@android:drawable/alert_dark_frame" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
+</LinearLayout>

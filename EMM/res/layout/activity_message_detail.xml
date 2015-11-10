@@ -1,0 +1,57 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff"
+    tools:context="${relativePackage}.${activityClass}" >
+    
+    <include layout="@layout/title_layout"/>
+    <LinearLayout 
+        android:layout_height="80dp"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:background="#eee"
+        android:gravity="center_vertical">
+        <ImageView 
+            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="30sp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/img_message"/>
+        <TextView 
+	        android:id="@+id/tv_message_title"
+	        android:layout_height="wrap_content"
+	        android:layout_width="wrap_content"
+	        android:text="重要通知"
+	        android:textColor="#333"
+	        android:gravity="center_vertical"
+	        android:textSize="20sp"/>
+        
+    </LinearLayout>
+    
+    <TextView 
+        android:id="@+id/tv_message_content"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:background="#fff"
+        android:layout_margin="20dp"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
+        android:textColor="#666"
+        android:lineSpacingExtra="8dp"
+        android:textScaleX="1.2"
+        android:text="        斯蒂芬的房间里可根据垃圾分类的卡视角分开都是垃圾饭卡第三届菲拉斯戴假发拉德斯基法拉第四节菲拉斯大家发垃圾菲拉斯"/>
+    <TextView 
+        android:id="@+id/tv_receive_time"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:background="#fff"
+        android:layout_marginRight="40dp"
+        android:gravity="center_vertical|right"
+        android:textSize="16sp"
+        android:textColor="#666"
+        android:lineSpacingExtra="8dp"
+        android:text="2015-8-8\n10:45"/>
+
+</LinearLayout>

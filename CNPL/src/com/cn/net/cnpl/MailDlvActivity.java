@@ -1,0 +1,569 @@
+package com.cn.net.cnpl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.telephony.TelephonyManager;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.cn.net.cnpl.db.DaoFactory;
+import com.cn.net.cnpl.db.dao.DlvStateDao;
+import com.cn.net.cnpl.db.dao.FollowActionDao;
+import com.cn.net.cnpl.db.dao.MailDao;
+import com.cn.net.cnpl.db.dao.ProjReasonDao;
+import com.cn.net.cnpl.db.dao.ResOrgDao;
+import com.cn.net.cnpl.db.dao.StateFollowDao;
+import com.cn.net.cnpl.model.Head;
+import com.cn.net.cnpl.model.User;
+import com.cn.net.cnpl.tools.BaseActivity;
+import com.cn.net.cnpl.tools.MyCode;
+import com.cn.net.cnpl.tools.MyDialog;
+import com.cn.net.cnpl.tools.NetHelper;
+
+public class MailDlvActivity extends BaseActivity {
+	
+//	private Button codeButton = null;
+	private TextView downBaseDatas = null;
+	private LinearLayout dataDownloadBtn = null;
+	private ProgressDialog myDialog = null;
+	private LinearLayout dlvButtonOk = null;
+	private LinearLayout dlvButtonN = null;
+	private LinearLayout dlvDownload = null;
+//	private Button cleandata = null;
+	// title
+	private TextView text = null;
+	public final static int CLOSE_DIA = 0;
+
+	ResOrgDao resOrgDao = null;
+
+	/**
+	 * 上传和未上传数量
+	 */
+	private TextView dlvuploadText = null;
+	private TextView dlvUnUploadText = null;
+	private TextView undlvuploadText = null;
+	private TextView undlvUnUploadText = null;
+
+	private TextView dlvcount = null;
+	private TextView ydlvcount = null;
+	private TextView ndlvcount = null;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		setContentView(R.layout.mail_dlv_new);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.top_bg_new);
+		
+		resOrgDao = DaoFactory.getInstance().getResOrgDao(MailDlvActivity.this);
+		//标题栏基础数据下载按钮
+		downBaseDatas = (TextView) findViewById(R.id.basedata);
+		downBaseDatas.setVisibility(View.VISIBLE);
+		downBaseDatas.setOnClickListener(onClickListener);
+		
+		
+		dlvButtonOk = (LinearLayout) findViewById(R.id.dlvbuttonok);
+		dlvButtonOk.setOnClickListener(onClickListener);
+		dlvButtonN = (LinearLayout) findViewById(R.id.dlvbuttonn);
+		dlvButtonN.setOnClickListener(onClickListener);
+		dlvDownload = (LinearLayout) findViewById(R.id.dlvdownload);
+		dlvDownload.setOnClickListener(onClickListener);
+		dataDownloadBtn = (LinearLayout) findViewById(R.id.dataDownloadBtn);
+		dataDownloadBtn.setOnClickListener(onClickListener);
+
+		
+		
+		dlvuploadText = (TextView) findViewById(R.id.dlvuploadText);
+		dlvUnUploadText = (TextView) findViewById(R.id.dlvUnUploadText);
+		undlvuploadText = (TextView) findViewById(R.id.undlvuploadText);
+		undlvUnUploadText = (TextView) findViewById(R.id.undlvUnUploadText);
+
+		dlvcount = (TextView) findViewById(R.id.dlvcount);
+		ydlvcount = (TextView) findViewById(R.id.ydlvcount);
+		ndlvcount = (TextView) findViewById(R.id.ndlvcount);
+
+		//自动数据上传服务
+		Intent serviceIntent = new Intent(this.getApplicationContext(),
+				DlvUploadService.class);
+		startService(serviceIntent);
+		// 数据上传 电子返单
+				Intent serviceIntent2 = new Intent(this.getApplicationContext(),
+				MailImgUploadService.class);
+				startService(serviceIntent2);
+		//数据删除
+		MailDao dao = DaoFactory.getInstance().getMailDao(this);
+		//15天以上自动清空
+		dao.deleteDisableMail(15);
+		//根据登录界面跳转数据判断是否自动同步数据
+		if("1".equals(getIntent().getExtras().get("tbtong")))
+//			download();
+			mydownload();
+	}
+	//-------------------
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// 如果是返回键,直接返回到桌面
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			MyDialog.Builder builder = new MyDialog.Builder(this);
+			builder.setTitle("提 示:");
+			builder.setMessage("是否确认退出？");
+			builder.setPositiveButton("", CancelListener());
+			builder.setNegativeButton("", null);
+			builder.create().show();
+		}
+
+		return super.onKeyDown(keyCode, event);
+	}
+
+	protected DialogInterface.OnClickListener CancelListener() {
+		return new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.dismiss();
+				Global.exit();
+
+			}
+		};
+	}
+	//-------------------
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+	}
+
+	@Override
+	protected void onResume() {
+		initData();
+		super.onResume();
+	}
+	
+	
+
+	/**
+	 * 初始化数据
+	 */
+	public void initData() {
+		new AsyncTask<Object, Void, List<Map<String, String>>>() {
+
+			@Override
+			protected List<Map<String, String>> doInBackground(Object... params) {
+
+				List<Map<String, String>> dataList = null;
+				try {
+					MailDao dao = DaoFactory.getInstance().getMailDao(
+							MailDlvActivity.this);
+					dataList = dao.FindMailUploadCountByUserCode(
+							getlogName(), null);
+				} catch (Exception e) {
+					dataList = null;
+				}
+
+				return dataList;
+			}
+
+			@Override
+			protected void onPostExecute(List<Map<String, String>> dataList) {
+//				myDialog.dismiss();
+				// 初始化成0
+				dlvuploadText.setText("0");
+				dlvUnUploadText.setText("0");
+				undlvuploadText.setText("0");
+				undlvUnUploadText.setText("0");
+				if (dataList != null && dataList.size() > 0) {
+					for (Map<String, String> map : dataList) {
+						String cunt = map.get("num");
+						if ("I".equals(map.get("dlvStsCode"))) {
+							if (Global.UPLOAD.equals(map.get("IS_UPLOAD"))) {
+								dlvuploadText.setText(cunt);
+							}
+							if (Global.UNUPLOAD.equals(map.get("IS_UPLOAD"))) {
+								dlvUnUploadText.setText(cunt);
+							}
+						}
+						if ("H".equals(map.get("dlvStsCode"))) {
+							if (Global.UPLOAD.equals(map.get("IS_UPLOAD"))) {
+								undlvuploadText.setText(cunt);
+							}
+							if (Global.UNUPLOAD.equals(map.get("IS_UPLOAD"))) {
+								undlvUnUploadText.setText(cunt);
+							}
+						}
+					}
+				}
+				dlvcount.setText(String.valueOf(Integer.valueOf(dlvuploadText.getText()
+						.toString())
+						+ Integer.valueOf(dlvUnUploadText.getText().toString())
+						+ Integer.valueOf(undlvuploadText.getText().toString())
+						+ Integer.valueOf(undlvUnUploadText.getText()
+								.toString())));
+				ydlvcount
+						.setText(String.valueOf(Integer.valueOf(dlvuploadText.getText()
+								.toString())
+								+ Integer.valueOf(dlvUnUploadText.getText()
+										.toString())));
+				ndlvcount.setText(String.valueOf(Integer.valueOf(undlvuploadText.getText()
+						.toString())
+						+ Integer.valueOf(undlvUnUploadText.getText()
+								.toString())));
+
+				super.onPostExecute(dataList);
+			}
+
+			@Override
+			protected void onPreExecute() {
+//				myDialog = ProgressDialog.show(MailDlvActivity.this,  Global.DIALOG_NAME,
+//						getString(R.string.loading), true, true);
+				super.onPreExecute();
+			}
+		}.execute();
+	}
+
+	private OnClickListener onClickListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent();
+			switch (v.getId()) {
+			case R.id.dlvbuttonok://妥投
+//				if (resOrgDao.tabDataIsExist()) {
+					intent.setClass(MailDlvActivity.this,
+							MailDlvyActivity.class);
+					startActivity(intent);
+//				} else {
+//					Toast.makeText(MailDlvActivity.this,
+//							getString(R.string.xiazai_tishi), 1000).show();
+//				}
+
+				break;
+			case R.id.dlvbuttonn://未妥投
+				//if (resOrgDao.tabDataIsExist()) {
+					intent.setClass(MailDlvActivity.this,
+							MailDlvNActivity.class);
+					startActivity(intent);
+				/*} else {
+
+					Toast.makeText(MailDlvActivity.this,
+							getString(R.string.xiazai_tishi), 1000).show();
+				}*/
+				break;
+			case R.id.dlvdownload://电子返单
+				intent.setClass(MailDlvActivity.this,
+						MailDlvdianzifandanY.class);
+				startActivity(intent);
+				break;
+			case R.id.dataDownloadBtn://配送单下载
+				intent.setClass(MailDlvActivity.this, MailDlvDataDownloadActivity.class);
+				startActivity(intent);
+				break;
+			case R.id.basedata:
+				download();
+				break;
+			}
+		}
+
+	};
+	private void mydownload(){
+		try{
+		JSONObject json = new JSONObject();
+		JSONArray jsonArray1 = new JSONArray();
+		JSONObject data = new JSONObject();
+		data.put("projId", 3);
+		data.put("projCd", "3");
+		data.put("projName", "大件产品");
+		data.put("feedBackType", 1);
+		data.put("excpReasons", new JSONArray());
+		jsonArray1.put(data);
+		json.put("success", true);
+		json.put("data", jsonArray1);
+		Log.i("tgxx", json.toString()+"");
+		if (json != null) {
+			if(json.getBoolean("success")){// 成功
+				ProjReasonDao dao=DaoFactory.getInstance().getProjReasonDao(MailDlvActivity.this);
+				dao.deletePro();
+				JSONArray jsonArray= json.getJSONArray("data");
+				for(int i=0;i<jsonArray.length();i++){
+					if("1".equals(jsonArray.getJSONObject(i).getString("feedBackType"))){
+						JSONArray	excpReasons =jsonArray.getJSONObject(i).getJSONArray("excpReasons");
+						for(int j=0;j<excpReasons.length();j++){
+							JSONObject	reasons =excpReasons.getJSONObject(j);
+							reasons.put("feedBackType", jsonArray.getJSONObject(i).getString("feedBackType"));
+							reasons.put("projId", jsonArray.getJSONObject(i).getString("projId"));
+							reasons.put("projName", jsonArray.getJSONObject(i).getString("projName"));
+							reasons.put("projCd", jsonArray.getJSONObject(i).getString("projCd"));
+							reasons.put("cd", excpReasons.getJSONObject(j).getString("cd"));
+							reasons.put("desc", excpReasons.getJSONObject(j).getString("desc"));
+							dao.SaveReason(reasons);
+						}
+						if(excpReasons.length()==0){
+							JSONObject	reasons =new JSONObject();
+							reasons.put("feedBackType", jsonArray.getJSONObject(i).getString("feedBackType"));
+							reasons.put("projId", jsonArray.getJSONObject(i).getString("projId"));
+							reasons.put("projName", jsonArray.getJSONObject(i).getString("projName"));
+							reasons.put("projCd", jsonArray.getJSONObject(i).getString("projCd"));
+							reasons.put("cd", "");
+							reasons.put("desc", "");
+							dao.SaveReason(reasons);
+						}
+					}else{
+						JSONArray	excpReasons =jsonArray.getJSONObject(i).getJSONArray("excpReasons");
+						for(int j=0;j<excpReasons.length();j++){
+							JSONObject	reasons =excpReasons.getJSONObject(j);
+							reasons.put("feedBackType", jsonArray.getJSONObject(i).getString("feedBackType"));
+							reasons.put("projId", jsonArray.getJSONObject(i).getString("projId"));
+							reasons.put("projName", jsonArray.getJSONObject(i).getString("projName"));
+							reasons.put("projCd", jsonArray.getJSONObject(i).getString("projCd"));
+							dao.SaveReason(reasons);
+						}
+					}
+				}
+					Toast.makeText(MailDlvActivity.this, getString(R.string.download_ok),
+						Toast.LENGTH_LONG).show();
+			}else{
+				Toast.makeText(MailDlvActivity.this, getString(R.string.download_fail),
+						Toast.LENGTH_LONG).show();
+			}
+		}
+		}catch (Exception e){
+			
+		}
+	}
+	//------------------------
+	private void download() {
+		final User user= User.FindUser(this.getApplicationContext());
+		new AsyncTask<Object, Void, JSONObject>() {
+			@Override
+			protected JSONObject doInBackground(Object... params) {
+				try {
+				NetHelper client = new NetHelper();
+				String url = Global.BASE_URL
+						+ Global.GETPROJREASONCDINFOSBYID;
+				client.Create(url);
+				JSONObject jsonObject=new JSONObject();
+			
+				jsonObject.put("key", user.getKey());
+				jsonObject.put("userCode", user.getLoginName());
+				JSONObject resultJsonObject = client.executeCnpl(jsonObject);
+				return resultJsonObject;
+				} catch (Exception e) {
+					return null ;
+				}
+			}
+
+			@Override
+			protected void onPostExecute(JSONObject json) {
+				if (myDialog.isShowing()) {
+					myDialog.dismiss();
+				}
+				try {
+					if (json != null) {
+						if(json.getBoolean("success")){// 成功
+							ProjReasonDao dao=DaoFactory.getInstance().getProjReasonDao(MailDlvActivity.this);
+							dao.deletePro();
+							JSONArray jsonArray= json.getJSONArray("data");
+							for(int i=0;i<jsonArray.length();i++){
+								if("1".equals(jsonArray.getJSONObject(i).getString("feedBackType"))){
+									JSONArray	excpReasons =jsonArray.getJSONObject(i).getJSONArray("excpReasons");
+									for(int j=0;j<excpReasons.length();j++){
+										JSONObject	reasons =excpReasons.getJSONObject(j);
+										reasons.put("feedBackType", jsonArray.getJSONObject(i).getString("feedBackType"));
+										reasons.put("projId", jsonArray.getJSONObject(i).getString("projId"));
+										reasons.put("projName", jsonArray.getJSONObject(i).getString("projName"));
+										reasons.put("projCd", jsonArray.getJSONObject(i).getString("projCd"));
+										reasons.put("cd", excpReasons.getJSONObject(j).getString("cd"));
+										reasons.put("desc", excpReasons.getJSONObject(j).getString("desc"));
+										dao.SaveReason(reasons);
+									}
+									if(excpReasons.length()==0){
+										JSONObject	reasons =new JSONObject();
+										reasons.put("feedBackType", jsonArray.getJSONObject(i).getString("feedBackType"));
+										reasons.put("projId", jsonArray.getJSONObject(i).getString("projId"));
+										reasons.put("projName", jsonArray.getJSONObject(i).getString("projName"));
+										reasons.put("projCd", jsonArray.getJSONObject(i).getString("projCd"));
+										reasons.put("cd", "");
+										reasons.put("desc", "");
+										dao.SaveReason(reasons);
+									}
+								}else{
+									JSONArray	excpReasons =jsonArray.getJSONObject(i).getJSONArray("excpReasons");
+									for(int j=0;j<excpReasons.length();j++){
+										JSONObject	reasons =excpReasons.getJSONObject(j);
+										reasons.put("feedBackType", jsonArray.getJSONObject(i).getString("feedBackType"));
+										reasons.put("projId", jsonArray.getJSONObject(i).getString("projId"));
+										reasons.put("projName", jsonArray.getJSONObject(i).getString("projName"));
+										reasons.put("projCd", jsonArray.getJSONObject(i).getString("projCd"));
+										dao.SaveReason(reasons);
+									}
+								}
+							}
+								Toast.makeText(MailDlvActivity.this, getString(R.string.download_ok),
+									Toast.LENGTH_LONG).show();
+						}else{
+							Toast.makeText(MailDlvActivity.this, getString(R.string.download_fail),
+									Toast.LENGTH_LONG).show();
+						}
+					} else {
+						Toast.makeText(MailDlvActivity.this, getString(R.string.download_fail),
+								Toast.LENGTH_LONG).show();
+					}
+				} catch (Exception e) {
+					Toast.makeText(MailDlvActivity.this, getString(R.string.download_fail),
+							Toast.LENGTH_LONG).show();
+				}
+				super.onPostExecute(json);
+			}
+
+			@Override
+			protected void onPreExecute() {
+				if (myDialog != null && myDialog.isShowing()) {
+					myDialog.dismiss();
+				}
+				myDialog = new ProgressDialog(MailDlvActivity.this, 0);
+				super.onPreExecute();
+			}
+		}.execute();
+	}
+	
+	//------------------------
+	public void deleteData() {
+		new AsyncTask<Object, Void, Head>() {
+
+			@Override
+			protected Head doInBackground(Object... params) {
+
+				Head head = new Head();
+				try {
+					MailDao dao = DaoFactory.getInstance().getMailDao(
+							MailDlvActivity.this);
+					dao.deleteDisableMail(5);
+				} catch (Exception e) {
+					head.setRet("1");
+					head.setErrorMsg(e.getMessage());
+				}
+
+				return head;
+			}
+
+			@Override
+			protected void onPostExecute(Head head) {
+				myDialog.dismiss();
+
+				if ("1".equals(head.getRet())) {
+					Toast.makeText(MailDlvActivity.this,
+							getString(R.string.qingchu_defeat),
+							Toast.LENGTH_LONG).show();
+				} else {
+					Toast.makeText(MailDlvActivity.this,
+							getString(R.string.qingchu_ok), Toast.LENGTH_LONG)
+							.show();
+				}
+				super.onPostExecute(head);
+			}
+
+			@Override
+			protected void onPreExecute() {
+				myDialog = ProgressDialog.show(MailDlvActivity.this, Global.DIALOG_NAME,
+						getString(R.string.loading), true, true);
+				super.onPreExecute();
+			}
+		}.execute();
+	}
+
+	/**
+	 * 数据下载
+	 * 
+	 * @throws JSONException
+	 */
+
+	public void dataDownload() {
+		new AsyncTask<Object, Void, Head>() {
+
+			@Override
+			protected Head doInBackground(Object... params) {
+
+				Head head = new Head();
+				try {
+					String imei = ((TelephonyManager) getSystemService(TELEPHONY_SERVICE))
+							.getDeviceId();//获取手机设备号
+					String org_code =getorgCode();
+					NetHelper helper = new NetHelper();
+					String paramsStr = "";
+					JSONObject obj = new JSONObject();
+					obj.put("id", "2");
+					obj.put("deviceNumber", imei);
+					obj.put("orgCode", org_code);
+					obj.put("updateTime", "20110101010101");
+
+					
+					// 下载代码信息
+					obj.put("underlyingDataCode", "2");
+					paramsStr = "header=" + obj.toString();
+					List<JSONObject> dataList = helper.exeRequest(paramsStr,
+							Global.BASE_URL + Global.DATA_DOWNLOAD);
+					DlvStateDao dlvStateDao = DaoFactory.getInstance()
+							.getDlvStateDao(MailDlvActivity.this);
+					dlvStateDao.SaveDlvState(dataList);
+					
+					obj.put("underlyingDataCode", "3");
+					paramsStr = "header=" + obj.toString();
+					List<JSONObject> dataList3 = helper.exeRequest(paramsStr,
+							Global.BASE_URL + Global.DATA_DOWNLOAD);
+					FollowActionDao actionDao = DaoFactory.getInstance()
+							.getFollowActionDao(MailDlvActivity.this);
+					actionDao.SaveFollowAction(dataList3);
+					
+					obj.put("underlyingDataCode", "4");
+					paramsStr = "header=" + obj.toString();
+					List<JSONObject> dataList4 = helper.exeRequest(paramsStr,
+							Global.BASE_URL + Global.DATA_DOWNLOAD);
+					StateFollowDao dao = DaoFactory.getInstance()
+							.getStateFollowDao(MailDlvActivity.this);
+					dao.SaveStateFollow(dataList4);
+					
+				} catch (Exception e) {
+					head.setRet("1");
+				}
+
+				return head;
+			}
+
+			@Override
+			protected void onPostExecute(Head head) {
+				if(myDialog.isShowing())
+				myDialog.dismiss();
+
+				if ("1".equals(head.getRet())) {
+					Toast.makeText(MailDlvActivity.this,
+							getString(R.string.getdata_defeat),
+							Toast.LENGTH_LONG).show();
+				} else {
+					Toast.makeText(MailDlvActivity.this,
+							getString(R.string.getdata_ok), Toast.LENGTH_LONG)
+							.show();
+				}
+				super.onPostExecute(head);
+			}
+
+			@Override
+			protected void onPreExecute() {
+				super.onPreExecute();
+			}
+		}.execute();
+	}
+
+}

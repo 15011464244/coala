@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/titleSize"
+       	android:layout_marginTop="@dimen/connect_info_youjianjieru5_top"
+        android:orientation="horizontal"
+         >
+
+        <TextView
+            android:layout_width="@dimen/titleImgSize"
+            android:layout_height="@dimen/titleSize"
+            android:background="@drawable/toptext"
+            android:layout_marginRight="@dimen/titlepadSize"
+            android:gravity="center"
+            android:text="@string/deliver_add_dianzifandan"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/btnTextSize" />
+        
+         <LinearLayout
+        	android:layout_width="fill_parent"
+        	android:layout_height="@dimen/titleSize"
+        	android:orientation="vertical"
+        	android:background="@drawable/topright" >
+        	<Button
+                    android:id="@+id/btncode"
+                    android:visibility="gone"
+                    android:layout_width="@dimen/erweimasize"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/btndenglu"
+                    android:text="@string/code"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/erweimatextsize" />
+        </LinearLayout>
+    </LinearLayout>
+    
+<!--
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/topline" >
+    </LinearLayout>-->
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_horizontal" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="@dimen/titlepadSize"
+            android:layout_marginLeft="@dimen/titlepadSize"
+            android:layout_marginRight="@dimen/titlepadSize"
+            android:layout_marginBottom="@dimen/imggapSize"
+            android:background="@drawable/tuotou1"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/btnHSize"
+                android:layout_marginBottom="@dimen/imggapSize"
+                android:layout_marginRight="@dimen/imggapSize"
+                android:layout_marginTop="@dimen/imgpadSize"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:id="@+id/ndlvEnid"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/btnHSize"
+                    android:layout_weight="5"
+                    android:gravity="left|center_vertical"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:text="@string/mail_no"
+                        android:textSize="@dimen/btnTextSize"
+                        android:textColor="#129381" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.5"
+                    android:orientation="horizontal" >
+
+                    <EditText
+                        android:id="@+id/dlvmailidserch_dianzifandan"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:background="@drawable/input2"
+                          android:inputType="textCapCharacters"
+                        android:focusable="true"
+                        android:capitalize="characters"
+                        android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                        android:hint="@string/scan_hint"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:textSize="@dimen/btnTextSize"
+                        android:singleLine="true" >
+
+                        <requestFocus />
+                    </EditText>
+
+                    <Button
+                        android:id="@+id/dlvcamera_dianzifandan"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:background="@drawable/btndenglu"
+                        android:text="@string/scan"
+                        android:textColor="#ffffff"
+                        android:textSize="@dimen/btnTextSize"
+                          />
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/imggapSize"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/btnHSize"
+                    android:layout_marginBottom="@dimen/imgpadSize"
+                    android:layout_weight="5"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/sign_image"
+                        android:textSize="@dimen/btnTextSize"
+                        android:textColor="#129381" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/btnimgYSize"
+                    android:layout_weight="1.5"
+                    android:orientation="horizontal" >
+
+                    <Button
+                        android:id="@+id/imgbutton_dianzifandan"
+                        android:layout_width="@dimen/btnimgYSize"
+                        android:layout_height="fill_parent"
+                        android:background="@drawable/tuotou4"
+                        android:text="@string/photo"
+                        android:gravity="bottom|center_horizontal"
+                    	android:paddingBottom="5dp"
+                    	android:textSize="@dimen/btnTextSize"
+                        android:textColor="#ffffff" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/imgpadSize"
+                android:layout_marginRight="@dimen/imgpadSize"
+                android:layout_marginTop="@dimen/imggapSize"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/imageViewcamera_dianzifandan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/alert_dark_frame" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/imggapSize"
+                android:layout_marginTop="@dimen/imggapSize"
+                android:gravity="center_horizontal" >
+
+                <Button
+                    android:id="@+id/dlvEnsave_dianzifandan"
+                    android:layout_width="@dimen/btmWSize"
+                    android:layout_height="@dimen/btnHSize"
+                    android:layout_marginBottom="@dimen/imggapSize"
+                    android:layout_marginLeft="@dimen/imgpadSize"
+                    android:background="@drawable/btndenglu"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/btnTextSize"
+                    android:text="@string/upload" />
+            </LinearLayout>
+        </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

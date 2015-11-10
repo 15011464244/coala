@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Wed Jun 10 10:06:06 CST 2015
+onejar.license.required=false
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=C\:\\Users\\Administrator\\Desktop\\KoalaPush_v1.5_218.16.jar
+manifest.mergeall=true
+manifest.mainclass=
+manifest.file=<createnew>
+jarname.isextern=true
+onejar.expand=
+excludes=<po|KoalaPush>~com/~arvin/~koalapush/~App.class;<po|KoalaPush>~com/~arvin/~koalapush/~BuildConfig.class;<po|KoalaPush>~com/~arvin/~koalapush/~R$attr.class;<po|KoalaPush>~com/~arvin/~koalapush/~R$dimen.class;<po|KoalaPush>~com/~arvin/~koalapush/~R$drawable.class;<po|KoalaPush>~com/~arvin/~koalapush/~R$id.class;<po|KoalaPush>~com/~arvin/~koalapush/~R$layout.class;<po|KoalaPush>~com/~arvin/~koalapush/~R$string.class;<po|KoalaPush>~com/~arvin/~koalapush/~R$style.class;<po|KoalaPush>~com/~arvin/~koalapush/~R.class
+includes=

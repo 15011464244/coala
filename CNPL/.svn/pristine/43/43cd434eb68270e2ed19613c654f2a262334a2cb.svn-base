@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/titleSize"
+       	android:layout_marginTop="@dimen/connect_info_youjianjieru5_top"
+        android:orientation="horizontal"
+         >
+
+        <TextView
+            android:layout_width="@dimen/titleImgSize"
+            android:layout_height="@dimen/titleSize"
+            android:background="@drawable/toptext"
+            android:layout_marginRight="@dimen/titlepadSize"
+            android:gravity="center"
+            android:text="@string/deliver_add"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/btnTextSize" />
+        
+         <LinearLayout
+        	android:layout_width="fill_parent"
+        	android:layout_height="@dimen/titleSize"
+        	android:orientation="vertical"
+        	android:background="@drawable/topright" >
+        	<Button
+                    android:id="@+id/btncode"
+                    android:layout_width="@dimen/erweimasize"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/btndenglu"
+                    android:text="@string/code"
+                    android:visibility="gone"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/erweimatextsize" />
+        </LinearLayout>
+    </LinearLayout>
+    
+<!--
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/topline" >
+    </LinearLayout>
+-->
+    <com.cn.net.cnpl.tools.MyScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_horizontal" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+<LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/imggapSize"
+            android:layout_marginTop="@dimen/titlepadSize"
+            android:layout_marginLeft="@dimen/titlepadSize"
+            android:layout_marginRight="@dimen/titlepadSize"
+            android:background="@drawable/tuotou1"
+            android:orientation="vertical" >
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/btnHSize"
+                android:layout_marginBottom="@dimen/imggapSize"
+                android:layout_marginTop="@dimen/imgpadSize"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:id="@+id/ndlvEnid"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/btnHSize"
+                    android:layout_weight="5"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="left|center"
+                        android:layout_gravity="left|center"
+                        android:text="@string/mail_no"
+                        android:textSize="@dimen/btnTextSize"
+                        android:textColor="#129381" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.5"
+                    android:orientation="horizontal" >
+
+                    <EditText
+                        android:id="@+id/dlvmailidserch"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:background="@drawable/input2"
+                        android:capitalize="characters"
+                        android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-_"
+                        android:focusable="true"
+                        android:hint="@string/scan_hint"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:textSize="@dimen/btnTextSize"
+                        android:singleLine="true" >
+
+                        <requestFocus />
+                    </EditText>
+
+                    <Button
+                        android:id="@+id/dlvcamera"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:background="@drawable/btndenglu"
+                        android:text="@string/scan"
+                        android:textColor="#ffffff"
+                        android:textSize="@dimen/btnTextSize" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="5"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:gravity="left|center"
+                        android:text="@string/mail_type"
+                        android:textSize="@dimen/btnTextSize"
+                        android:textColor="#129381" />
+                </LinearLayout>
+
+                <RadioGroup
+                    android:id="@+id/radioGrouplei"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.5"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
+
+                    <RadioButton
+                        android:id="@+id/radioin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:checked="true"
+                        android:drawableLeft="@drawable/checkboxstyte"
+                        android:paddingLeft="5dp"
+                        android:text="@string/internal"
+                        android:textColor="#129381"
+                        android:textSize="@dimen/btnTextSize" />
+
+                    <RadioButton
+                        android:id="@+id/radioout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:drawableLeft="@drawable/checkboxstyte"
+                        android:text="@string/international"
+                        android:textColor="#129381"
+                        android:textSize="@dimen/btnTextSize" />
+
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/btnHSize"
+                android:layout_marginTop="@dimen/imggapSize"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="5"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:gravity="left|center"
+                        android:text="@string/receive_type"
+                        android:textSize="@dimen/btnTextSize"
+                        android:textColor="#129381" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.5"
+                    android:background="@drawable/input2"
+                    android:orientation="horizontal" >
+
+                    <Spinner
+                        android:id="@+id/arrType"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:background="@null"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:popupBackground="@drawable/divbg" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/btnHSize"
+                android:layout_marginTop="@dimen/imggapSize"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="5"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="2.5"
+                        android:gravity="left|center"
+                        android:text="@string/reveive_name"
+                        android:textSize="@dimen/btnTextSize"
+                        android:textColor="#129381" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.5"
+                    android:background="@drawable/input2"
+                    android:orientation="horizontal" >
+
+                    <EditText
+                        android:id="@+id/dlventername"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:background="@drawable/input2"
+                        android:hint="@string/revname_hint"
+                        android:textSize="@dimen/btnTextSize"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp" >
+                    </EditText>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/imggapSize"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="5"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="2.5"
+                        android:gravity="left|center"
+                        android:text="@string/fee_type"
+                        android:textSize="@dimen/btnTextSize"
+                        android:textColor="#129381" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:orientation="horizontal" >
+
+                    <CheckBox
+                        android:id="@+id/substitute_fee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:button="@null"
+                        android:checked="false"
+                        android:drawableLeft="@drawable/checkboxstyte"
+                        android:paddingLeft="2dp"
+                        android:text="@string/substitute_fee"
+                        android:textColor="#129381"
+                        android:textSize="@dimen/btnTextSize" />
+
+                    <CheckBox
+                        android:id="@+id/receive_fee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:button="@null"
+                        android:checked="false"
+                        android:drawableLeft="@drawable/checkboxstyte"
+                        android:paddingLeft="2dp"
+                        android:text="@string/receive_fee"
+                        android:textColor="#129381"
+                        android:textSize="@dimen/btnTextSize" />
+
+                    <!--
+                    <Spinner
+                        android:id="@+id/gatheringType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="7.5"
+                        android:background="@null"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:popupBackground="@drawable/divbg" />
+
+
+
+
+
+                    -->
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/btnHSize"
+                android:layout_marginTop="@dimen/imggapSize"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="5"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="2.5"
+                        android:gravity="left|center"
+                        android:text="@string/fee"
+                        android:textSize="@dimen/btnTextSize"
+                        android:textColor="#129381" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.5"
+                    android:background="@drawable/input2"
+                    android:orientation="horizontal" >
+
+                    <EditText
+                        android:id="@+id/dlventermoney"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="7.5"
+                        android:background="@drawable/input2"
+                        android:editable="false"
+                        android:hint="@string/fee_hint"
+                        android:inputType="numberDecimal"
+                        android:textSize="@dimen/btnTextSize"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp" >
+                    </EditText>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/imgpadSize"
+                android:layout_marginRight="@dimen/imgpadSize"
+                android:layout_marginTop="@dimen/imggapSize"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/ndllvadd"
+                    android:layout_width="@dimen/mail_batchdlvnenter_ndllvadd_width"
+                    android:layout_height="@dimen/btnHSize"
+                    android:layout_marginBottom="@dimen/imggapSize"
+                    android:background="@drawable/btndenglu"
+                    android:textSize="@dimen/btnTextSize"
+                    android:textColor="#ffffff"
+                    android:text="@string/add_list_table" />
+            </LinearLayout>
+</LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/imggapSize"
+                android:layout_marginLeft="@dimen/titlepadSize"
+            	android:layout_marginRight="@dimen/titlepadSize"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <TableLayout
+                    android:id="@+id/orderSearchResultTop"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/btnHSize"
+                    android:background="#FFBF00"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+                    <TableRow
+                        android:gravity="center"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/displayOrderNum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:text="@string/mail_no"
+                            android:textColor="#ffffff"
+                            android:textSize="@dimen/imgtitleSize" />
+
+                    </TableRow>
+                </TableLayout>
+
+                <ListView
+                    android:id="@+id/mailList"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:cacheColorHint="#00000000"
+                    android:divider="@drawable/line2" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/imggapSize"
+                    android:layout_marginTop="@dimen/imggapSize"
+                    android:gravity="center_horizontal" >
+                    <Button
+                        android:id="@+id/dlvEnsave"
+                        android:layout_width="@dimen/btmWSize"
+                        android:layout_height="@dimen/btnHSize"
+                        android:layout_marginBottom="@dimen/imggapSize"
+                        android:background="@drawable/btndenglu"
+                        android:textSize="@dimen/btnTextSize"
+                        android:textColor="#ffffff"
+                        android:text="@string/save" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </com.cn.net.cnpl.tools.MyScrollView>
+
+</LinearLayout>

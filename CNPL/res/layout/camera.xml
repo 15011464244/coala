@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <SurfaceView
+        android:id="@+id/surfaceview"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/surfaceview"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/confirm"
+            android:layout_width="@dimen/btmWSize"
+            android:layout_height="@dimen/btnHSize"
+            android:layout_alignParentLeft="true"
+            android:visibility="gone"
+            android:layout_marginLeft="@dimen/imgpadSize"
+            android:background="@drawable/btndenglu"
+            android:textSize="@dimen/btnTextSize"
+            android:text="@string/confirm" />
+        
+          <Button
+            android:id="@+id/docaerma"
+            android:layout_width="@dimen/btmWSize"
+            android:layout_height="@dimen/btnHSize"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/btndenglu"
+            android:layout_marginLeft="@dimen/imgpadSize"
+            android:textSize="@dimen/btnTextSize"
+            android:text="@string/photo" />
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="@dimen/btmWSize"
+            android:layout_height="@dimen/btnHSize"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/imgpadSize"
+            android:background="@drawable/btndenglu"
+            android:visibility="gone"
+            android:textSize="@dimen/btnTextSize"
+            android:text="@string/cancel" />
+    </RelativeLayout>
+
+</RelativeLayout>

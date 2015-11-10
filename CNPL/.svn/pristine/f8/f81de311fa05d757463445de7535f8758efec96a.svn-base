@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white"
+    android:baselineAligned="false"
+    android:gravity="center_vertical"
+     >
+	<TextView 
+	    	android:id="@+id/new_name"
+		    android:layout_height="wrap_content"
+		    android:layout_width="wrap_content"
+		    android:textSize="20dp"
+		    android:text="CNPL"
+		    android:textStyle="italic"
+		    android:textColor="@android:color/background_dark"
+		    android:gravity="center"
+		    android:layout_centerInParent="true"
+		    />
+	<TextView 
+	    android:id="@+id/basedata"
+	    android:padding="5dp"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textColor="#FEA500"
+	    android:text="基础数据下载"
+	    android:background="#00000000"
+	    android:layout_alignParentRight="true"
+	    android:layout_centerVertical="true"
+	    android:layout_marginRight="5dp"
+	    android:visibility="gone"
+	    android:textSize="18dp"
+	    android:clickable="true"
+	    android:textStyle="normal"
+	    />
+	<Button 
+	    android:id="@+id/top_left"
+	    android:layout_height="wrap_content"
+	    android:layout_width="wrap_content"
+	    android:background="@drawable/top_back"
+	    android:layout_centerVertical="true"
+	    android:layout_alignParentLeft="true"
+	    android:layout_marginLeft="20dp"
+	    android:visibility="gone"
+	    />
+	<Button 
+	    android:id="@+id/top_add"
+	    android:layout_height="wrap_content"
+	    android:layout_width="wrap_content"
+	    android:background="@drawable/top_add"
+	    android:layout_centerVertical="true"
+	    android:layout_alignParentRight="true"
+	    android:layout_marginRight="5dp"
+	    android:visibility="gone"
+	    />
+	<TextView 
+	    android:id="@+id/top_download"
+	    android:layout_height="wrap_content"
+	    android:layout_width="wrap_content"
+	    android:background="#00000000"
+	    android:layout_centerVertical="true"
+	    android:layout_alignParentRight="true"
+	    android:layout_marginRight="20dp"
+	    android:text="下载"
+	    android:textColor="#FEA500"
+	    android:visibility="gone"
+	    android:textSize="18dp"
+	    android:clickable="true"
+	    android:textStyle="normal"
+	    />
+	<TextView 
+	    android:id="@+id/top_save"
+	    android:layout_height="wrap_content"
+	    android:layout_width="wrap_content"
+	    android:background="#00000000"
+	    android:layout_centerVertical="true"
+	    android:layout_alignParentRight="true"
+	    android:layout_marginRight="20dp"
+	    android:text="保存"
+	    android:textColor="#FEA500"
+	    android:visibility="gone"
+	    android:textSize="18dp"
+	    android:clickable="true"
+	    android:textStyle="normal"
+	    />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dip"
+        android:orientation="vertical" >
+		
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#2d52fc"
+            android:textSize="12sp"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/transitCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#2d52fc"
+            android:textSize="12sp"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#2d52fc"
+            android:textSize="12sp"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="80dip"
+        android:layout_marginTop="18dip"
+        android:layout_gravity="right"
+        android:textColor="#2d52fc"
+        android:textSize="18sp"
+        android:visibility="invisible" />
+
+</RelativeLayout>

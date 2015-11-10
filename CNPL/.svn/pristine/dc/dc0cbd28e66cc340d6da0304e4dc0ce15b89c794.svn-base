@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/topline" >
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/btnHSize"
+        android:layout_marginRight="@dimen/imggapSize"
+        android:layout_marginTop="@dimen/imggapSize"
+        android:gravity="right" >
+        
+        <Button
+            android:id="@+id/dlvdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/imggapSize"
+        	android:paddingRight="@dimen/imggapSize"
+            android:background="@drawable/chang"
+            android:textSize="@dimen/btnTextSize"
+            android:text="@string/deliver_down" />
+        
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        >
+	<GridView  
+      android:id="@+id/GridView"  
+      android:layout_width="fill_parent"  
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"  
+      android:listSelector="@drawable/bg"
+      android:paddingRight="20dp"
+      android:paddingLeft="20dp"
+      android:numColumns="2"  
+      android:stretchMode="columnWidth"
+      android:horizontalSpacing="20dp"  
+      >  
+	</GridView>  
+	</RelativeLayout>
+	
+</LinearLayout>
