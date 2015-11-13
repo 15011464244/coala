@@ -15,7 +15,7 @@
     <string name="C_PHOTO">头像</string>
     <string name="C_NAME">名字</string>
     <string name="C_PHONE">电话</string>
-    <string name="C_QR">二维码</string>
+    <string name="C_QR">APP下载二维码</string>
     <string name="C_ADDRESS">我的地址</string>
     <string name="C_HINT_LOGIN_USER">请输入手机号</string>
     <string name="C_HINT_REGIST_USER">请输入手机号</string>

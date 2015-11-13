@@ -22,9 +22,9 @@ public class Constant {
     /*
      * 江西
      */
-//	 public static final String SERVER_ROOT = "http://111.75.223.93:9002/post-customer-service/";
+	 public static final String SERVER_ROOT = "http://111.75.223.93:9002/post-customer-service/";
 	
-	 public static final String SERVER_ROOT = "http://111.75.223.93:9008/post-customer-service/";
+//	 public static final String SERVER_ROOT = "http://111.75.223.93:9008/post-customer-service/";
 	/**
 	 * 登录
 	 */
@@ -198,5 +198,9 @@ public class Constant {
 	 * 注册的时候点击下一步对短信验证码的验证
 	 */
 	public static final String checkSmsCode = SERVER_ROOT + "MicroPhoneAction/checkMobileCode";
+	/*
+	 * 微信支付的调用获得prepayId的过程
+	 */
+	public static final String wxPay = "http://user.pingandj.cn/wx/pay/recharge";
 	
 }

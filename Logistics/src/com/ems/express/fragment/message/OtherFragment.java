@@ -1,9 +1,13 @@
 package com.ems.express.fragment.message;
 
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +17,7 @@ import java.util.Random;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 
 import android.app.Dialog;
 import android.app.Fragment;
@@ -23,6 +28,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -46,6 +53,7 @@ import com.alipay.sdk.app.PayTask;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
@@ -71,15 +79,16 @@ public class OtherFragment extends Fragment {
 	
 	
 	PayReq req;//微信
-	final IWXAPI msgApi = WXAPIFactory.createWXAPI(getActivity(), null);
+//	final IWXAPI msgApi = WXAPIFactory.createWXAPI(getActivity(), null);
+	IWXAPI msgApi;
 	  //appid
     //请同时修改  androidmanifest.xml里面，.PayActivityd里的属性<data android:scheme="wxb4ba3c02aa476ea1"/>为新设置的appid
-    String APP_ID = "wxf2f565574a968187";
+    String APP_ID = "wx739afd4aac41eefc";
      //商户号
     final String MCH_ID = "1233848001";
      //  API密钥，在商户平台设置
     String API_KEY="412fde4e9c2e2bb619514ecea142e449";
-    Map<String,String> resultunifiedorder;
+//    Map<String,String> resultunifiedorder;
 	
 	
 	
@@ -192,10 +201,15 @@ public class OtherFragment extends Fragment {
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.message_arrive_fragment, null);
 		mContext = this.getActivity();
-//		msgApi.registerApp(APP_ID);
+		msgApi = WXAPIFactory.createWXAPI(getActivity(), null);
+		msgApi.registerApp(APP_ID);
 		req = new PayReq();
 		initView();
+		String getHostIp = GetHostIp();
+		LogUtils.e(getHostIp+"getHostIp");
 		
+		getPrepayId("18612012572","测试商品","0.01");
+//		sendPayReq();
 		// 注册一个自定义的广播接收器
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("NewMsgReceiver_Action");
@@ -392,7 +406,7 @@ public class OtherFragment extends Fragment {
 				case 1:// 选择了微信
 					payType = "1";
 					ProgressDialog dialog = ProgressDialog.show(getActivity(), getString(R.string.app_tip), getString(R.string.getting_prepayid));
-					getPrepayId("10", "1233848001", "1217752501201407033233368018", "测试商品","http://www.baidu.com");
+					getPrepayId("18612012572","测试商品","0.01");
 					genPayReq();
 					sendPayReq();
 					break;
@@ -627,7 +641,7 @@ public class OtherFragment extends Fragment {
 		 * @param 金额，商户号，订单号，商品详情，异步通知网址
 		 * @return
 		 */
-		public void getPrepayId(String total_fee,String mch_id,String out_trade_no,String body,String notify_url){
+		public void getPrepayId(String linkTel,String body,String actualAmount){
 			 if(!msgApi.isWXAppInstalled())
 	            {
 	                Toast.makeText(getActivity(), "没有安装微信", Toast.LENGTH_LONG).show();
@@ -639,69 +653,118 @@ public class OtherFragment extends Fragment {
 	                
 	                return;
 	            }
-			HashMap<String, Object> json = new HashMap<String, Object>();
-			String	nonceStr = genNonceStr();
+//			HashMap<String, Object> json = new HashMap<String, Object>();
+//			String	nonceStr = genNonceStr();
+//			LogUtils.e("获取参数中");
+//			json.put("linkTel", linkTel);//用户登陆账号
+//			json.put("body", body);//商品详情
+//			json.put("actualAmount", actualAmount);
+//			json.put("spbillCreateIp", "192.168.1.111");//终端IP
+//			json.put("deviceType", "0");//接收微信支付异步通知回调地址
 			
-			json.put("app_id", APP_ID);
-			json.put("total_fee", total_fee);
-			json.put("mch_id", mch_id);
-			json.put("out_trade_no", out_trade_no);//订单号
-			json.put("nonce_str", nonceStr);//随机字符串
-			json.put("body", body);//商品详情
-			json.put("spbill_create_ip", "127.0.0.1");//终端IP
-			json.put("notify_url", notify_url);//接收微信支付异步通知回调地址
-			json.put("trade_type", "APP");//接收微信支付异步通知回调地址
-			
-			List<NameValuePair> packageParams = new LinkedList<NameValuePair>();
-			packageParams.add(new BasicNameValuePair("appid", APP_ID));
-			packageParams.add(new BasicNameValuePair("body", body));
-			packageParams.add(new BasicNameValuePair("mch_id", MCH_ID));
-			packageParams.add(new BasicNameValuePair("nonce_str", nonceStr));
-			packageParams.add(new BasicNameValuePair("notify_url", notify_url));
-			packageParams.add(new BasicNameValuePair("out_trade_no",out_trade_no));
-			packageParams.add(new BasicNameValuePair("spbill_create_ip","127.0.0.1"));
-			packageParams.add(new BasicNameValuePair("total_fee", total_fee));
-			packageParams.add(new BasicNameValuePair("trade_type", "APP"));
-			String sign = genPackageSign(packageParams);
-			packageParams.add(new BasicNameValuePair("sign", sign));
-			String xmlstring =toXml(packageParams);
-			
-			String params = ParamsUtil.getUrlParamsByMap(json);
-			MyRequest<Object> req = new MyRequest<Object>(Request.Method.POST, null, Constant.checkSign,
-					new Response.Listener<Object>() {
-
-						@Override
-						public void onResponse(Object arg0) {
-							LogUtils.e("签到check  "+ arg0.toString());
-								try {
-									resultunifiedorder= (Map<String, String>) arg0;
-									
-								} catch (Exception e) {
-									e.printStackTrace();
+//			List<NameValuePair> packageParams = new LinkedList<NameValuePair>();
+//			packageParams.add(new BasicNameValuePair("appid", APP_ID));
+//			packageParams.add(new BasicNameValuePair("body", body));
+//			packageParams.add(new BasicNameValuePair("mch_id", MCH_ID));
+//			packageParams.add(new BasicNameValuePair("nonce_str", nonceStr));
+////			packageParams.add(new BasicNameValuePair("notify_url", notify_url));
+////			packageParams.add(new BasicNameValuePair("out_trade_no",out_trade_no));
+//			packageParams.add(new BasicNameValuePair("spbill_create_ip","127.0.0.1"));
+////			packageParams.add(new BasicNameValuePair("total_fee", total_fee));
+//			packageParams.add(new BasicNameValuePair("trade_type", "APP"));
+//			String sign = genPackageSign(packageParams);
+//			packageParams.add(new BasicNameValuePair("sign", sign));
+//			String xmlstring =toXml(packageParams);
+//			
+//			String params = ParamsUtil.getUrlParamsByMap(json);
+//			MyRequest<Object> req1 = new MyRequest<Object>(Request.Method.POST, null, Constant.wxPay,
+//					new Response.Listener<Object>() {
+//
+//						@Override
+//						public void onResponse(Object arg0) {
+//							LogUtils.e("微信getPrepayId 返回参数"+ arg0.toString());
+//								try {
+//									JSONObject jsonObject = new JSONObject(arg0.toString());
+//									String resCode = jsonObject.getString("resCode");
+//									if (resCode.equals("0")) {
+//										JSONObject json1 = jsonObject.getJSONObject("pr");
+//										req.appId = json1.getString("appId");
+//										req.partnerId = json1.getString("partnerId");
+//										req.prepayId = json1.getString("prepayId");
+//										req.nonceStr = json1.getString("nonceStr");
+//										req.timeStamp = json1.getString("timeStamp");
+//										req.packageValue = json1.getString("packageValue");
+//										req.sign = json1.getString("sign");
+//										LogUtils.e(req.appId);
+//									}
+//								} catch (Exception e) {
+//									e.printStackTrace();
+//								}
+//							}
+//					
+//					}, new Response.ErrorListener() {
+//
+//						@Override
+//						public void onErrorResponse(VolleyError arg0) {
+//							LogUtils.e("签到check异常  "+ arg0.toString());
+//							Toast.makeText(getActivity(), "查询是否签到失败!", Toast.LENGTH_LONG).show();
+//							arg0.printStackTrace();
+//						}
+//					}, params);
+//			App.getQueue().add(req1);
+	            JSONObject json = new JSONObject();
+	            try {
+					json.put("linkTel", "18612012572");
+					json.put("body", "body");
+					json.put("actualAmount", "0.01");
+					json.put("spbillCreateIp", "192.168.1.111");
+					json.put("deviceType", "0");
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Constant.wxPay, json,  
+			        new Response.Listener<JSONObject>() {  
+			            @Override  
+			            public void onResponse(JSONObject response) {  
+			            	
+								LogUtils.e("微信getPrepayId 返回参数"+ response.toString());
+									try {
+										JSONObject jsonObject = new JSONObject(response.toString());
+										String resCode = jsonObject.getString("resCode");
+										if (resCode.equals("0")) {
+											JSONObject json1 = jsonObject.getJSONObject("pr");
+											req.appId = json1.getString("appId");
+											req.partnerId = json1.getString("partnerId");
+											req.prepayId = json1.getString("prepayId");
+											req.nonceStr = json1.getString("nonceStr");
+											req.timeStamp = json1.getString("timeStamp");
+											req.packageValue = json1.getString("packageValue");
+											req.sign = json1.getString("sign");
+											LogUtils.e(req.appId);
+											sendPayReq();
+										}
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
 								}
-							}
-					
-					}, new Response.ErrorListener() {
-
-						@Override
-						public void onErrorResponse(VolleyError arg0) {
-							LogUtils.e("签到check异常  "+ arg0.toString());
-							Toast.makeText(getActivity(), "查询是否签到失败!", Toast.LENGTH_LONG).show();
-							arg0.printStackTrace();
-						}
-					}, params);
-			App.getQueue().add(req);
+			        }, new Response.ErrorListener() {  
+			            @Override  
+			            public void onErrorResponse(VolleyError error) {  
+			                Log.e("gongjie", "fail"+error.getMessage(), error); 
+			            }  
+			        });
+			App.getQueue().add(jsonObjectRequest);
 			
 		}
 		private void genPayReq() {
 			StringBuilder sb = new StringBuilder();	
 			
-			req.appId = APP_ID;
-			req.partnerId = MCH_ID;
-			req.prepayId = resultunifiedorder.get("prepay_id");
-			req.packageValue = "Sign=WXPay";
-			req.nonceStr = genNonceStr();
-			req.timeStamp = String.valueOf(genTimeStamp());
+//			req.appId = APP_ID;
+//			req.partnerId = MCH_ID;
+//			req.prepayId = resultunifiedorder.get("prepay_id");
+//			req.packageValue = "Sign=WXPay";
+//			req.nonceStr = genNonceStr();
+//			req.timeStamp = String.valueOf(genTimeStamp());
 
 
 			List<NameValuePair> signParams = new LinkedList<NameValuePair>();
@@ -827,4 +890,45 @@ public class OtherFragment extends Fragment {
 		super.onDestroy();
 		mContext.unregisterReceiver(newMsgBReceiver);
 	}
+	public  String GetHostIp() {    
+		  //获取wifi服务  
+	    WifiManager wifiManager = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);  
+	    //判断wifi是否开启  
+	    if (!wifiManager.isWifiEnabled()) {  
+			    wifiManager.setWifiEnabled(true);    
+			    WifiInfo wifiInfo = wifiManager.getConnectionInfo();       
+			    int ipAddress = wifiInfo.getIpAddress();   
+			    String ip = intToIp(ipAddress);
+			    return ip;
+	    }  else {
+		    	 try  
+		         {  
+		             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();)  
+		             {  
+		                NetworkInterface intf = en.nextElement();  
+		                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();)  
+		                {  
+		                    InetAddress inetAddress = enumIpAddr.nextElement();  
+		                    if (!inetAddress.isLoopbackAddress())  
+		                    {  
+		                        return inetAddress.getHostAddress().toString();  
+		                    }  
+		                }  
+		            }  
+		         }  
+		         catch (SocketException ex)  
+		         {  
+		             Log.e("WifiPreference IpAddress", ex.toString());  
+		         }  
+		         return null;    
+		}
+	}  
+	private String intToIp(int i) {       
+        
+        return (i & 0xFF ) + "." +       
+      ((i >> 8 ) & 0xFF) + "." +       
+      ((i >> 16 ) & 0xFF) + "." +       
+      ( i >> 24 & 0xFF) ;  
+   } 
+	
 }

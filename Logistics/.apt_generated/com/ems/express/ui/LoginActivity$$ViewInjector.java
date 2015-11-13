@@ -10,12 +10,6 @@ public class LoginActivity$$ViewInjector<T extends com.ems.express.ui.LoginActiv
     View view;
     view = finder.findRequiredView(source, 2131427415, "field 'imgProgress'");
     target.imgProgress = finder.castView(view, 2131427415, "field 'imgProgress'");
-    view = finder.findRequiredView(source, 2131427414, "field 'rllayout'");
-    target.rllayout = finder.castView(view, 2131427414, "field 'rllayout'");
-    view = finder.findRequiredView(source, 2131427410, "field 'mLoginPhone'");
-    target.mLoginPhone = finder.castView(view, 2131427410, "field 'mLoginPhone'");
-    view = finder.findRequiredView(source, 2131427411, "field 'mLoginPW'");
-    target.mLoginPW = finder.castView(view, 2131427411, "field 'mLoginPW'");
     view = finder.findRequiredView(source, 2131427409, "field 'tv_register' and method 'toRegister'");
     target.tv_register = finder.castView(view, 2131427409, "field 'tv_register'");
     view.setOnClickListener(
@@ -26,17 +20,14 @@ public class LoginActivity$$ViewInjector<T extends com.ems.express.ui.LoginActiv
           target.toRegister();
         }
       });
+    view = finder.findRequiredView(source, 2131427411, "field 'mLoginPW'");
+    target.mLoginPW = finder.castView(view, 2131427411, "field 'mLoginPW'");
+    view = finder.findRequiredView(source, 2131427414, "field 'rllayout'");
+    target.rllayout = finder.castView(view, 2131427414, "field 'rllayout'");
+    view = finder.findRequiredView(source, 2131427410, "field 'mLoginPhone'");
+    target.mLoginPhone = finder.castView(view, 2131427410, "field 'mLoginPhone'");
     view = finder.findRequiredView(source, 2131427381, "field 'mTitle'");
     target.mTitle = finder.castView(view, 2131427381, "field 'mTitle'");
-    view = finder.findRequiredView(source, 2131427408, "method 'toBack'");
-    view.setOnClickListener(
-      new butterknife.internal.DebouncingOnClickListener() {
-        @Override public void doClick(
-          android.view.View p0
-        ) {
-          target.toBack();
-        }
-      });
     view = finder.findRequiredView(source, 2131427413, "method 'toLogin'");
     view.setOnClickListener(
       new butterknife.internal.DebouncingOnClickListener() {
@@ -55,14 +46,23 @@ public class LoginActivity$$ViewInjector<T extends com.ems.express.ui.LoginActiv
           target.toForgetPW();
         }
       });
+    view = finder.findRequiredView(source, 2131427408, "method 'toBack'");
+    view.setOnClickListener(
+      new butterknife.internal.DebouncingOnClickListener() {
+        @Override public void doClick(
+          android.view.View p0
+        ) {
+          target.toBack();
+        }
+      });
   }
 
   @Override public void reset(T target) {
     target.imgProgress = null;
+    target.tv_register = null;
+    target.mLoginPW = null;
     target.rllayout = null;
     target.mLoginPhone = null;
-    target.mLoginPW = null;
-    target.tv_register = null;
     target.mTitle = null;
   }
 }

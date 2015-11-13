@@ -10,15 +10,15 @@ public class AddCommonActivity$$ViewInjector<T extends com.ems.express.ui.AddCom
     View view;
     view = finder.findRequiredView(source, 2131427852, "field 'mTvInfo'");
     target.mTvInfo = finder.castView(view, 2131427852, "field 'mTvInfo'");
-    view = finder.findRequiredView(source, 2131427343, "field 'mEtCommonWord'");
-    target.mEtCommonWord = finder.castView(view, 2131427343, "field 'mEtCommonWord'");
     view = finder.findRequiredView(source, 2131427344, "field 'mBtnSave'");
     target.mBtnSave = finder.castView(view, 2131427344, "field 'mBtnSave'");
+    view = finder.findRequiredView(source, 2131427343, "field 'mEtCommonWord'");
+    target.mEtCommonWord = finder.castView(view, 2131427343, "field 'mEtCommonWord'");
   }
 
   @Override public void reset(T target) {
     target.mTvInfo = null;
-    target.mEtCommonWord = null;
     target.mBtnSave = null;
+    target.mEtCommonWord = null;
   }
 }
