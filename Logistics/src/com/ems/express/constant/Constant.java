@@ -22,9 +22,9 @@ public class Constant {
     /*
      * 江西
      */
-	 public static final String SERVER_ROOT = "http://111.75.223.93:9002/post-customer-service/";
+//	 public static final String SERVER_ROOT = "http://111.75.223.93:9002/post-customer-service/";
 	
-//	 public static final String SERVER_ROOT = "http://111.75.223.93:9008/post-customer-service/";
+	 public static final String SERVER_ROOT = "http://111.75.223.93:9008/post-customer-service/";
 	/**
 	 * 登录
 	 */

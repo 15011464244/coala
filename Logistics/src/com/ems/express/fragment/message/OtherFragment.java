@@ -6,6 +6,8 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -16,6 +18,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.conn.util.InetAddressUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
@@ -84,11 +87,6 @@ public class OtherFragment extends Fragment {
 	  //appid
     //请同时修改  androidmanifest.xml里面，.PayActivityd里的属性<data android:scheme="wxb4ba3c02aa476ea1"/>为新设置的appid
     String APP_ID = "wx739afd4aac41eefc";
-     //商户号
-    final String MCH_ID = "1233848001";
-     //  API密钥，在商户平台设置
-    String API_KEY="412fde4e9c2e2bb619514ecea142e449";
-//    Map<String,String> resultunifiedorder;
 	
 	
 	
@@ -106,15 +104,10 @@ public class OtherFragment extends Fragment {
 	
     //商户PID
 	public static final String PARTNER = "2088021282301748";
-//	public static final String PARTNER = "2088021605626202";
 	//商户收款账号
 	public static final String SELLER = "pingandaijia126@126.com";
-//	public static final String SELLER = "jxshjggj2@126.com";
 	//商户私钥，pkcs8格式
 	public static final String RSA_PRIVATE = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAJn2KKkgxGDWq757jyHtJYiPQYtki8S1HAKJdXhkMerPFqSB4i5F0KiKH5EDSVGgBRw7oSiiPtnD8AEPNQMwDzyMs1oFmx/AeYKQScalMilUPQdOC7OMprM8zorfhpOVQ7RkYIVvuQD2MmCXpIf1PAqe/LGe6W3MS7qk0PRy4SHPAgMBAAECgYAjS3smyow6ZvwYPtshO+xO0giEnBgukBZLvpdfchi/a5oVPHFNilO7T27NH6O/Qp/pSQI4/njKE1EB7SqKAIp9S/2D3g8S+lE3xAkSyl3wdqEf33vKlzaJgcnL9KeniiLNFBU+KSX7SqqNH1Xhs4ib6/J9adJNB4so8VeGyFhwAQJBAMcZuTlsKZlRiJkz9jaScJ3Gp7Kbkd3AAQ+ayuSLXhXB/nKGIdWC5kmK0Hy9jDI6hv4jphz4AYOusG8RHqdoA08CQQDF9g1hQx5XnOY/C5xNE/NAHRzNZzxZjHFr2dIAGYkqRRBXO2hDt4crmcx16N/LAldicUkvV0UhNxFboxIMX1mBAkB/izQD3A1eAUQvWIEufmsUN5FwMoaj9n73fyLge4M/DvIwbUq5W0yo6fsbHdX0y1d08GNWhW167OprjB0GAvSzAkAWAUzpc+GKkalSdsLwGniett29w20E80SkXXkng68ooLa5S6RCasM+yIDe1n0R/vehvMAK4COSFqH6Ur0t3OeBAkA+F+JWtAN0LcND8qguPtgHOXQHjNWO4Y+MjCdWF+YHfyRo/Dw6FkTrSF90qiX1CI2tVPkjTx05vlX5nW6D/Qa4";
-//	public static final String RSA_PRIVATE = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAM/UHFG6RWgwHHGbWCpVFUjCfA9g40iXn16s3tAuLdraW1uL9qj/KpNzZPSiKq7Jh2UOo/xed9/NZ15jJTbLnB7RR0Jcs6sQbmPI0gaQeNgaOEoY3kGyzJZM8V7vY+5Ft1HseTvT5C7r3o6GQCtWkjSd3pcsXUI1TD/vgQtM0qtJAgMBAAECgYEAg9DV0WRip010jP3pcpgactaf1yUtoxpAA82DWOkhPmEmdq8UWGXXPESBcMP2bHv3+znI+sV0JKfj+zLJJLMJpkGdi6cX9SAgoFpQRbE8ciSlc1SEd0JzP+i7Zot52Ft+JwoRzQI9ntb/55m6AZbbzQYKLYFVsJdg/z4KhxYR5oECQQDoS4Ba198j3vAgLD5JLuAtsiUmWK/5vL7uzf9mYYP4WY6tkt3vvK3dlKZxUfFWVAqwTvcwMS0jYJfG2mOeEdT5AkEA5QlyceBBEAevjYVLhJYAdyv/xgBk6ZiAVrvE8IEoJJ3whfj9g1Km1ff6u5BKqUEmyCbTGW/yIY9iB3HMzDEs0QJAYW1hPTizJxlW/zdvPESD08aW3DlwPT9TmVce2nLl5eCx/czOdsFc7sVs9bRXk0yWWxITjMvjUaYuokFwbJiwCQJAUZ7TPQe4x/ilNB7Lcb1u/wkcBji/vYtOORqDLV4pqxrpyySXW4RJ1jigDtV19ek04+EKG6eMNy98tMB2RlJD8QJAIQku1lS741XBRRhlfQNguTJm3/d4exVkhK7Dn0vsLeERVrF3mWx0n6AWWkmQMBH8aswIh6gAWESqpcX4A7fzbg==";
-//	public static final String RSA_PRIVATE = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBALgCBATWHSE8HRBTdX9nilmyxzYLYopWbWeoX4yhQZ3zlNM6zu/XjTiOW00yapJJJj+kNNQCBrYGJbGofdMdSwktRDxmpKRWDSV9PycTtiCk8+2Gz536rLKbW1atl0U/6uMO2N9nNpgXx9NtvjsDPzfnSv65mOX1gGVU6EVqMZUHAgMBAAECgYEAl8f53q9rSd3XL39YXWZgBctlbZwIhYnzJt0JK+xcPtkMuww4ZDiOYcdzYoMiy1YRec+OUA730C/T6e7NE1aHbDy95Fxfn+EYR2jmqZuls40MsxMPOvAKaHrMxbYv1LCU7/VAxM6HT2gLYNKzPoTb/JGwwhk7GW2mQIl4MLdk3ZECQQDmQikymDMtmNzmY4prnDAdTSzpimwJXdfedbSBlr8yigGsBOTbJPsacC9+UztmQscHCs6C3t0rtKt8Ba9F6G/vAkEAzJQx9txEEnAV4BCMZeHnFWeWvSYQQKQuoddt2Ur1NocNH3JrxyKNe9NbkOB1XNOE1BVhO09ORQpaWxc+v7MUaQJBAKYw/pc770Rr3pSTJ+c/liKv/0iY1h10lEhGYIBgE6Qgo9BKv/vEF1Efw8fDv02xyQE2NZOT08Kl5lffqoAkohUCQFuIty5X8ZE6W19MqDTxtZ5LIhPxkvYJP+Aj7r95nWvPU1zNqlGIMTvFHsQc2gY1kcn+4ulRm5iigDkflnDZZHkCQD/iOxo1tJRnxzPkXs4FlE5zNbD3keFQK42j92+YPZWRGgwqSoMYY5IkHTvpuKsw9V+pi1c5Wt5UqyT5fuP1AbM=";
-//	public static final String RSA_PRIVATE = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAKaOEwvYuThEWuvYMoarfeETF84IFcmfdPgrkqA0bvEjhjxCph5OxUMn8v7ZwJl+S1Gh3+4XEIvSkCSjAz9Li2YqCWGgrA9v9WfSzhk1ewrL3PUAwZkwDN+Yk/xvH01fg4jzbVG5K4Fg7FxE1RHu8b63ga6YvjjME26g1Zwi1n6rAgMBAAECgYBqAFYi3gXTx71OCMTvbMmqq6ok2IR1U+Tv5VtmVridBAz04T40X9GwEgbXJ+MqTXTGOY35S/id5J8UkiMI752BmtG222s6s7ysyu8/ujOu68ML5AtzJHpUUIO5bPVZUgsZlco8H9dN1/yDKHvkOVq8GTJPAytH/X02dFzqhjyYQQJBANp4Q5ldYIhElDGNVr0B6SJ60qe4hMK5PIykpntdMIIHzxlLCZSZf1YS7EYh8NCRAOVbo26RDAw6+Q0Rd9LoCDECQQDDKrtHlHeZZA3ajbJebcH6x9YsW4/kTTACniXRGbtOKtjEl4wyP5s0b4gyEKyxVMOjyFVMT+TyYzgII6Zl6NmbAkBy4Va6qM2AGn/K5sW7seuEBA4NwAuf0YQzeMlKiaBeX/jZFgo9p9G700uHPYXCRt2vvdZc58zsCX65Dnxx3S2hAkEApDU+78H+QwRJF7si+Yp1rLAZBqdfUSKUo482mFGDJAiu6/Hqlpin2J2CxUT8WBPOq+4xvox2QG60xTxhk9svwwJAWYLNCBQ+Ux2AS5cIlzQ5BJ0nVcSlQEuDIhumBRRjkzuCZy0jcL5dGK1TW2Obl5T5VcbJElqFG+hNkAPULFHypQ==";
 	//支付宝公钥
 	public static final String RSA_PUBLIC = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnxj/9qwVfgoUh/y2W89L6BkRAFljhNhgPdyPuBV64bfQNN1PjbCzkIM6qRdKBoLPXmKKMiFYnkd6rAoprih3/PrQEB/VsW8OoM8fxn67UDYuyBTqA23MML9q1+ilIZwBC2AQ2UBVOrFXfFl75p6/B5KsiNG9zpgmLCUYuLkxpLQIDAQAB";
 
@@ -207,9 +200,8 @@ public class OtherFragment extends Fragment {
 		initView();
 		String getHostIp = GetHostIp();
 		LogUtils.e(getHostIp+"getHostIp");
-		
-		getPrepayId("18612012572","测试商品","0.01");
-//		sendPayReq();
+		getLocalIpAddress();
+		LogUtils.e(getLocalIpAddress()+"getLocalIpAddress");
 		// 注册一个自定义的广播接收器
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("NewMsgReceiver_Action");
@@ -224,7 +216,6 @@ public class OtherFragment extends Fragment {
 		listmessage =(SwipeMenuListView)view.findViewById(R.id.list_message);
 		imgview  =(ImageView)view.findViewById(R.id.img_view2);
 		adapter = new OtherMessageAdapter(mContext, messageListData);
-		
 		mNotPackage = (RelativeLayout) view.findViewById(R.id.rl_notpackage);
 		
 		listmessage.setAdapter(adapter);
@@ -277,7 +268,6 @@ public class OtherFragment extends Fragment {
 					}else if("6".equals(item.getMailStatus())){
 						delete(position);
 					}
-					
 					break;
 				case 1:
 					delete(position);
@@ -407,8 +397,6 @@ public class OtherFragment extends Fragment {
 					payType = "1";
 					ProgressDialog dialog = ProgressDialog.show(getActivity(), getString(R.string.app_tip), getString(R.string.getting_prepayid));
 					getPrepayId("18612012572","测试商品","0.01");
-					genPayReq();
-					sendPayReq();
 					break;
 					
 				case 2:// 选择了支付宝
@@ -650,74 +638,14 @@ public class OtherFragment extends Fragment {
 	            if(!msgApi.isWXAppSupportAPI())
 	            {
 	            	Toast.makeText(getActivity(), "当前版本不支持支付功能", Toast.LENGTH_LONG).show();
-	                
 	                return;
 	            }
-//			HashMap<String, Object> json = new HashMap<String, Object>();
-//			String	nonceStr = genNonceStr();
-//			LogUtils.e("获取参数中");
-//			json.put("linkTel", linkTel);//用户登陆账号
-//			json.put("body", body);//商品详情
-//			json.put("actualAmount", actualAmount);
-//			json.put("spbillCreateIp", "192.168.1.111");//终端IP
-//			json.put("deviceType", "0");//接收微信支付异步通知回调地址
-			
-//			List<NameValuePair> packageParams = new LinkedList<NameValuePair>();
-//			packageParams.add(new BasicNameValuePair("appid", APP_ID));
-//			packageParams.add(new BasicNameValuePair("body", body));
-//			packageParams.add(new BasicNameValuePair("mch_id", MCH_ID));
-//			packageParams.add(new BasicNameValuePair("nonce_str", nonceStr));
-////			packageParams.add(new BasicNameValuePair("notify_url", notify_url));
-////			packageParams.add(new BasicNameValuePair("out_trade_no",out_trade_no));
-//			packageParams.add(new BasicNameValuePair("spbill_create_ip","127.0.0.1"));
-////			packageParams.add(new BasicNameValuePair("total_fee", total_fee));
-//			packageParams.add(new BasicNameValuePair("trade_type", "APP"));
-//			String sign = genPackageSign(packageParams);
-//			packageParams.add(new BasicNameValuePair("sign", sign));
-//			String xmlstring =toXml(packageParams);
-//			
-//			String params = ParamsUtil.getUrlParamsByMap(json);
-//			MyRequest<Object> req1 = new MyRequest<Object>(Request.Method.POST, null, Constant.wxPay,
-//					new Response.Listener<Object>() {
-//
-//						@Override
-//						public void onResponse(Object arg0) {
-//							LogUtils.e("微信getPrepayId 返回参数"+ arg0.toString());
-//								try {
-//									JSONObject jsonObject = new JSONObject(arg0.toString());
-//									String resCode = jsonObject.getString("resCode");
-//									if (resCode.equals("0")) {
-//										JSONObject json1 = jsonObject.getJSONObject("pr");
-//										req.appId = json1.getString("appId");
-//										req.partnerId = json1.getString("partnerId");
-//										req.prepayId = json1.getString("prepayId");
-//										req.nonceStr = json1.getString("nonceStr");
-//										req.timeStamp = json1.getString("timeStamp");
-//										req.packageValue = json1.getString("packageValue");
-//										req.sign = json1.getString("sign");
-//										LogUtils.e(req.appId);
-//									}
-//								} catch (Exception e) {
-//									e.printStackTrace();
-//								}
-//							}
-//					
-//					}, new Response.ErrorListener() {
-//
-//						@Override
-//						public void onErrorResponse(VolleyError arg0) {
-//							LogUtils.e("签到check异常  "+ arg0.toString());
-//							Toast.makeText(getActivity(), "查询是否签到失败!", Toast.LENGTH_LONG).show();
-//							arg0.printStackTrace();
-//						}
-//					}, params);
-//			App.getQueue().add(req1);
 	            JSONObject json = new JSONObject();
 	            try {
 					json.put("linkTel", "18612012572");
 					json.put("body", "body");
 					json.put("actualAmount", "0.01");
-					json.put("spbillCreateIp", "192.168.1.111");
+					json.put("spbillCreateIp", getLocalIpAddress());
 					json.put("deviceType", "0");
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -756,133 +684,9 @@ public class OtherFragment extends Fragment {
 			App.getQueue().add(jsonObjectRequest);
 			
 		}
-		private void genPayReq() {
-			StringBuilder sb = new StringBuilder();	
-			
-//			req.appId = APP_ID;
-//			req.partnerId = MCH_ID;
-//			req.prepayId = resultunifiedorder.get("prepay_id");
-//			req.packageValue = "Sign=WXPay";
-//			req.nonceStr = genNonceStr();
-//			req.timeStamp = String.valueOf(genTimeStamp());
-
-
-			List<NameValuePair> signParams = new LinkedList<NameValuePair>();
-			signParams.add(new BasicNameValuePair("appid", req.appId));
-			signParams.add(new BasicNameValuePair("noncestr", req.nonceStr));
-			signParams.add(new BasicNameValuePair("package", req.packageValue));
-			signParams.add(new BasicNameValuePair("partnerid", req.partnerId));
-			signParams.add(new BasicNameValuePair("prepayid", req.prepayId));
-			signParams.add(new BasicNameValuePair("timestamp", req.timeStamp));
-
-			req.sign = genAppSign(signParams);
-
-			sb.append("sign\n"+req.sign+"\n\n");
-			
-			Log.e("orion", signParams.toString());
-
-		}
-		private String genNonceStr() {
-			Random random = new Random();
-			return MD5.getMessageDigest(String.valueOf(random.nextInt(10000)).getBytes());
-		}
-		private long genTimeStamp() {
-			return System.currentTimeMillis() / 1000;
-		}
-		private String genAppSign(List<NameValuePair> params) {
-			StringBuilder sb = new StringBuilder();
-
-			for (int i = 0; i < params.size(); i++) {
-				sb.append(params.get(i).getName());
-				sb.append('=');
-				sb.append(params.get(i).getValue());
-				sb.append('&');
-			}
-			sb.append("key=");
-			sb.append(API_KEY);
-
-	        sb.append("sign str\n"+sb.toString()+"\n\n");
-			String appSign = MD5.getMessageDigest(sb.toString().getBytes()).toUpperCase();
-			Log.e("orion",appSign);
-			return appSign;
-		}
 		private void sendPayReq() {
-			
-
 			msgApi.registerApp(APP_ID);
 			msgApi.sendReq(req);
-		}
-		/**
-		 生成签名
-		 */
-
-		private String genPackageSign(List<NameValuePair> params) {
-			StringBuilder sb = new StringBuilder();
-			
-			for (int i = 0; i < params.size(); i++) {
-				sb.append(params.get(i).getName());
-				sb.append('=');
-				sb.append(params.get(i).getValue());
-				sb.append('&');
-			}
-			sb.append("key=");
-			sb.append(API_KEY);
-			
-
-			String packageSign = MD5.getMessageDigest(sb.toString().getBytes()).toUpperCase();
-			Log.e("orion",packageSign);
-			return packageSign;
-		}
-		private String toXml(List<NameValuePair> params) {
-			StringBuilder sb = new StringBuilder();
-			sb.append("<xml>");
-			for (int i = 0; i < params.size(); i++) {
-				sb.append("<"+params.get(i).getName()+">");
-
-
-				sb.append(params.get(i).getValue());
-				sb.append("</"+params.get(i).getName()+">");
-			}
-			sb.append("</xml>");
-
-			Log.e("orion",sb.toString());
-			return sb.toString();
-		}
-		/*
-		 * 上传支付结果
-		 * 
-		 */
-		private void updatePaymentMessage(Map map){
-			HashMap<String, Object> json = new HashMap<String, Object>();
-			String	nonceStr = genNonceStr();
-			json.put("payType",payType);
-			json.put("orderNum", map.get("orderNum"));
-			json.put("actFee", map.get("actFee"));
-			json.put("userCode", map.get("userCode"));
-			json.put("orgCode", map.get("orgCode"));
-			
-			String params = ParamsUtil.getUrlParamsByMap(json);
-			MyRequest<Object> req = new MyRequest<Object>(Request.Method.POST, null, Constant.updatePayment,
-					new Response.Listener<Object>() {
-
-						@Override
-						public void onResponse(Object arg0) {
-							LogUtils.e("上传支付返回"+ arg0.toString());
-							}
-					
-					}, new Response.ErrorListener() {
-
-						@Override
-						public void onErrorResponse(VolleyError arg0) {
-							LogUtils.e("上传支付异常  "+ arg0.toString());
-							Toast.makeText(getActivity(), "上传支付失败!", Toast.LENGTH_LONG).show();
-							arg0.printStackTrace();
-						}
-					}, params);
-			App.getQueue().add(req);
-			
-			
-			
 		}
 	@Override
 	public void onDestroy() {
@@ -930,5 +734,28 @@ public class OtherFragment extends Fragment {
       ((i >> 16 ) & 0xFF) + "." +       
       ( i >> 24 & 0xFF) ;  
    } 
+	
+//	正确的获取ip的方法
+	public String getLocalIpAddress() { 
+        try { 
+              String ipv4; 
+                  ArrayList<NetworkInterface>  nilist = Collections.list(NetworkInterface.getNetworkInterfaces()); 
+              for (NetworkInterface ni: nilist)  
+              { 
+                 ArrayList<InetAddress>  ialist = Collections.list(ni.getInetAddresses()); 
+                 for (InetAddress address: ialist)
+        { 
+                         if (!address.isLoopbackAddress() &&                          
+                                          InetAddressUtils.isIPv4Address(ipv4=address.getHostAddress()))  
+                    {  
+                        return ipv4; 
+                    } 
+                } 
+            } 
+           } catch (SocketException ex) { 
+            Log.e("gongjie", ex.toString()); 
+        } 
+        return null; 
+    }
 	
 }
