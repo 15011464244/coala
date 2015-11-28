@@ -1,6 +1,11 @@
 package com.ems.express.util;
 
 import im.fir.sdk.version.AppVersion;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient.ConnectCallback;
+import io.rong.imlib.RongIMClient.ErrorCode;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.UserInfo;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -103,6 +108,8 @@ public class DialogUtils{
 	
 	public static Dialog getCarrierDialog(final Carrier point,
 			final Context context,LatLng mylocaltion) {
+		//融云的token
+		final String token = "OhyNtlNKch8S7Tte+b1FsVFLSVXAg7Gh8iQKGtH8crvais9T1CXsOGHjDbaSSQP3L+CypE1DURe8i0tWgB8aOg==";
 		dialogfuj = new Dialog(context,R.style.DialogStyle4);
 		dialogfuj.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -118,6 +125,7 @@ public class DialogUtils{
 				, mylocaltion.longitude, mylocaltion.latitude)));
 		ImageView imageView = (ImageView)view.findViewById(R.id.img);
 		if(!point.getSID().equals("null")&&!point.getSID().equals("")){
+			Log.e("gongjie", "头像是sid"+point.getSID());
 			String url = UrlUtils.URL_CARRIER_IMG+"?sid=" + point.getSID();
 			LogUtil.print("获取头像地址："+url);
 			DisplayImageOptions options = new DisplayImageOptions.Builder()
@@ -143,12 +151,56 @@ public class DialogUtils{
 					return;
 				}
 				App.dbHelper.insertChatList(App.db, point);
-				ChatListItemBean bean = new ChatListItemBean();
-				bean.setImage(point.getSID());
-				bean.setMobile(point.getMobile());
-				bean.setName(point.getPeople());
-				bean.setClientId(point.getClientId());
-				MainActivity.startAction(context, bean);
+				RongIM.connect(token, new ConnectCallback() {
+
+					@Override
+					public void onError(ErrorCode arg0) {
+						Toast.makeText(context, "connect onError", Toast.LENGTH_SHORT).show();
+					}
+
+					@Override
+					public void onSuccess(String arg0) {
+						Toast.makeText(context, "connect onSuccess", Toast.LENGTH_SHORT).show();
+						/**
+						 * 设置用户信息的提供者，供 RongIM 调用获取用户名称和头像信息。
+						 *
+						 * @param userInfoProvider 用户信息提供者。
+						 * @param isCacheUserInfo  设置是否由 IMKit 来缓存用户信息。<br>
+						 *                         如果 App 提供的 UserInfoProvider。
+						 *                         每次都需要通过网络请求用户数据，而不是将用户数据缓存到本地内存，会影响用户信息的加载速度；<br>
+						 *                         此时最好将本参数设置为 true，由 IMKit 将用户信息缓存到本地内存中。
+						 * @see UserInfoProvider
+						 */
+						RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
+
+						    @Override
+						    public UserInfo getUserInfo(String userId) {
+						    	Log.e("gongjie", "userId"+userId);
+						    	String dlvorgcode = "33004607";
+						    	String username = "9401";
+						    	String url = "http://111.75.223.93:9008/post-carrier-service/PhoneAction/findEmployeeImage?"+"dlvorgcode="+dlvorgcode+"&username="+username;
+						    	UserInfo info = new UserInfo(userId, "gongjie", Uri.parse(url));
+						        return info;//根据 userId 去你的用户系统里查询对应的用户信息返回给融云 SDK。
+						    }
+
+						}, true);
+						ChatListItemBean bean = new ChatListItemBean();
+						bean.setImage(point.getSID());
+						bean.setMobile(point.getMobile());
+						bean.setName(point.getPeople());
+						bean.setClientId(point.getClientId());
+						RongIM.getInstance().startConversation(context, Conversation.ConversationType.PRIVATE, "11", "聊天标题");
+					}
+
+					@Override
+					public void onTokenIncorrect() {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+				
+				
+//				MainActivity.startAction(context, bean);
 				dialogfuj.dismiss();
 			}
 		});

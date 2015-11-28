@@ -131,17 +131,6 @@ public class PriceActivity extends BaseActivityForRequest implements OnClickList
 						// 刷新地图
 						LatLng ll = new LatLng(location.getLatitude(),
 								location.getLongitude());
-//						if (!"messageCenter".equals(activity)) {
-//							locations = ll;
-//							addMapMark2(ll);
-//							setLocation(ll);
-//						}
-//
-//						if (!"signMessage".equals(activity)) {
-//							locations = ll;
-//							addMapMark2(ll);
-//							setLocation(ll);
-//						}
 
 						ReverseGeoCodeOption option = new ReverseGeoCodeOption();
 						option.location(ll);
@@ -171,7 +160,6 @@ public class PriceActivity extends BaseActivityForRequest implements OnClickList
 			util.show();
 		}
 		//新加的代码，实现本地位置的自动显示
-		LocationMode mCurrentMode = LocationMode.NORMAL;
 //		mBaiduMap.setMyLocationConfigeration(new MyLocationConfigeration(
 //				mCurrentMode, true, BitmapDescriptorFactory
 //						.fromResource

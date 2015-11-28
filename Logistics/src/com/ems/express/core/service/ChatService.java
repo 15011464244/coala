@@ -302,7 +302,10 @@ public class ChatService extends Service implements OnPreparedListener {
 					String orgCode = jsonObject.getString("orgCode");
 					//新加的寄件人的电话号
 					String senderMobile = jsonObject.getString("senderMobile");
-					querySignMessage(orgCode, employeeNo, orderNo, orderStatus ,senderMobile);
+					//新添加的快递员点确认的时间
+					String pushDate = jsonObject.getString("pushDate");
+					Log.e("gongjie", "pushDate"+pushDate);
+					querySignMessage(orgCode, employeeNo, orderNo, orderStatus ,senderMobile,pushDate);
 				}else if ("4".equals(orderStatus)) {
 					// 揽收处理
 					String orderNo = jsonObject.getString("sid");
@@ -639,7 +642,7 @@ public class ChatService extends Service implements OnPreparedListener {
 	// 派单查询邮递员
 	private void querySignMessage(final String orgCode,
 			final String employeeNo, final String orderNo,
-			final String mailStatus ,final String senderMobile) {
+			final String mailStatus ,final String senderMobile,final String pushDate) {
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("orgcode", orgCode);
 		map.put("username", employeeNo);
@@ -665,9 +668,9 @@ public class ChatService extends Service implements OnPreparedListener {
 //								String senderMobile = dmb.getSenderMobile();
 								// String mailStatus = "3";
 
-								SimpleDateFormat dateFormat = new SimpleDateFormat(
-										"yyyy-MM-dd HH:mm:ss");
-								String format = dateFormat.format(new Date());
+//								SimpleDateFormat dateFormat = new SimpleDateFormat(
+//										"yyyy-MM-dd HH:mm:ss");
+//								String format = dateFormat.format(new Date());
 								// 若已存在，先删除
 								SendNoticeBean sBean = App.dbHelper
 										.querySendMessageBySidAndStatus(App.db,
@@ -677,7 +680,7 @@ public class ChatService extends Service implements OnPreparedListener {
 											sBean.getSendId() + "");
 								}
 
-								App.dbHelper.insertSendNotice(App.db, format,
+								App.dbHelper.insertSendNotice(App.db, pushDate,
 										"1", longitude2, latitude2, mobile2,
 										clientId, employeeNo2, people2, code2,
 										sid2, "", mailStatus, orderNo, orgCode,

@@ -1,11 +1,14 @@
 package com.ems.express;
 
 import im.fir.sdk.FIR;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.ipc.RongExceptionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -23,9 +26,13 @@ import com.baidu.frontia.FrontiaApplication;
 import com.baidu.mapapi.SDKInitializer;
 import com.ems.express.bean.MessageCenterItemBean;
 import com.ems.express.core.service.ChatService;
+import com.ems.express.ui.chat.ContactNotificationMessageProvider;
+import com.ems.express.ui.chat.DeAgreedFriendRequestMessage;
+import com.ems.express.ui.chat.DemoCommandNotificationMessage;
+import com.ems.express.ui.chat.DemoContext;
+import com.ems.express.ui.chat.RongCloudEvent;
 import com.ems.express.util.DBHelper;
 import com.ems.express.util.DeviceUuidFactory;
-import com.ems.express.util.NotificationUtil;
 import com.ems.express.util.PreUtils;
 import com.ems.express.util.SpfsUtil;
 import com.ems.express.util.ToastUtil;
@@ -51,7 +58,8 @@ public class App extends FrontiaApplication {
 	public static List<MessageCenterItemBean> mBaiduPushData = new ArrayList<MessageCenterItemBean>();
 	private String mDefaultWords = "请您上午过来取件__请您12点之后过来取件";
 	public static final String DEFAULT_COMMON_WORDS_LOADED = "words_loaded";
-
+	
+	
 	
 	static ServiceConnection mChatServiceConnection = new ServiceConnection() {
 		
@@ -98,6 +106,28 @@ public class App extends FrontiaApplication {
 	public void onCreate() {
 		//BugHD调用
 		FIR.init(this);
+		//初始化融云
+		 RongIM.init(this);
+		 /**
+          * 融云SDK事件监听处理
+          *
+          * 注册相关代码，只需要在主进程里做。
+          */
+         if ("io.rong.app".equals(getCurProcessName(getApplicationContext()))) {
+
+             RongCloudEvent.init(this);
+             DemoContext.init(this);
+             Thread.setDefaultUncaughtExceptionHandler(new RongExceptionHandler(this));
+             try {
+                 RongIM.registerMessageType(DemoCommandNotificationMessage.class);
+                 RongIM.registerMessageType(DeAgreedFriendRequestMessage.class);
+                 RongIM.registerMessageTemplate(new ContactNotificationMessageProvider());
+
+             } catch (Exception e) {
+                 e.printStackTrace();
+             }
+         }
+		
 		//友盟统计
 		MobclickAgent.updateOnlineConfig(this);
 		//开启默认的页面统计
@@ -166,6 +196,18 @@ public class App extends FrontiaApplication {
 		// Initialize ImageLoader with configuration.
 		ImageLoader.getInstance().init(config);
 	}
+	public static String getCurProcessName(Context context) {
+        int pid = android.os.Process.myPid();
+        ActivityManager activityManager = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningAppProcessInfo appProcess : activityManager
+                .getRunningAppProcesses()) {
+            if (appProcess.pid == pid) {
+                return appProcess.processName;
+            }
+        }
+        return null;
+    }
 
 	public static RequestQueue getQueue() {
 		return sQueue;

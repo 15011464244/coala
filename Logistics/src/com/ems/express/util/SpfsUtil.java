@@ -42,7 +42,7 @@ public class SpfsUtil {
 	public static Boolean getIsLoadingCity(){
 		return sharedPreferences.getBoolean("isLoading", true);
 	}
-	
+	//个人中心里的电话号码，
 	public static void saveTelephone(String phone) {
 		sharedPreferences.edit().putString("telephone", phone).commit();
 	}

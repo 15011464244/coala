@@ -1,5 +1,10 @@
 package com.ems.express.fragment.home;
 
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient.ConnectCallback;
+import io.rong.imlib.RongIMClient.ErrorCode;
+import io.rong.imlib.model.UserInfo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Executors;
@@ -13,6 +18,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -151,27 +158,44 @@ public class HomeIndexFragment extends Fragment implements OnClickListener {
 		width = metric.widthPixels;
 //		Log.e("gongjie", width+"");
 		height = metric.heightPixels;
-//		Log.e("gongjie", height+"");
+		Log.e("gongjie", height+"");
 		viewPageVeiw = (RelativeLayout) view.findViewById(R.id.rl_viewpager);
 		ll_one = (LinearLayout) view.findViewById(R.id.ll_one);
 		ll_two = (LinearLayout) view.findViewById(R.id.ll_two);
-		LinearLayout.LayoutParams linearParams = (android.widget.LinearLayout.LayoutParams) viewPageVeiw.getLayoutParams();
+		LinearLayout.LayoutParams linearParams  = (android.widget.LinearLayout.LayoutParams) viewPageVeiw.getLayoutParams();
 		LinearLayout.LayoutParams linearParams1 = (android.widget.LinearLayout.LayoutParams) ll_one.getLayoutParams();
 		LinearLayout.LayoutParams linearParams2 = (android.widget.LinearLayout.LayoutParams) ll_two.getLayoutParams();
-		if (height == 1920) {
-			linearParams.height = height*2/5;
-			linearParams.width = width;
-			viewPageVeiw.setLayoutParams(linearParams);
-			linearParams1.height = height*9/40;
-			linearParams1.width = width; 
-			ll_one.setLayoutParams(linearParams1);
-			linearParams2.height = height*9/40;
-			linearParams2.width = width;
-			ll_two.setLayoutParams(linearParams2);
+		// 获取手机型号：
+		Log.e("gongjie", android.os.Build.MODEL+"");
+		//获取手机厂商：
+		Log.e("gongjie", android.os.Build.MANUFACTURER+"");
+		if (height == 1803) {
+			if (android.os.Build.MANUFACTURER.equals("OPPO")) {
+				Log.e("gongjie", "进入OPPO");
+				linearParams.height = height*10/40;
+				linearParams.width = width;
+				viewPageVeiw.setLayoutParams(linearParams);
+				linearParams1.height = height*14/80;
+				linearParams1.width = width; 
+				ll_one.setLayoutParams(linearParams1);
+				linearParams2.height = height*14/80;
+				linearParams2.width = width;
+				ll_two.setLayoutParams(linearParams2);
+			}
+		}else if (height == 1920) {
+			if (android.os.Build.MANUFACTURER.equals("Mizu")) {
+				Log.e("gongjie", "进入Meizu");
+				linearParams.height = height*10/40;
+				linearParams.width = width;
+				viewPageVeiw.setLayoutParams(linearParams);
+				linearParams1.height = height*11/80;
+				linearParams1.width = width; 
+				ll_one.setLayoutParams(linearParams1);
+				linearParams2.height = height*6/40;
+				linearParams2.width = width;
+				ll_two.setLayoutParams(linearParams2);
+			}
 		}
-		
-		
-		
 		send = (LinearLayout) view.findViewById(R.id.ll_send);
 		receive = (LinearLayout) view.findViewById(R.id.ll_receive);
 		talk = (LinearLayout) view.findViewById(R.id.ll_talk);
@@ -204,6 +228,14 @@ public class HomeIndexFragment extends Fragment implements OnClickListener {
 		images = new ArrayList<ImageView>();
 		for (int i = 0; i < imageIds.length; i++) {
 			ImageView imageView = new ImageView(mContext);
+			DisplayMetrics dm = new DisplayMetrics();
+			// 为了让轮播图正常全显示出来
+			getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+			int tempWidth = BitmapFactory.decodeResource(getResources(), imageIds[i]).getWidth();
+			int tempHeight = BitmapFactory.decodeResource(getResources(), imageIds[i]).getHeight();
+			LinearLayout.LayoutParams   params =  (android.widget.LinearLayout.LayoutParams) viewPageVeiw.getLayoutParams();
+			params.height = (int) (tempHeight * ((double) dm.widthPixels / (double) tempWidth));
+			viewPageVeiw.setLayoutParams(params);
 			imageView.setImageResource(imageIds[i]);
 			images.add(imageView);
 		}
@@ -394,6 +426,50 @@ public class HomeIndexFragment extends Fragment implements OnClickListener {
 			break;
 		case R.id.ll_talk:
 			ToastUtil.show(mContext, "实时通讯");
+			//融云的token
+			String token = "h+sOjOvSP5wO9eUdbiF8hKKZgOBwfU4srIHJPxpl05ywbdNxTSrcwGohfdTC3K3l1F8zAXjhjOs=";
+			RongIM.connect(token, new ConnectCallback() {
+
+				@Override
+				public void onError(ErrorCode arg0) {
+					Toast.makeText(mContext, "connect onError", Toast.LENGTH_SHORT).show();
+				}
+
+				@Override
+				public void onSuccess(String arg0) {
+					Toast.makeText(mContext, "connect onSuccess", Toast.LENGTH_SHORT).show();
+					/**
+					 * 设置用户信息的提供者，供 RongIM 调用获取用户名称和头像信息。
+					 *
+					 * @param userInfoProvider 用户信息提供者。
+					 * @param isCacheUserInfo  设置是否由 IMKit 来缓存用户信息。<br>
+					 *                         如果 App 提供的 UserInfoProvider。
+					 *                         每次都需要通过网络请求用户数据，而不是将用户数据缓存到本地内存，会影响用户信息的加载速度；<br>
+					 *                         此时最好将本参数设置为 true，由 IMKit 将用户信息缓存到本地内存中。
+					 * @see UserInfoProvider
+					 */
+					RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
+
+					    @Override
+					    public UserInfo getUserInfo(String userId) {
+					    	Log.e("gongjie", "userId"+userId);
+					    	String dlvorgcode = "33004607";
+					    	String username = "9401";
+					    	String url = "http://111.75.223.93:9008/post-carrier-service/PhoneAction/findEmployeeImage?"+"dlvorgcode="+dlvorgcode+"&username="+username;
+					    	UserInfo info = new UserInfo(userId, "gongjie", Uri.parse(url));
+					        return info;//根据 userId 去你的用户系统里查询对应的用户信息返回给融云 SDK。
+					    }
+
+					}, true);
+					RongIM.getInstance().startConversationList(mContext);
+				}
+
+				@Override
+				public void onTokenIncorrect() {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 			ChatListActivity.startAction(mContext);
 			break;
 		case R.id.ll_message:

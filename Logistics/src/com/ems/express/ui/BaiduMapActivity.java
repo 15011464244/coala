@@ -420,6 +420,7 @@ public class BaiduMapActivity extends BaseActivityForRequest implements
 								}
 							}
 							strcounty = result.getAddressDetail().district;
+							Log.e("gongjie", "strcounty"+strcounty);
 						}
 						if(strpro != null && strcity != null && strcounty != null){
 							rsu2.freshByName(strpro, strcity, strcounty);

@@ -2,6 +2,9 @@ package com.ems.express.ui;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 
 import org.json.JSONObject;
@@ -21,6 +24,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
+import android.provider.DocumentsContract.Document;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -33,6 +37,9 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.onekeyshare.OnekeyShare;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -107,6 +114,8 @@ public class PersonalCenterActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_personal_center);
 		ButterKnife.inject(this);
+		//shareSDK分享
+		ShareSDK.initSDK(this,"c47256c5e9e0");
 		initDialog();
 		jumpSend=(TextView)findViewById(R.id.bt_jump_send);
 		if(!TextUtils.isEmpty(SpfsUtil.loadName()) && !"null".equals(SpfsUtil.loadName())){
@@ -204,6 +213,10 @@ public class PersonalCenterActivity extends BaseActivity {
 			mDialog.show();
 		}
 	}
+	@OnClick(R.id.btn_share)
+	void toShare(){
+		showShare();
+	}
 
 	@OnClick(R.id.btn_name)
 	void toEditName() {
@@ -230,6 +243,7 @@ public class PersonalCenterActivity extends BaseActivity {
 	@OnClick(R.id.btn_qrcode)
 	void showQrcode(){
 		DialogUtils.getQrcodeDialog(this).show();
+//		showShare();
 	}
 
 	private void startIntent(int action, String content) {
@@ -493,6 +507,57 @@ public class PersonalCenterActivity extends BaseActivity {
 		}
 		return null;
 	}
+	//shareSDK一键分享
+	private void showShare() {
+//		 ShareSDK.initSDK(this);
+		 OnekeyShare oks = new OnekeyShare();
+		 //关闭sso授权
+		 oks.disableSSOWhenAuthorize(); 
+		 
+		// 分享时Notification的图标和文字  2.5.9以后的版本不调用此方法
+		 //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
+		 // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+		 oks.setTitle("快递帮手省钱又好用，邀您一起来！");
+		 // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+		 oks.setTitleUrl("http://fir.im/xcf7");
+		 // text是分享文本，所有平台都需要这个字段
+		 oks.setText("全新体验，快来下载吧");
+		 // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+//		 oks.setImagePath("/sdcard/small.jpg");//确保SDcard下面存在此张图片
+		 try {
+			InputStream is = getResources().getAssets().open("small.jpg");
+			File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+			String path =directory.getPath() + File.separator +"small.jpg";
+			FileOutputStream out = new FileOutputStream(path);
+			
+			
+			byte[]  buffer = new byte[1024*4];
+			int n = 0;
+			
+			while ((n = is.read(buffer))!=-1) {
+				out.write(buffer, 0, n);
+				
+			}
+			is.close();
+			out.close();
+			LogUtil.print("分享图片存储的path"+path);
+			oks.setImagePath(path);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 // url仅在微信（包括好友和朋友圈）中使用
+		 oks.setUrl("http://fir.im/xcf7");
+		 // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+		 oks.setComment("请输入您的评论");
+		 // site是分享此内容的网站名称，仅在QQ空间使用
+		 oks.setSite(getString(R.string.app_name));
+		 // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+		 oks.setSiteUrl("http://fir.im/xcf7");
+		 
+		// 启动分享GUI
+		 oks.show(this);
+		 }
 
 	/**
 	 * @param uri

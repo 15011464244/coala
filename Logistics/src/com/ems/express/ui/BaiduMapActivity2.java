@@ -94,7 +94,7 @@ public class BaiduMapActivity2 extends BaseActivityForRequest implements
 	private AnimationUtil util;
 	
 	private BDLocationListener myListener = new BDLocationListener() {
-
+//
 		@Override
 		public void onReceivePoi(BDLocation location) {
 			if (location != null) {

@@ -61,7 +61,7 @@
     	
     	 <LinearLayout
        android:layout_width="match_parent"
-       android:layout_height="150dp"
+       android:layout_height="100dp"
        android:background="#fff"
        android:orientation="vertical" >
 
@@ -131,12 +131,16 @@
                 android:gravity="right"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/font_15" />
-        </LinearLayout><View
-                style="@style/line_left_right_10"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@drawable/horizontal_line" />
+        </LinearLayout>
+        </LinearLayout>
+         <View style="@style/line_margin_no" />
 
+    	<View style="@style/line_top_10" />
+		  <LinearLayout
+	       android:layout_width="match_parent"
+	       android:layout_height="150dp"
+	       android:background="#fff"
+	       android:orientation="vertical" >
           <LinearLayout
             android:id="@+id/btn_qrcode"
             android:layout_width="match_parent"
@@ -177,9 +181,37 @@
                 android:textColor="@color/grey"
                 android:textSize="@dimen/font_15" />
         </LinearLayout>
-        
-
-        <TextView style="@style/DividerLineStyle" />
+        <View
+	        android:layout_width="match_parent"
+	        android:layout_height="0.5dp"
+	        style="@style/line_left_right_10"
+	        android:background="@drawable/horizontal_line" />
+        	<TextView 
+	            android:layout_height="50dp"
+	            android:layout_width="fill_parent"
+	            android:gravity="center"
+	            android:text="分享好友，邀请大家一起来获取积分"
+	            android:textColor="#FFA500"
+            />
+        	
+       
+         	 <Button
+         	     
+         	     android:layout_width="match_parent"
+         	     android:layout_height="40dp"
+		   	    android:id="@+id/btn_share"
+		   	    android:background="@drawable/btn_selector"
+		   	    android:layout_marginTop="0dp"
+		   	    android:layout_marginBottom="10dp"
+		   	    android:layout_marginLeft="20dp"
+		   	    android:layout_marginRight="20dp"
+		   	    android:text="分享邀请好友"
+		   	    android:textColor="@color/white"
+		   	    android:textSize="15sp"
+		   	     />
+         	 
+        </LinearLayout>
+		
 
         <LinearLayout
             android:id="@+id/btn_address"
@@ -212,9 +244,7 @@
                 android:textColor="@color/grey"
                 android:textSize="@dimen/font_15" />
         </LinearLayout>
-        </LinearLayout>
 
-        <TextView style="@style/DividerLineStyle" />
     </LinearLayout>
 
 </LinearLayout>

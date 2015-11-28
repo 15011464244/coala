@@ -1424,6 +1424,62 @@ public class DBHelper extends SQLiteOpenHelper {
 		cur.close();
 		return cityList;
 	}
+	//查询固定市列表
+		public String queryCodeByCity(SQLiteDatabase db,String proCode,String cityName) {
+			String sql = "select * from city where code like '"+proCode+"%' and name = '"+cityName+"'";
+			List<City> cityList = new ArrayList<City>();
+			Cursor cur = db.rawQuery(sql, null);
+			String code = null;
+			while(cur.moveToNext()){
+				City city = new City();
+				city.setCode(Integer.valueOf(cur.getString(cur.getColumnIndex("code"))));
+				city.setName(cur.getString(cur.getColumnIndex("name")));
+				code = cur.getString(cur.getColumnIndex("code"));
+				cityList.add(city);
+			}
+			cur.close();
+			return code;
+		}
+	//根据固定地址查询code
+	public String queryCodeByProvince(SQLiteDatabase db,String pro){
+		String sql = "select * from province where name ='"+ pro+"'";
+		List<City> cityList = new ArrayList<City>();
+		Cursor cur = db.rawQuery(sql, null);
+		String code = null;
+		while (cur.moveToNext()) {
+			City city = new City();
+			city.setCode(Integer.valueOf(cur.getString(cur.getColumnIndex("code"))));
+			city.setName(cur.getString(cur.getColumnIndex("name")));
+			code = cur.getString(cur.getColumnIndex("code"));
+			cityList.add(city);
+		}
+		return code;
+	}
+	//查询固定县列表
+		public String queryCodeByCounty(SQLiteDatabase db,String cityCode,String countyName) {
+			String startWith;
+			if(cityCode.startsWith("11")||cityCode.startsWith("12")||cityCode.startsWith("31")||cityCode.startsWith("50")){
+				 startWith = cityCode.substring(0, 3);
+			}else{
+				 startWith = cityCode.substring(0, 4);
+			}
+			
+			Log.e("msggg", startWith);
+			String sql = "select * from county where code like '"+startWith+"%' and name = '"+countyName+"'";
+			List<City> cityList = new ArrayList<City>();
+			Cursor cur = db.rawQuery(sql, null);
+			String code = null;
+			while(cur.moveToNext()){
+				City city = new City();
+				city.setCode(Integer.valueOf(cur.getString(cur.getColumnIndex("code"))));
+				city.setName(cur.getString(cur.getColumnIndex("name")));
+				code = cur.getString(cur.getColumnIndex("code"));
+				cityList.add(city);
+			}
+			cur.close();
+			Log.e("gongjie", cityList.toString());
+			return code;
+		}
 	/**
 	 * 创建县列表
 	 * @param db
@@ -1477,6 +1533,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			cityList.add(city);
 		}
 		cur.close();
+		Log.e("gongjie", cityList.toString());
 		return cityList;
 	}
 			

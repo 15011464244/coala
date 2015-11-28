@@ -25,6 +25,16 @@ public class Constant {
 //	 public static final String SERVER_ROOT = "http://111.75.223.93:9002/post-customer-service/";
 	
 	 public static final String SERVER_ROOT = "http://111.75.223.93:9008/post-customer-service/";
+	 //江西本地
+//	 public static final String SERVER_ROOT = "http://172.16.254.153:9008/post-customer-service/";
+	 
+	 /**
+		 * 运费查询
+		 */
+//		public static final String Costquery = SERVER_ROOT + "UtilsAction/API/costquery";
+//		public static final String Costquery = "http://211.156.193.130:8091/message-service/" + "UtilsAction/API/costquery";
+		public static final String Costquery = "http://172.16.254.153:9008/dias/api/helperUser/queryBilling";
+//		public static final String Costquery = "http://172.16.254.153:9002/dias/api/helperUser/queryBilling";
 	/**
 	 * 登录
 	 */
@@ -94,12 +104,7 @@ public class Constant {
 	 */
 	public static final String DeliveryMail = SERVER_ROOT + "NewemsAction/receiveMsg";
 	
-	/**
-	 * 运费查询
-	 */
-//	public static final String Costquery = SERVER_ROOT + "UtilsAction/API/costquery";
-//	public static final String Costquery = "http://211.156.193.130:8091/message-service/" + "UtilsAction/API/costquery";
-	public static final String Costquery = "http://111.75.223.93:9008/dias/api/helperUser/queryBilling";
+	
 
 	/**
 	 * 邮件信息
@@ -202,5 +207,8 @@ public class Constant {
 	 * 微信支付的调用获得prepayId的过程
 	 */
 	public static final String wxPay = "http://user.pingandj.cn/wx/pay/recharge";
-	
+	/*
+	 * 注册的时候上传位置信息的接口
+	 */
+	public static final String uploadLocation = SERVER_ROOT+"MicroPhoneAction/uploadRegisterLocation";
 }

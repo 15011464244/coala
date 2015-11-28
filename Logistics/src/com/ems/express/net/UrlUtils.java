@@ -8,6 +8,8 @@ public class UrlUtils {
 	/*
 	 * 江西
 	 */
+	
+//	public static String HOST = "http://172.16.254.153:9008/post-customer-service/";
 	public static String HOST = "http://111.75.223.93:9008/post-customer-service";
 //	public static String HOST = "http://111.75.223.93:9002/post-customer-service";
 	//赵杰测试
