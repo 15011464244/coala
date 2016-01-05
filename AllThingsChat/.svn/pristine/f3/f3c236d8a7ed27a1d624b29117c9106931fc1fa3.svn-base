@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="50dp" 
+    android:background="#D32524">
+    
+     <TextView 
+         android:id="@+id/remove"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="取消"
+         android:layout_centerHorizontal="true"
+         android:layout_centerVertical="true"
+         android:layout_marginLeft="20dp"
+         android:layout_alignParentLeft="true"
+         android:textColor="#ffffff"
+         android:visibility="gone"/>
+          <TextView 
+            android:id="@+id/titles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="百事通"
+            android:textColor="#ffffff"
+            android:textSize="17dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            />
+            <ImageButton 
+                android:id="@+id/add"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/add"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20px"/>
+        <ImageButton 
+            android:layout_width="12dp"
+            android:layout_height="20dp"
+            android:background="@drawable/back"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"/>
+       <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+               android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:text="投稿"
+                android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"/>
+          
+        
+        
+            
+        
+ 
+
+</RelativeLayout>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+ 
+>
+<RelativeLayout 
+    android:id="@+id/rl1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:padding="10dp">
+    <ImageView 
+        android:id="@+id/iv"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/p1"
+        android:padding="10dp"
+        />
+    <TextView 
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="一生闺蜜"
+        android:layout_toRightOf="@id/iv"
+        android:textColor="#000000"
+        android:layout_marginTop="8dp"/>
+    <RelativeLayout 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/iv"
+        android:layout_below="@id/tv"
+        android:layout_marginTop="7dp">
+        <LinearLayout
+            android:id="@+id/ll" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <ImageView 
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="@drawable/iconfont_zhaopian"/>
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="123584"
+            android:textColor="#000000"
+            />
+        </LinearLayout>
+            <LinearLayout
+                android:layout_toRightOf="@id/ll" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="12dp"
+            >
+            <ImageView 
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="@drawable/iconfont_yanjing"/>
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="123584"
+            android:textColor="#000000"
+            />
+        </LinearLayout>
+        
+    </RelativeLayout>
+ <ImageView 
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_centerVertical="true"
+     android:layout_centerHorizontal="true"
+     android:background="@drawable/more"
+     android:layout_alignParentRight="true"
+     android:layout_marginRight="5dp"/>
+ </RelativeLayout>
+ <RelativeLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#000000"
+    android:layout_below="@id/rl1">
+    
+</RelativeLayout>
+</RelativeLayout>
+
+
+

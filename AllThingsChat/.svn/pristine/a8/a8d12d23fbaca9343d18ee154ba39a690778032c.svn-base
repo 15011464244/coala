@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="#ffffff">
+    <include 
+        android:id="@+id/title"
+        layout="@layout/title"/>
+<RelativeLayout 
+    android:id="@+id/rl"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/title"
+    android:background="#F2F2F2"
+     android:padding="9dp">
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       
+        android:text="切换栏目"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="5dp"
+        android:textColor="#000000"/>
+    <ImageView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/more_top"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"/>
+    
+</RelativeLayout>
+
+
+<RelativeLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/rl"
+    android:padding="6dp"
+    >
+    <LinearLayout
+        android:id="@+id/ll" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button 
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="服装"
+            android:background="@drawable/buttonstyle"
+            android:textColor="#000000"
+            android:layout_weight="1"
+            android:layout_margin="6dp"/>
+        <Button 
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="酒店"
+            android:background="@drawable/buttonstyle"
+            android:textColor="#000000"
+            android:layout_weight="1"
+            android:layout_margin="6dp"/>
+        <Button 
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="旅游"
+            android:background="@drawable/buttonstyle"
+            android:textColor="#000000"
+            android:layout_weight="1"
+            android:layout_margin="6dp"/>
+        <Button 
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="美酒"
+            android:background="@drawable/buttonstyle"
+            android:textColor="#000000"
+            android:layout_weight="1"
+            android:layout_margin="6dp"/>
+        
+        
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll1" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll"
+        android:orientation="horizontal">
+        <Button 
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="医疗"
+            android:background="@drawable/buttonstyle"
+            android:textColor="#000000"
+            android:layout_weight="1"
+            android:layout_margin="6dp"/>
+        <Button 
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="美食"
+            android:background="@drawable/buttonstyle"
+            android:textColor="#000000"
+            android:layout_weight="1"
+            android:layout_margin="6dp"/>
+        <Button 
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="旅游"
+            android:background="@drawable/buttonstyle"
+            android:textColor="#000000"
+            android:layout_weight="1"
+            android:layout_margin="6dp"/>
+        <Button 
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="美酒"
+            android:background="@drawable/buttonstyle"
+            android:textColor="#000000"
+            android:layout_weight="1"
+            android:layout_margin="6dp"/>
+        
+        
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll2" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll1"
+        android:orientation="horizontal">
+        <Button 
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="更多"
+            android:background="#f2f2f2"
+            android:textColor="#000000"
+            
+            android:layout_margin="6dp"/>
+     
+        
+        
+    </LinearLayout>
+    
+</RelativeLayout>
+</RelativeLayout>

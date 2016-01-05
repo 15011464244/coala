@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" 
+    android:background="#ffffff">
+   <RelativeLayout
+        android:id="@+id/ll" 
+        
+        android:layout_width="wrap_content"
+        android:layout_toLeftOf="@id/ib"
+        android:layout_height="35dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/send_comment"
+        >
+       
+        <EditText 
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:hint="说点什么吧"
+            android:background="@null"/>
+    
+       
+       
+    </RelativeLayout>
+    <ImageButton 
+           android:id="@+id/ib"
+           android:layout_width="20dp"
+           android:layout_height="20dp"
+           android:background="@drawable/add_comment"
+           android:layout_centerHorizontal="true"
+           android:layout_centerVertical="true"
+           android:layout_alignParentRight="true"
+           android:layout_marginRight="15dp"/>
+</RelativeLayout>
